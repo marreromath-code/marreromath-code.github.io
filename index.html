@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Math Topics By Dr. Marrero</title>
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: Georgia, 'Times New Roman', serif;
+      background: #f9f7f2;
+      color: #1a1a2e;
+      line-height: 1.7;
+    }
+
+    /* ── Color palette ── */
+    :root {
+      --navy:  #1a2744;
+      --gold:  #b8960c;
+      --gold-light: #f0d060;
+      --cream: #f9f7f2;
+      --light-gray: #eeeae0;
+      --text:  #1a1a2e;
+      --muted: #5a5a7a;
+    }
+
+    /* ── Typography ── */
+    h1, h2, h3 { font-family: Georgia, serif; color: var(--navy); }
+    a { color: var(--gold); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Nav ── */
+    nav {
+      background: var(--navy);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    }
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      height: 64px;
+    }
+    .nav-logo {
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: bold;
+      letter-spacing: 0.03em;
+    }
+    .nav-logo span { color: var(--gold-light); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: #ccc;
+      font-family: 'Arial', sans-serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold-light); text-decoration: none; }
+
+    /* ── Hero ── */
+    .hero {
+      background: linear-gradient(135deg, var(--navy) 0%, #2d3f6e 60%, #3a5298 100%);
+      color: #fff;
+      padding: 5rem 2rem 4rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: "∑ ∫ π √ ∞ ≤ ≥ Δ λ θ ℝ ℕ ∂ ⊕";
+      position: absolute;
+      top: 1rem; left: 0; right: 0;
+      font-size: 1.4rem;
+      color: rgba(255,255,255,0.07);
+      letter-spacing: 1.5rem;
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: var(--gold);
+      color: #fff;
+      font-family: Arial, sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.3rem 1rem;
+      border-radius: 2px;
+      margin-bottom: 1.2rem;
+    }
+    .hero h1 {
+      color: #fff;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+    .hero h1 em {
+      font-style: normal;
+      color: var(--gold-light);
+    }
+    .hero p {
+      font-size: 1.15rem;
+      color: #c8d0e8;
+      max-width: 620px;
+      margin: 0 auto 2rem;
+    }
+    .hero-cta {
+      display: inline-flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 2rem;
+      border-radius: 3px;
+      font-family: Arial, sans-serif;
+      font-size: 0.9rem;
+      font-weight: bold;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: transform 0.15s, box-shadow 0.15s;
+      cursor: pointer;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.25); text-decoration: none; }
+    .btn-primary { background: var(--gold); color: #fff; }
+    .btn-outline { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,0.6); }
+
+    /* ── Section wrapper ── */
+    section { padding: 4rem 2rem; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .section-title {
+      text-align: center;
+      margin-bottom: 0.5rem;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+    }
+    .section-divider {
+      width: 60px;
+      height: 3px;
+      background: var(--gold);
+      margin: 0.6rem auto 2.5rem;
+      border-radius: 2px;
+    }
+    .section-sub {
+      text-align: center;
+      color: var(--muted);
+      font-family: Arial, sans-serif;
+      font-size: 0.95rem;
+      margin-bottom: 2.5rem;
+      margin-top: -1.5rem;
+    }
+
+    /* ── About ── */
+    #about { background: #fff; }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 3rem;
+      align-items: center;
+    }
+    .about-avatar {
+      background: linear-gradient(135deg, var(--navy), #3a5298);
+      border-radius: 50%;
+      width: 180px;
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      font-size: 4rem;
+      color: var(--gold-light);
+      box-shadow: 0 4px 20px rgba(26,39,68,0.25);
+    }
+    .about-text h3 {
+      font-size: 1.5rem;
+      margin-bottom: 0.3rem;
+    }
+    .about-text .subtitle {
+      color: var(--gold);
+      font-family: Arial, sans-serif;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 1rem;
+    }
+    .about-text p { color: #333; margin-bottom: 0.8rem; }
+
+    /* ── Topics ── */
+    #topics { background: var(--cream); }
+    .topics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+    .topic-card {
+      background: #fff;
+      border: 1px solid #ddd8cc;
+      border-top: 4px solid var(--gold);
+      border-radius: 4px;
+      padding: 1.8rem 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .topic-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(26,39,68,0.12);
+    }
+    .topic-icon { font-size: 2rem; margin-bottom: 0.8rem; }
+    .topic-card h3 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+    .topic-card p { font-family: Arial, sans-serif; font-size: 0.88rem; color: var(--muted); }
+
+    /* ── Videos ── */
+    #videos { background: #fff; }
+    .videos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    .video-card {
+      border: 1px solid #ddd8cc;
+      border-radius: 4px;
+      overflow: hidden;
+      transition: box-shadow 0.2s;
+    }
+    .video-card:hover { box-shadow: 0 6px 20px rgba(26,39,68,0.14); }
+    .video-card iframe {
+      width: 100%;
+      aspect-ratio: 16/9;
+      display: block;
+      border: none;
+    }
+    .video-info { padding: 1rem 1.2rem; }
+    .video-info h3 { font-size: 1rem; margin-bottom: 0.3rem; }
+    .video-info p { font-family: Arial, sans-serif; font-size: 0.83rem; color: var(--muted); }
+    .channel-link-wrap {
+      text-align: center;
+      margin-top: 2.5rem;
+    }
+
+    /* ── Newsletter / Contact ── */
+    #contact { background: var(--navy); color: #fff; }
+    #contact .section-title { color: #fff; }
+    #contact .section-sub { color: #a0aac8; }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+    .contact-info h3 { color: var(--gold-light); font-size: 1.2rem; margin-bottom: 0.8rem; }
+    .contact-info p { color: #b0bcd4; font-family: Arial, sans-serif; font-size: 0.95rem; margin-bottom: 0.5rem; }
+    .contact-info a { color: var(--gold-light); }
+    .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+    .contact-form input,
+    .contact-form textarea {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 3px;
+      color: #fff;
+      font-family: Georgia, serif;
+      font-size: 0.95rem;
+      padding: 0.75rem 1rem;
+      width: 100%;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .contact-form input::placeholder,
+    .contact-form textarea::placeholder { color: rgba(255,255,255,0.4); }
+    .contact-form input:focus,
+    .contact-form textarea:focus { border-color: var(--gold-light); }
+    .contact-form textarea { resize: vertical; min-height: 120px; }
+    .contact-form button {
+      background: var(--gold);
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      padding: 0.8rem 2rem;
+      font-family: Arial, sans-serif;
+      font-size: 0.9rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      align-self: flex-start;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .contact-form button:hover { background: #9a7a0a; transform: translateY(-1px); }
+
+    /* ── Footer ── */
+    footer {
+      background: #0f1929;
+      color: #667;
+      text-align: center;
+      padding: 1.5rem 2rem;
+      font-family: Arial, sans-serif;
+      font-size: 0.82rem;
+    }
+    footer a { color: var(--gold); }
+
+    /* ── Apps ── */
+    .apps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    .app-card {
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-start;
+      background: var(--cream);
+      border: 1px solid #ddd8cc;
+      border-left: 5px solid var(--gold);
+      border-radius: 4px;
+      padding: 2rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .app-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(26,39,68,0.12);
+    }
+    .app-icon {
+      font-size: 2.8rem;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+    .app-body h3 { font-size: 1.2rem; margin-bottom: 0.2rem; }
+    .app-tag {
+      font-family: 'Courier New', monospace;
+      font-size: 0.78rem;
+      color: var(--gold);
+      margin-bottom: 0.7rem;
+    }
+    .app-body p { font-family: Arial, sans-serif; font-size: 0.9rem; color: #444; line-height: 1.6; }
+
+    /* ── YouTube Facade (click-to-play) ── */
+    .yt-facade {
+      position: relative;
+      cursor: pointer;
+      aspect-ratio: 16/9;
+      background: #000;
+      overflow: hidden;
+    }
+    .yt-facade img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: opacity 0.2s;
+    }
+    .yt-facade:hover img { opacity: 0.75; }
+    .play-btn {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(180, 0, 0, 0.88);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 64px; height: 64px;
+      font-size: 1.6rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, transform 0.15s;
+      padding-left: 4px;
+    }
+    .yt-facade:hover .play-btn {
+      background: rgba(200, 0, 0, 1);
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+    .yt-facade iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      border: none;
+    }
+
+    /* ── Thumbnail Grid ── */
+    .thumb-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.2rem;
+    }
+    .thumb-card {
+      display: block;
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid #ddd8cc;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      background: #fff;
+    }
+    .thumb-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 18px rgba(26,39,68,0.14);
+      text-decoration: none;
+    }
+    .thumb-card img {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      display: block;
+    }
+    .thumb-title {
+      padding: 0.6rem 0.8rem;
+      font-family: Georgia, serif;
+      font-size: 0.85rem;
+      color: var(--navy);
+      line-height: 1.4;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .about-grid { grid-template-columns: 1fr; text-align: center; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .nav-links { gap: 1rem; }
+    }
+    @media (max-width: 480px) {
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Navigation ── -->
+  <nav>
+    <div class="nav-inner">
+      <div class="nav-logo">Math Topics <span>By Dr. Marrero</span></div>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#topics">Topics</a></li>
+        <li><a href="#apps">Apps</a></li>
+        <li><a href="#videos">Videos</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="https://padlet.com/marreromath/math-topics-newsletter-april-06-2026-rri9d5qi2nbe2yu4" target="_blank" rel="noopener" style="color:var(--gold-light); font-weight:bold;">Newsletter</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ── Hero ── -->
+  <header class="hero">
+    <div class="hero-badge">Mathematics Education · Grades 6–12 &amp; Beyond</div>
+    <h1>Math Topics<br/><em>By Dr. Marrero</em></h1>
+    <p>Rigorous, engaging mathematics education — from foundational middle school concepts through Calculus, with a focus on deep understanding and mathematical thinking.</p>
+    <div class="hero-cta">
+      <a href="https://www.youtube.com/channel/UCiMvj3HiZ9BtdlJJiQeuXlw" target="_blank" rel="noopener" class="btn btn-primary">Watch on YouTube</a>
+      <a href="#topics" class="btn btn-outline">Explore Topics</a>
+      <a href="https://padlet.com/marreromath/math-topics-newsletter-april-06-2026-rri9d5qi2nbe2yu4" target="_blank" rel="noopener" class="btn btn-outline">📬 Weekly Newsletter</a>
+    </div>
+  </header>
+
+  <!-- ── About ── -->
+  <section id="about">
+    <div class="container">
+      <h2 class="section-title">About Dr. Marrero</h2>
+      <div class="section-divider"></div>
+      <div class="about-grid">
+        <div style="display:flex; justify-content:center;">
+          <img src="dr_marrero.jpg" alt="Dr. Carlos Marrero" style="width:200px; height:200px; border-radius:50%; object-fit:cover; object-position: center top; box-shadow: 0 4px 20px rgba(26,39,68,0.25); border: 4px solid var(--gold);"/>
+        </div>
+        <div class="about-text">
+          <h3>Dr. Carlos Marrero, Ed.D., ES, MS</h3>
+          <div class="subtitle">Mathematics Educator &amp; Faculty Professor · Grades 6–12 &amp; Post-Secondary</div>
+          <p>
+            Dr. Carlos Marrero is a mathematics educator with over <strong>21 years of demonstrated excellence</strong> at the secondary and post-secondary levels, currently serving as a Math Adjunct with <strong>Georgia Virtual Learning</strong> (Georgia Department of Education).
+          </p>
+          <p>
+            His teaching philosophy is rooted in the idealism of Plato — who considered mathematics the only universal constant — and the belief that a teacher's role is to act as a <em>transformer</em>, one who triggers students' drive to explore, question, and solve critical problems. His instructional approach is grounded in three pillars: <strong>discussion, analysis, and synthesis</strong>, with a strong emphasis on building connectivity across mathematical fields.
+          </p>
+          <p>
+            Dr. Marrero holds a <strong>Doctor of Education (Ed.D.)</strong> from Nova Southeastern University, where his dissertation focused on implementing technology-enhanced instruction in Algebra I to increase student academic achievement. He also holds an Educational Specialist (ES) and Master of Science (MS) in Mathematics Education, and a Bachelor of Science in Mathematics Education &amp; Computer Programming from Havana University.
+          </p>
+          <p>
+            Beyond the classroom, he has served as an instructional coach, department chair, curriculum specialist, and manuscript reviewer for <em>NCTM's Mathematics Teacher</em> journal. He is a member of NCTM, the American Mathematical Association, and the Honor Society of Phi Kappa Phi.
+          </p>
+          <div style="display:flex; gap:1rem; flex-wrap:wrap; margin-top:1.2rem;">
+            <a href="https://www.youtube.com/channel/UCiMvj3HiZ9BtdlJJiQeuXlw" target="_blank" rel="noopener" class="btn btn-primary">Visit the Channel →</a>
+            <a href="https://linkedin.com/in/mathtopics" target="_blank" rel="noopener" class="btn btn-primary" style="background:#0a66c2;">LinkedIn Profile →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Topics ── -->
+  <section id="topics">
+    <div class="container">
+      <h2 class="section-title">Topics Covered</h2>
+      <div class="section-divider"></div>
+      <p class="section-sub">Comprehensive coverage across the mathematics curriculum for grades 6–12 and beyond</p>
+      <div class="topics-grid">
+
+        <div class="topic-card">
+          <div class="topic-icon">➕</div>
+          <h3>Algebra</h3>
+          <p>Equations, inequalities, functions, polynomials, factoring, and algebraic structures — built for genuine understanding.</p>
+        </div>
+
+        <div class="topic-card">
+          <div class="topic-icon">📐</div>
+          <h3>Geometry &amp; Pre-Calculus</h3>
+          <p>Geometric reasoning, trigonometry, conic sections, and the bridge from algebra to calculus.</p>
+        </div>
+
+        <div class="topic-card">
+          <div class="topic-icon">∫</div>
+          <h3>Calculus</h3>
+          <p>Limits, derivatives, integrals, and their applications — explained clearly with conceptual depth and worked examples.</p>
+        </div>
+
+        <div class="topic-card">
+          <div class="topic-icon">📊</div>
+          <h3>Middle School Math</h3>
+          <p>Ratios, proportional reasoning, number theory, statistics, and foundational skills for grades 6–8.</p>
+        </div>
+
+        <div class="topic-card">
+          <div class="topic-icon">🎓</div>
+          <h3>Math Pedagogy</h3>
+          <p>Research-informed teaching strategies, lesson design, and best practices for mathematics educators.</p>
+        </div>
+
+        <div class="topic-card">
+          <div class="topic-icon">💡</div>
+          <h3>Math Education Topics</h3>
+          <p>Equity in math classrooms, curriculum design, mathematical mindsets, and trends in math education.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Apps ── -->
+  <section id="apps" style="background:#fff;">
+    <div class="container">
+      <h2 class="section-title">Interactive Tools &amp; Apps</h2>
+      <div class="section-divider"></div>
+      <p class="section-sub">Free web apps built to support math learning and exploration</p>
+      <div class="apps-grid">
+
+        <div class="app-card">
+          <div class="app-icon">🔢</div>
+          <div class="app-body">
+            <h3>Number Crunch Lab</h3>
+            <p class="app-tag">number-crunch-lab.com</p>
+            <p>Classify, convert, and explore numbers interactively. Features tools for digit analysis, operations, fractions, geometry, and statistics — great for students at all levels.</p>
+            <a href="https://number-crunch-lab.com" target="_blank" rel="noopener" class="btn btn-primary" style="margin-top:1rem; display:inline-block;">Launch App →</a>
+          </div>
+        </div>
+
+        <div class="app-card">
+          <div class="app-icon">⚛</div>
+          <div class="app-body">
+            <h3>Principia</h3>
+            <p class="app-tag">principia-math-path.com</p>
+            <p>A journey through 5,000 years of human scientific and mathematical achievement — from ancient Greek philosophy and Euclidean geometry to quantum mechanics and modern computing.</p>
+            <a href="https://principia-math-path.com" target="_blank" rel="noopener" class="btn btn-primary" style="margin-top:1rem; display:inline-block;">Explore Timeline →</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Videos ── -->
+  <section id="videos">
+    <div class="container">
+      <h2 class="section-title">Featured Videos</h2>
+      <div class="section-divider"></div>
+      <p class="section-sub">Hand-picked lessons from the channel — subscribe on YouTube for the full library</p>
+
+      <!-- Featured Videos (click-to-play) -->
+      <div class="videos-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); margin-bottom: 3rem;">
+
+        <div class="video-card">
+          <div class="yt-facade" data-id="pUpUdtvHBl4">
+            <img src="https://img.youtube.com/vi/pUpUdtvHBl4/hqdefault.jpg" alt="I Wasted Years on Math Until I Tried This"/>
+            <button class="play-btn" aria-label="Play video">&#9654;</button>
+          </div>
+          <div class="video-info">
+            <h3>I Wasted Years on Math Until I Tried This</h3>
+            <p>A powerful look at how changing your approach to math can transform your understanding.</p>
+          </div>
+        </div>
+
+        <div class="video-card">
+          <div class="yt-facade" data-id="NA_Rz-N-JWU">
+            <img src="https://img.youtube.com/vi/NA_Rz-N-JWU/hqdefault.jpg" alt="AP Calculus Limits – The Mistake Most Students Make"/>
+            <button class="play-btn" aria-label="Play video">&#9654;</button>
+          </div>
+          <div class="video-info">
+            <h3>AP Calculus Limits – The Mistake Most Students Make</h3>
+            <p>Avoid the most common conceptual error students make when studying limits in AP Calculus.</p>
+          </div>
+        </div>
+
+        <div class="video-card">
+          <div class="yt-facade" data-id="Sk3hPqD_MaA">
+            <img src="https://img.youtube.com/vi/Sk3hPqD_MaA/hqdefault.jpg" alt="The 8-Week Plan Before Taking Calculus"/>
+            <button class="play-btn" aria-label="Play video">&#9654;</button>
+          </div>
+          <div class="video-info">
+            <h3>The 8-Week Plan Before Taking Calculus</h3>
+            <p>A structured preparation guide for students getting ready to take Calculus.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Thumbnail Grid -->
+      <h3 style="text-align:center; font-size:1.2rem; margin-bottom:0.4rem; color:var(--navy);">More from the Channel</h3>
+      <div class="section-divider" style="margin-bottom:1.8rem;"></div>
+      <div class="thumb-grid">
+
+        <a class="thumb-card" href="https://www.youtube.com/watch?v=pUpUdtvHBl4" target="_blank" rel="noopener">
+          <img src="https://img.youtube.com/vi/pUpUdtvHBl4/hqdefault.jpg" alt="I Wasted Years on Math Until I Tried This" loading="lazy"/>
+          <div class="thumb-title">I Wasted Years on Math Until I Tried This</div>
+        </a>
+
+        <a class="thumb-card" href="https://www.youtube.com/watch?v=B7ktRPgpPeM" target="_blank" rel="noopener">
+          <img src="https://img.youtube.com/vi/B7ktRPgpPeM/hqdefault.jpg" alt="Why Are College Students Struggling With Basic Math?" loading="lazy"/>
+          <div class="thumb-title">Why Are College Students Struggling With Basic Math?</div>
+        </a>
+
+        <a class="thumb-card" href="https://www.youtube.com/watch?v=NA_Rz-N-JWU" target="_blank" rel="noopener">
+          <img src="https://img.youtube.com/vi/NA_Rz-N-JWU/hqdefault.jpg" alt="AP Calculus Limits – The Mistake Most Students Make" loading="lazy"/>
+          <div class="thumb-title">AP Calculus Limits – The Mistake Most Students Make</div>
+        </a>
+
+        <a class="thumb-card" href="https://www.youtube.com/watch?v=xjvHvH1_6y0" target="_blank" rel="noopener">
+          <img src="https://img.youtube.com/vi/xjvHvH1_6y0/hqdefault.jpg" alt="Claude Cowork for Beginners - Build Learning Materials Fast" loading="lazy"/>
+          <div class="thumb-title">Claude Cowork for Beginners – Build Learning Materials Fast</div>
+        </a>
+
+        <a class="thumb-card" href="https://www.youtube.com/watch?v=4yqoxdsldHI" target="_blank" rel="noopener">
+          <img src="https://img.youtube.com/vi/4yqoxdsldHI/hqdefault.jpg" alt="I Let NotebookLM Build My Unit Plan" loading="lazy"/>
+          <div class="thumb-title">I Let NotebookLM Build My Unit Plan (Here's What Happened)</div>
+        </a>
+
+        <a class="thumb-card" href="https://www.youtube.com/watch?v=Sk3hPqD_MaA" target="_blank" rel="noopener">
+          <img src="https://img.youtube.com/vi/Sk3hPqD_MaA/hqdefault.jpg" alt="The 8-Week Plan Before Taking Calculus" loading="lazy"/>
+          <div class="thumb-title">The 8-Week Plan Before Taking Calculus</div>
+        </a>
+
+      </div>
+
+      <div class="channel-link-wrap" style="margin-top:2rem;">
+        <a href="https://www.youtube.com/channel/UCiMvj3HiZ9BtdlJJiQeuXlw" target="_blank" rel="noopener" class="btn btn-primary">
+          View All Videos on YouTube →
+        </a>
+        <p style="margin-top:0.8rem; font-family:Arial,sans-serif; font-size:0.85rem; color:var(--muted);">
+          Subscribe to stay updated when new lessons are posted.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Contact / Newsletter ── -->
+  <section id="contact">
+    <div class="container">
+      <h2 class="section-title">Get in Touch</h2>
+      <div class="section-divider"></div>
+      <p class="section-sub">Questions, collaborations, or feedback? Reach out below.</p>
+      <div class="contact-grid">
+
+        <div class="contact-info">
+          <h3>Connect</h3>
+          <p>📧 Email: <a href="mailto:contactmathtopics@gmail.com">contactmathtopics@gmail.com</a></p>
+          <p>▶ YouTube: <a href="https://www.youtube.com/channel/UCiMvj3HiZ9BtdlJJiQeuXlw" target="_blank" rel="noopener">Math Topics By Dr. Marrero</a></p>
+          <p>📬 Newsletter: <a href="https://padlet.com/marreromath/math-topics-newsletter-april-06-2026-rri9d5qi2nbe2yu4" target="_blank" rel="noopener">Weekly Math Topics Newsletter</a></p>
+          <br/>
+          <h3>For Educators</h3>
+          <p>Interested in collaboration, professional development, or using these videos in your classroom? Send a message and let's connect.</p>
+          <br/>
+          <h3>For Students</h3>
+          <p>Have a question about a specific topic or video? Reach out — or leave a comment on the YouTube channel for a quicker response.</p>
+        </div>
+
+        <div>
+          <form class="contact-form" onsubmit="handleSubmit(event)">
+            <input type="text" name="name" placeholder="Your Name" required />
+            <input type="email" name="email" placeholder="Your Email" required />
+            <input type="text" name="subject" placeholder="Subject (e.g., Algebra question, Collaboration)" />
+            <textarea name="message" placeholder="Your message..." required></textarea>
+            <button type="submit">Send Message</button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer>
+    <p>© 2026 Math Topics By Dr. Marrero &nbsp;·&nbsp; <a href="https://www.youtube.com/channel/UCiMvj3HiZ9BtdlJJiQeuXlw" target="_blank" rel="noopener">YouTube Channel</a> &nbsp;·&nbsp; <a href="mailto:contactmathtopics@gmail.com">contactmathtopics@gmail.com</a></p>
+  </footer>
+
+  <script>
+    // Click-to-play YouTube facade
+    document.querySelectorAll('.yt-facade').forEach(facade => {
+      facade.addEventListener('click', () => {
+        const id = facade.dataset.id;
+        const iframe = document.createElement('iframe');
+        iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1`;
+        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+        iframe.allowFullscreen = true;
+        facade.innerHTML = '';
+        facade.appendChild(iframe);
+      });
+    });
+
+    function handleSubmit(e) {
+      e.preventDefault();
+      const form = e.target;
+      const name = form.name.value;
+      const email = form.email.value;
+      const subject = form.subject.value || 'Website Contact';
+      const message = form.message.value;
+      const mailto = `mailto:contactmathtopics@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`)}`;
+      window.location.href = mailto;
+    }
+  </script>
+
+</body>
+</html>
