@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Resources – Math Topics By Dr. Marrero</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: Georgia, 'Times New Roman', serif;
+      background: #f9f7f2;
+      color: #1a1a2e;
+      line-height: 1.7;
+    }
+
+    :root {
+      --navy:  #1a2744;
+      --gold:  #b8960c;
+      --gold-light: #f0d060;
+      --cream: #f9f7f2;
+      --light-gray: #eeeae0;
+      --text:  #1a1a2e;
+      --muted: #5a5a7a;
+    }
+
+    h1, h2, h3 { font-family: Georgia, serif; color: var(--navy); }
+    a { color: var(--gold); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Nav ── */
+    nav {
+      background: var(--navy);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    }
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      height: 64px;
+    }
+    .nav-logo {
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: bold;
+      letter-spacing: 0.03em;
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--gold-light); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: #ccc;
+      font-family: 'Arial', sans-serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--gold-light); text-decoration: none; }
+
+    /* ── Page Header ── */
+    .page-header {
+      background: linear-gradient(135deg, var(--navy) 0%, #2d3f6e 60%, #3a5298 100%);
+      color: #fff;
+      padding: 3.5rem 2rem 3rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-header::before {
+      content: "∑ ∫ π √ ∞ ≤ ≥ Δ λ θ ℝ ℕ ∂ ⊕";
+      position: absolute;
+      top: 1rem; left: 0; right: 0;
+      font-size: 1.4rem;
+      color: rgba(255,255,255,0.07);
+      letter-spacing: 1.5rem;
+      pointer-events: none;
+    }
+    .page-header-badge {
+      display: inline-block;
+      background: var(--gold);
+      color: #fff;
+      font-family: Arial, sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.3rem 1rem;
+      border-radius: 2px;
+      margin-bottom: 1rem;
+    }
+    .page-header h1 {
+      color: #fff;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      margin-bottom: 0.8rem;
+    }
+    .page-header h1 em {
+      font-style: normal;
+      color: var(--gold-light);
+    }
+    .page-header p {
+      font-size: 1.05rem;
+      color: #c8d0e8;
+      max-width: 580px;
+      margin: 0 auto 1.5rem;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: rgba(255,255,255,0.75);
+      font-family: Arial, sans-serif;
+      font-size: 0.88rem;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: var(--gold-light); text-decoration: none; }
+
+    /* ── Section ── */
+    section { padding: 4rem 2rem; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .section-title {
+      font-size: clamp(1.4rem, 2.5vw, 2rem);
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .section-divider {
+      width: 60px;
+      height: 3px;
+      background: var(--gold);
+      margin: 0.5rem 0 2rem;
+      border-radius: 2px;
+    }
+    .section-sub {
+      color: var(--muted);
+      font-family: Arial, sans-serif;
+      font-size: 0.92rem;
+      margin-bottom: 2rem;
+      margin-top: -1.2rem;
+    }
+
+    /* ── Topic Section Block ── */
+    .topic-section {
+      background: #fff;
+      border: 1px solid #ddd8cc;
+      border-top: 5px solid var(--gold);
+      border-radius: 6px;
+      padding: 2rem 2rem 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+    .topic-section-header {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 0.4rem;
+    }
+    .topic-section-icon { font-size: 1.8rem; line-height: 1; }
+    .topic-section-desc {
+      font-family: Arial, sans-serif;
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+    }
+    .resources-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+
+    /* ── Resource Card ── */
+    .resource-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      background: var(--cream);
+      border: 1px solid #ddd8cc;
+      border-radius: 5px;
+      padding: 1.2rem 1.2rem;
+      text-decoration: none;
+      color: var(--navy);
+      transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
+    }
+    .resource-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(26,39,68,0.13);
+      border-color: var(--gold);
+      text-decoration: none;
+    }
+    .resource-file-icon {
+      font-size: 2rem;
+      flex-shrink: 0;
+      line-height: 1;
+      margin-top: 0.1rem;
+    }
+    .resource-info { min-width: 0; }
+    .resource-name {
+      font-family: Georgia, serif;
+      font-size: 0.95rem;
+      font-weight: bold;
+      color: var(--navy);
+      line-height: 1.35;
+      margin-bottom: 0.25rem;
+    }
+    .resource-meta {
+      font-family: Arial, sans-serif;
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .resource-download-hint {
+      margin-top: 0.4rem;
+      font-family: Arial, sans-serif;
+      font-size: 0.78rem;
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    /* ── Empty state ── */
+    .coming-soon {
+      font-family: Arial, sans-serif;
+      font-size: 0.9rem;
+      color: var(--muted);
+      font-style: italic;
+      padding: 0.5rem 0;
+    }
+
+    /* ── Footer ── */
+    footer {
+      background: #0f1929;
+      color: #667;
+      text-align: center;
+      padding: 1.5rem 2rem;
+      font-family: Arial, sans-serif;
+      font-size: 0.82rem;
+    }
+    footer a { color: var(--gold); }
+
+    /* ── Btn ── */
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 2rem;
+      border-radius: 3px;
+      font-family: Arial, sans-serif;
+      font-size: 0.9rem;
+      font-weight: bold;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: transform 0.15s, box-shadow 0.15s;
+      cursor: pointer;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.25); text-decoration: none; }
+    .btn-primary { background: var(--gold); color: #fff; }
+
+    @media (max-width: 768px) {
+      .nav-links { gap: 1rem; }
+      .resources-list { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Navigation ── -->
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">Math Topics <span>By Dr. Marrero</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="index.html#topics">Topics</a></li>
+        <li><a href="index.html#apps">Apps</a></li>
+        <li><a href="index.html#videos">Videos</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+        <li><a href="resources.html" class="active" style="color:var(--gold-light); font-weight:bold;">Resources</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ── Page Header ── -->
+  <header class="page-header">
+    <div class="page-header-badge">Free Learning Materials</div>
+    <h1>Topic <em>Resources</em></h1>
+    <p>Handpicked study guides, practice tests, and reference materials — organized by topic and free to download.</p>
+    <a href="index.html" class="back-link">← Back to Main Page</a>
+  </header>
+
+  <!-- ── Resources Content ── -->
+  <section>
+    <div class="container">
+
+      <!-- Algebra -->
+      <div class="topic-section" id="algebra">
+        <div class="topic-section-header">
+          <span class="topic-section-icon">➕</span>
+          <h2 class="section-title">Algebra</h2>
+        </div>
+        <p class="topic-section-desc">Equations, inequalities, functions, polynomials, factoring, and algebraic structures — built for genuine understanding.</p>
+        <div class="resources-list">
+
+          <a class="resource-card" href="Algebra1_EOC_Practice_Test.pdf" download>
+            <span class="resource-file-icon">📄</span>
+            <div class="resource-info">
+              <div class="resource-name">Algebra 1 EOC Practice Test</div>
+              <div class="resource-meta">PDF · Practice Test</div>
+              <div class="resource-download-hint">⬇ Click to download</div>
+            </div>
+          </a>
+
+          <a class="resource-card" href="Algebra_1_EOC_Command_Dashboard.pptx" download>
+            <span class="resource-file-icon">📊</span>
+            <div class="resource-info">
+              <div class="resource-name">Algebra 1 EOC Command Dashboard</div>
+              <div class="resource-meta">PowerPoint · Study Tool</div>
+              <div class="resource-download-hint">⬇ Click to download</div>
+            </div>
+          </a>
+
+        </div>
+      </div>
+
+      <!-- Geometry & Pre-Calculus -->
+      <div class="topic-section" id="geometry">
+        <div class="topic-section-header">
+          <span class="topic-section-icon">📐</span>
+          <h2 class="section-title">Geometry &amp; Pre-Calculus</h2>
+        </div>
+        <p class="topic-section-desc">Geometric reasoning, trigonometry, conic sections, and the bridge from algebra to calculus.</p>
+        <div class="resources-list">
+          <p class="coming-soon">Resources coming soon — check back after the next update.</p>
+        </div>
+      </div>
+
+      <!-- Calculus -->
+      <div class="topic-section" id="calculus">
+        <div class="topic-section-header">
+          <span class="topic-section-icon">∫</span>
+          <h2 class="section-title">Calculus</h2>
+        </div>
+        <p class="topic-section-desc">Limits, derivatives, integrals, and their applications — explained clearly with conceptual depth and worked examples.</p>
+        <div class="resources-list">
+
+          <a class="resource-card" href="AP_Calculus_Study_Guide.pdf" download>
+            <span class="resource-file-icon">📄</span>
+            <div class="resource-info">
+              <div class="resource-name">AP Calculus Study Guide</div>
+              <div class="resource-meta">PDF · Study Guide</div>
+              <div class="resource-download-hint">⬇ Click to download</div>
+            </div>
+          </a>
+
+        </div>
+      </div>
+
+      <!-- Middle School Math -->
+      <div class="topic-section" id="middle-school">
+        <div class="topic-section-header">
+          <span class="topic-section-icon">📊</span>
+          <h2 class="section-title">Middle School Math</h2>
+        </div>
+        <p class="topic-section-desc">Ratios, proportional reasoning, number theory, statistics, and foundational skills for grades 6–8.</p>
+        <div class="resources-list">
+          <p class="coming-soon">Resources coming soon — check back after the next update.</p>
+        </div>
+      </div>
+
+      <!-- Math Pedagogy -->
+      <div class="topic-section" id="pedagogy">
+        <div class="topic-section-header">
+          <span class="topic-section-icon">🎓</span>
+          <h2 class="section-title">Math Pedagogy</h2>
+        </div>
+        <p class="topic-section-desc">Research-informed teaching strategies, lesson design, and best practices for mathematics educators.</p>
+        <div class="resources-list">
+          <p class="coming-soon">Resources coming soon — check back after the next update.</p>
+        </div>
+      </div>
+
+      <!-- Math Education Topics -->
+      <div class="topic-section" id="math-education">
+        <div class="topic-section-header">
+          <span class="topic-section-icon">💡</span>
+          <h2 class="section-title">Math Education Topics</h2>
+        </div>
+        <p class="topic-section-desc">Equity in math classrooms, curriculum design, mathematical mindsets, and trends in math education.</p>
+        <div class="resources-list">
+          <p class="coming-soon">Resources coming soon — check back after the next update.</p>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div style="text-align:center; margin-top:1rem; padding-top:1rem;">
+        <p style="font-family:Arial,sans-serif; font-size:0.95rem; color:var(--muted); margin-bottom:1.2rem;">Want to be notified when new resources are added?</p>
+        <a href="https://padlet.com/marreromath/math-topics-newsletter-april-06-2026-rri9d5qi2nbe2yu4" target="_blank" rel="noopener" class="btn btn-primary">📬 Subscribe to the Newsletter</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer>
+    <p>© 2026 Math Topics By Dr. Marrero &nbsp;·&nbsp; <a href="https://www.youtube.com/channel/UCiMvj3HiZ9BtdlJJiQeuXlw" target="_blank" rel="noopener">YouTube Channel</a> &nbsp;·&nbsp; <a href="mailto:contactmathtopics@gmail.com">contactmathtopics@gmail.com</a></p>
+  </footer>
+
+</body>
+</html>
