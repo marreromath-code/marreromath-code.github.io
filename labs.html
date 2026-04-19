@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Labs — MarreroMath</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:#07090f;
+  color:#e2e8f6;
+  font-family:'Inter',sans-serif;
+  min-height:100vh;
+}
+
+/* ── ANIMATED BACKGROUND ── */
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 70% 60% at 10% 5%,  rgba(37,99,235,.14) 0%,transparent 55%),
+    radial-gradient(ellipse 60% 50% at 90% 20%,  rgba(124,58,237,.12) 0%,transparent 55%),
+    radial-gradient(ellipse 80% 40% at 50% 100%, rgba(16,185,129,.09) 0%,transparent 60%);
+  pointer-events:none;
+}
+
+/* ── TOP NAV ── */
+.topnav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(7,9,15,.88);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(255,255,255,.07);
+  padding:0 32px;
+  display:flex;align-items:center;gap:0;height:58px;
+}
+.nav-brand{
+  font-family:'Playfair Display',serif;
+  font-size:1.15rem;font-weight:700;
+  background:linear-gradient(135deg,#60a5fa,#a78bfa);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  text-decoration:none;margin-right:auto;
+}
+.nav-links{display:flex;gap:2px;}
+.nav-link{
+  color:rgba(226,232,246,.45);
+  font-size:.82rem;font-weight:500;
+  padding:7px 14px;border-radius:7px;
+  text-decoration:none;transition:all .18s;
+}
+.nav-link:hover{color:#e2e8f6;background:rgba(255,255,255,.06);}
+.nav-link.active{color:#60a5fa;background:rgba(37,99,235,.12);}
+
+/* ── PAGE WRAPPER ── */
+.page{
+  position:relative;z-index:1;
+  max-width:1080px;margin:0 auto;
+  padding:56px 24px 80px;
+}
+
+/* ── PAGE HEADER ── */
+.page-header{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  flex-wrap:wrap;gap:16px;
+  margin-bottom:48px;
+  padding-bottom:28px;
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+.ph-left{}
+.ph-eyebrow{
+  font-size:.68rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:2.5px;
+  color:#60a5fa;margin-bottom:10px;
+  display:flex;align-items:center;gap:7px;
+}
+.ph-eyebrow::before{content:'';width:20px;height:2px;background:#60a5fa;border-radius:1px;}
+.ph-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2rem,5vw,3.4rem);
+  font-weight:800;line-height:1.05;
+  color:#e2e8f6;letter-spacing:-.02em;
+}
+.ph-right{
+  display:flex;flex-direction:column;align-items:flex-end;gap:6px;
+}
+.ph-stat{text-align:right;}
+.ph-stat .sn{
+  font-family:'JetBrains Mono',monospace;
+  font-size:1.6rem;font-weight:600;
+  background:linear-gradient(135deg,#60a5fa,#a78bfa);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.ph-stat .sl{font-size:.7rem;color:rgba(226,232,246,.35);text-transform:uppercase;letter-spacing:1px;}
+
+/* ── FILTER TABS ── */
+.filter-row{
+  display:flex;gap:6px;flex-wrap:wrap;margin-bottom:32px;
+}
+.ftab{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  color:rgba(226,232,246,.45);
+  font-size:.76rem;font-weight:600;
+  padding:6px 14px;border-radius:20px;
+  cursor:pointer;transition:all .18s;
+  user-select:none;
+}
+.ftab:hover{border-color:rgba(255,255,255,.16);color:#e2e8f6;}
+.ftab.on{background:rgba(37,99,235,.15);border-color:rgba(37,99,235,.4);color:#60a5fa;}
+
+/* ── FEATURED BANNER ── */
+.featured-banner{
+  background:linear-gradient(135deg,rgba(37,99,235,.12) 0%,rgba(124,58,237,.1) 100%);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:18px;padding:28px 30px;
+  margin-bottom:28px;
+  display:flex;align-items:center;gap:24px;
+  cursor:pointer;text-decoration:none;
+  transition:all .25s;position:relative;overflow:hidden;
+}
+.featured-banner::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(37,99,235,.08),rgba(124,58,237,.06));
+  opacity:0;transition:opacity .25s;border-radius:inherit;
+}
+.featured-banner:hover{border-color:rgba(255,255,255,.16);transform:translateY(-3px);box-shadow:0 16px 48px rgba(0,0,0,.35);}
+.featured-banner:hover::after{opacity:1;}
+.fb-icon{
+  font-size:3rem;
+  width:72px;height:72px;
+  background:rgba(124,58,237,.2);
+  border-radius:16px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  position:relative;z-index:1;
+}
+.fb-content{flex:1;position:relative;z-index:1;}
+.fb-tag{
+  font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;
+  color:#a78bfa;margin-bottom:6px;
+  display:flex;align-items:center;gap:6px;
+}
+.fb-tag::before{content:'★';font-size:.7rem;}
+.fb-title{
+  font-family:'Playfair Display',serif;
+  font-size:1.45rem;font-weight:700;color:#e2e8f6;margin-bottom:7px;
+}
+.fb-desc{font-size:.86rem;color:rgba(226,232,246,.5);line-height:1.6;}
+.fb-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;}
+.chip{
+  font-size:.67rem;font-weight:600;padding:3px 10px;border-radius:20px;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  color:rgba(226,232,246,.5);
+}
+.fb-arrow{
+  font-size:1.5rem;color:rgba(167,139,250,.6);
+  position:relative;z-index:1;
+  transition:transform .2s;
+}
+.featured-banner:hover .fb-arrow{transform:translateX(6px);}
+
+/* ── LABS GRID ── */
+.labs-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(308px,1fr));
+  gap:18px;
+}
+
+/* ── LAB CARD ── */
+.lab-card{
+  background:rgba(255,255,255,.035);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:16px;
+  padding:24px;
+  text-decoration:none;
+  display:flex;flex-direction:column;
+  transition:all .25s ease;
+  position:relative;overflow:hidden;
+  cursor:pointer;
+}
+.lab-card::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--accent-grad);
+  opacity:0;transition:opacity .25s;
+}
+.lab-card:hover{
+  background:rgba(255,255,255,.06);
+  border-color:rgba(255,255,255,.14);
+  transform:translateY(-4px);
+  box-shadow:0 18px 50px rgba(0,0,0,.35);
+}
+.lab-card:hover::before{opacity:1;}
+
+.lc-top{display:flex;align-items:center;gap:13px;margin-bottom:15px;}
+.lc-icon{
+  width:50px;height:50px;border-radius:13px;
+  background:var(--icon-bg);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.75rem;flex-shrink:0;
+}
+.lc-meta{}
+.lc-tag{
+  font-size:.61rem;font-weight:700;text-transform:uppercase;letter-spacing:1.3px;
+  color:var(--tag-c);margin-bottom:4px;display:block;
+}
+.lc-title{
+  font-family:'Playfair Display',serif;
+  font-size:1.05rem;font-weight:700;color:#e2e8f6;line-height:1.2;
+}
+.lc-desc{
+  font-size:.82rem;color:rgba(226,232,246,.48);
+  line-height:1.65;margin-bottom:16px;flex:1;
+}
+.lc-features{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:18px;}
+.lf{
+  font-size:.65rem;font-weight:600;
+  padding:3px 9px;border-radius:20px;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.09);
+  color:rgba(226,232,246,.48);
+}
+.lc-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:14px;
+  border-top:1px solid rgba(255,255,255,.06);
+  margin-top:auto;
+}
+.lc-open{
+  font-size:.78rem;font-weight:700;
+  color:var(--tag-c);
+}
+.lc-btn{
+  width:30px;height:30px;border-radius:50%;
+  background:var(--icon-bg);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.95rem;
+  transition:transform .2s;
+}
+.lab-card:hover .lc-btn{transform:translateX(4px);}
+
+/* Card themes */
+.t-blue{--accent-grad:linear-gradient(90deg,#2563eb,#60a5fa);--icon-bg:rgba(37,99,235,.16);--tag-c:#60a5fa;}
+.t-green{--accent-grad:linear-gradient(90deg,#059669,#34d399);--icon-bg:rgba(16,185,129,.16);--tag-c:#34d399;}
+.t-amber{--accent-grad:linear-gradient(90deg,#d97706,#fbbf24);--icon-bg:rgba(217,119,6,.16);--tag-c:#fbbf24;}
+.t-rose{--accent-grad:linear-gradient(90deg,#e11d48,#fb7185);--icon-bg:rgba(225,29,72,.16);--tag-c:#fb7185;}
+
+/* ── SECTION DIVIDER ── */
+.sec-div{
+  display:flex;align-items:center;gap:14px;
+  margin:36px 0 24px;
+}
+.sec-div-line{flex:1;height:1px;background:rgba(255,255,255,.07);}
+.sec-div-label{
+  font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;
+  color:rgba(226,232,246,.3);white-space:nowrap;
+}
+
+/* ── INFO STRIP ── */
+.info-strip{
+  margin-top:48px;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:14px;
+  padding:22px 28px;
+  display:flex;align-items:center;gap:20px;flex-wrap:wrap;
+}
+.is-icon{font-size:1.8rem;flex-shrink:0;}
+.is-text{flex:1;}
+.is-title{font-weight:700;font-size:.92rem;color:#e2e8f6;margin-bottom:3px;}
+.is-sub{font-size:.8rem;color:rgba(226,232,246,.4);line-height:1.6;}
+.is-badge{
+  background:rgba(37,99,235,.14);
+  border:1px solid rgba(37,99,235,.3);
+  color:#60a5fa;
+  font-size:.72rem;font-weight:700;
+  padding:6px 14px;border-radius:8px;
+  white-space:nowrap;
+}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+  .topnav{padding:0 16px;}
+  .page{padding:36px 14px 60px;}
+  .featured-banner{flex-wrap:wrap;gap:14px;}
+  .fb-arrow{display:none;}
+  .page-header{flex-direction:column;align-items:flex-start;}
+  .ph-right{align-items:flex-start;}
+}
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+  <a class="nav-brand" href="index.html">MarreroMath</a>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">Home</a>
+    <a class="nav-link active" href="labs.html">Labs</a>
+  </div>
+</nav>
+
+<!-- PAGE CONTENT -->
+<div class="page">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="ph-left">
+      <div class="ph-eyebrow">Interactive Learning</div>
+      <h1 class="ph-title">Math Labs</h1>
+    </div>
+    <div class="ph-right">
+      <div class="ph-stat">
+        <div class="sn">5 Labs</div>
+        <div class="sl">Ready to Use</div>
+      </div>
+      <div class="ph-stat">
+        <div class="sn">50 Questions</div>
+        <div class="sl">EOC Practice</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter tabs -->
+  <div class="filter-row">
+    <div class="ftab on" onclick="filterCards('all',this)">All Labs</div>
+    <div class="ftab" onclick="filterCards('functions',this)">Functions</div>
+    <div class="ftab" onclick="filterCards('statistics',this)">Statistics</div>
+    <div class="ftab" onclick="filterCards('eoc',this)">EOC Prep</div>
+  </div>
+
+  <!-- Featured: Stats Lab -->
+  <a class="featured-banner" href="stats_unit6_lab.html" data-cat="statistics">
+    <div class="fb-icon">📦</div>
+    <div class="fb-content">
+      <div class="fb-tag">Featured · Unit 6 · Investigating Data</div>
+      <div class="fb-title">Statistics: Investigating Data</div>
+      <div class="fb-desc">
+        The complete statistics unit — summary statistics, MAD &amp; standard deviation,
+        outlier detection, box plots, dot plots, histograms, comparing data sets, correlation,
+        and regression. All calculators update live as you type your own numbers.
+      </div>
+      <div class="fb-chips">
+        <span class="chip">📊 Summary Stats</span>
+        <span class="chip">σ MAD &amp; SD</span>
+        <span class="chip">⚠️ Outliers</span>
+        <span class="chip">📦 3 Graph Types</span>
+        <span class="chip">⚖️ Compare Sets</span>
+        <span class="chip">🔗 Correlation</span>
+        <span class="chip">📈 Regression</span>
+        <span class="chip">🌡️ City Box Plots</span>
+      </div>
+    </div>
+    <div class="fb-arrow">→</div>
+  </a>
+
+  <!-- Section: Function Labs -->
+  <div class="sec-div" data-cat="functions">
+    <div class="sec-div-line"></div>
+    <div class="sec-div-label">Function Labs</div>
+    <div class="sec-div-line"></div>
+  </div>
+
+  <div class="labs-grid" id="labsGrid">
+
+    <!-- Exponential Functions -->
+    <a class="lab-card t-blue" href="exponential_functions_lab.html" data-cat="functions">
+      <div class="lc-top">
+        <div class="lc-icon">📉</div>
+        <div class="lc-meta">
+          <span class="lc-tag">Unit 6 · Algebra 1</span>
+          <div class="lc-title">Exponential Functions</div>
+        </div>
+      </div>
+      <p class="lc-desc">
+        Drag sliders to transform f(x) = a·b^x and watch the graph
+        update live. Explore growth, decay, sequences, compound interest,
+        and real-world models with step-by-step equation solving.
+      </p>
+      <div class="lc-features">
+        <span class="lf">📊 Live Graph</span>
+        <span class="lf">🔄 Transformations</span>
+        <span class="lf">⚡ Solver</span>
+        <span class="lf">🌍 Real World</span>
+        <span class="lf">🔢 Sequences</span>
+        <span class="lf">📋 Reference</span>
+      </div>
+      <div class="lc-footer">
+        <span class="lc-open">Open Lab</span>
+        <div class="lc-btn">→</div>
+      </div>
+    </a>
+
+    <!-- Scatterplots -->
+    <a class="lab-card t-green" href="scatterplots_lab.html" data-cat="statistics">
+      <div class="lc-top">
+        <div class="lc-icon">📍</div>
+        <div class="lc-meta">
+          <span class="lc-tag">Statistics · Bivariate Data</span>
+          <div class="lc-title">Scatterplots &amp; Bivariate Data</div>
+        </div>
+      </div>
+      <p class="lc-desc">
+        Click the canvas to plot your own data points and watch the
+        regression line build in real time. Explore correlation, causation,
+        lurking variables, residuals, and R-squared.
+      </p>
+      <div class="lc-features">
+        <span class="lf">📍 Click-to-Plot</span>
+        <span class="lf">📈 Best Fit Line</span>
+        <span class="lf">🔗 Correlation r</span>
+        <span class="lf">🔍 Causation</span>
+        <span class="lf">📐 Residuals</span>
+        <span class="lf">R² Calculator</span>
+      </div>
+      <div class="lc-footer">
+        <span class="lc-open">Open Lab</span>
+        <div class="lc-btn">→</div>
+      </div>
+    </a>
+
+    <!-- Section: EOCPrep -->
+    <div style="grid-column:1/-1;" data-cat="eoc">
+      <div class="sec-div" style="margin:18px 0 6px;">
+        <div class="sec-div-line"></div>
+        <div class="sec-div-label">EOC Prep</div>
+        <div class="sec-div-line"></div>
+      </div>
+    </div>
+
+    <!-- EOC Study Guide -->
+    <a class="lab-card t-amber" href="EOC_Study_Guide.html" data-cat="eoc">
+      <div class="lc-top">
+        <div class="lc-icon">📚</div>
+        <div class="lc-meta">
+          <span class="lc-tag">EOC Prep · Study Guide</span>
+          <div class="lc-title">EOC Study Guide</div>
+        </div>
+      </div>
+      <p class="lc-desc">
+        Master all 10 EOC topics with vocabulary, key rules, real-world
+        applications, and interactive graphs. Read before you practice —
+        everything you need to know in one place.
+      </p>
+      <div class="lc-features">
+        <span class="lf">📖 Vocabulary</span>
+        <span class="lf">🔑 Key Rules</span>
+        <span class="lf">🌍 Applications</span>
+        <span class="lf">📊 10 Graphs</span>
+        <span class="lf">10 Topics</span>
+      </div>
+      <div class="lc-footer">
+        <span class="lc-open">Open Guide</span>
+        <div class="lc-btn">→</div>
+      </div>
+    </a>
+
+    <!-- EOC Practice Quiz -->
+    <a class="lab-card t-rose" href="EOC_Practice_Quiz.html" data-cat="eoc">
+      <div class="lc-top">
+        <div class="lc-icon">⚡</div>
+        <div class="lc-meta">
+          <span class="lc-tag">EOC Prep · Practice Quiz</span>
+          <div class="lc-title">EOC Practice Quiz</div>
+        </div>
+      </div>
+      <p class="lc-desc">
+        Test yourself with 50 EOC-style questions across 10 topics. Get
+        instant feedback on every answer, see what's correct, and read a
+        full explanation — then track your score by topic.
+      </p>
+      <div class="lc-features">
+        <span class="lf">50 Questions</span>
+        <span class="lf">✅ Instant Feedback</span>
+        <span class="lf">💡 Explanations</span>
+        <span class="lf">📊 Score Tracker</span>
+        <span class="lf">10 Topics</span>
+      </div>
+      <div class="lc-footer">
+        <span class="lc-open">Start Quiz</span>
+        <div class="lc-btn">→</div>
+      </div>
+    </a>
+
+  </div><!-- end labsGrid -->
+
+  <!-- Info strip -->
+  <div class="info-strip">
+    <div class="is-icon">🚀</div>
+    <div class="is-text">
+      <div class="is-title">All labs are free — no login, no download required</div>
+      <div class="is-sub">
+        Every lab works directly in your browser on any device —
+        phone, tablet, or computer. Just click and start learning.
+      </div>
+    </div>
+    <div class="is-badge">Works on any device</div>
+  </div>
+
+</div><!-- end page -->
+
+<script>
+function filterCards(cat, btn){
+  document.querySelectorAll('.ftab').forEach(t=>t.classList.remove('on'));
+  btn.classList.add('on');
+
+  // Cards
+  document.querySelectorAll('.lab-card, .featured-banner').forEach(el=>{
+    const c = el.dataset.cat || '';
+    const show = cat==='all' || c===cat;
+    el.style.display = show ? '' : 'none';
+  });
+
+  // Section dividers inside grid
+  document.querySelectorAll('#labsGrid [data-cat]').forEach(el=>{
+    const c = el.dataset.cat;
+    el.style.display = (cat==='all' || c===cat) ? '' : 'none';
+  });
+
+  // Featured banner
+  const fb = document.querySelector('ofeatured-banner');
+  if(fb) fb.style.display = (cat==='all'||cat==='statistics') ? '' : 'none';
+
+  // Section labels outside grid
+  document.querySelectorAll('.sec-div[data-cat]').forEach(el=>{
+    const c = el.dataset.cat;
+    el.style.display = (cat==='all'||c===cat) ? '' : 'none';
+  });
+}
+</script>
+
+</body>
+</html>
