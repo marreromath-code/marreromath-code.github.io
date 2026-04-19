@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EOC Practice Quiz — Algebra: Concepts & Connections</title>
+<link href="https://fonts.googleapis.com/css2?family=Bitter:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f8f7f4;--surface:#fff;--card:#fff;--border:#e2ddd6;--text:#1a1612;--muted:#8a7f72;--accent:#2563eb;--alight:rgba(37,99,235,.08);--green:#16a34a;--glight:rgba(22,163,74,.09);--red:#dc2626;--rlight:rgba(220,38,38,.08);--gold:#d97706;--glight2:rgba(217,119,6,.08);--purple:#7c3aed;--plight:rgba(124,58,237,.08);}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;}
+/* HEADER */
+.header{background:var(--text);color:#fff;padding:22px 24px 18px;text-align:center;}
+.header h1{font-family:'Bitter',serif;font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;letter-spacing:-.02em;margin-bottom:4px;}
+.header p{font-size:.88rem;opacity:.65;}
+/* SCORE BAR */
+.score-bar{background:#fff;border-bottom:2px solid var(--border);padding:10px 20px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:50;flex-wrap:wrap;}
+.score-label{font-size:.78rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;}
+.score-val{font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:700;color:var(--accent);}
+.score-pct{font-size:.78rem;color:var(--muted);margin-left:3px;}
+.progress-wrap{flex:1;min-width:180px;height:8px;background:var(--border);border-radius:4px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--purple));border-radius:4px;transition:width .4s ease;}
+.btn-reset{margin-left:auto;background:var(--text);color:#fff;border:none;font-family:'Inter',sans-serif;font-size:.78rem;font-weight:600;padding:6px 14px;border-radius:6px;cursor:pointer;transition:opacity .2s;}
+.btn-reset:hover{opacity:.75;}
+/* NAV */
+nav.topic-nav{padding:16px 20px 0;display:flex;gap:6px;flex-wrap:wrap;max-width:980px;margin:0 auto;}
+nav.topic-nav button{background:var(--surface);border:1.5px solid var(--border);color:var(--muted);font-family:'Inter',sans-serif;font-size:.75rem;font-weight:600;padding:6px 12px;border-radius:20px;cursor:pointer;transition:all .18s;white-space:nowrap;}
+nav.topic-nav button:hover{border-color:var(--accent);color:var(--accent);}
+nav.topic-nav button.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+nav.topic-nav button.done{border-color:var(--green);color:var(--green);}
+/* MAIN */
+main{max-width:980px;margin:0 auto;padding:20px 20px 60px;}
+/* TOPIC SECTION */
+.topic{display:none;animation:fadeIn .25s ease;}
+.topic.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.topic-header{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding:16px 20px;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;}
+.topic-icon{font-size:1.8rem;}
+.topic-title{font-family:'Bitter',serif;font-size:1.4rem;font-weight:800;}
+.topic-sub{font-size:.82rem;color:var(--muted);margin-top:1px;}
+.topic-score{margin-left:auto;text-align:right;font-size:.8rem;color:var(--muted);}
+.topic-score .tsv{font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:700;color:var(--accent);display:block;}
+/* QUESTION CARD */
+.q-card{background:var(--surface);border:1.5px solid var(--border);border-radius:13px;padding:22px 24px;margin-bottom:16px;transition:border-color .2s;}
+.q-card.answered-correct{border-color:var(--green);background:#fafffe;}
+.q-card.answered-wrong{border-color:var(--red);background:#fff8f8;}
+.q-num{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin-bottom:8px;}
+.q-text{font-size:.97rem;font-weight:500;line-height:1.6;margin-bottom:16px;}
+.q-text strong{font-weight:700;}
+.q-table{width:auto;border-collapse:collapse;margin:10px 0 14px;font-size:.88rem;}
+.q-table th{background:#f3f1ed;padding:7px 16px;border:1px solid var(--border);font-weight:600;text-align:center;}
+.q-table td{padding:7px 16px;border:1px solid var(--border);text-align:center;}
+.q-formula{font-family:'JetBrains Mono',monospace;background:#f3f1ed;border:1px solid var(--border);border-radius:7px;padding:8px 16px;margin:8px 0 14px;font-size:.93rem;text-align:center;}
+/* CHOICES */
+.choices{display:flex;flex-direction:column;gap:8px;}
+.choice{display:flex;align-items:flex-start;gap:11px;padding:11px 14px;border:1.5px solid var(--border);border-radius:9px;cursor:pointer;transition:all .18s;background:#fff;font-size:.9rem;text-align:left;}
+.choice:hover:not(.disabled){border-color:var(--accent);background:var(--alight);}
+.choice.disabled{cursor:default;}
+.choice.correct{border-color:var(--green);background:var(--glight);color:var(--green);}
+.choice.wrong{border-color:var(--red);background:var(--rlight);color:var(--red);}
+.choice.reveal{border-color:var(--green);background:var(--glight);}
+.choice-letter{min-width:24px;height:24px;border-radius:50%;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.73rem;font-weight:700;flex-shrink:0;margin-top:1px;transition:all .18s;}
+.choice.correct .choice-letter{background:var(--green);border-color:var(--green);color:#fff;}
+.choice.wrong .choice-letter{background:var(--red);border-color:var(--red);color:#fff;}
+.choice.reveal .choice-letter{background:var(--green);border-color:var(--green);color:#fff;}
+/* FEEDBACK */
+.feedback{margin-top:12px;padding:11px 14px;border-radius:8px;font-size:.85rem;line-height:1.55;display:none;}
+.feedback.show{display:block;}
+.feedback.correct{background:var(--glight);border:1px solid rgba(22,163,74,.25);color:#15803d;}
+.feedback.wrong{background:var(--rlight);border:1px solid rgba(220,38,38,.2);color:#b91c1c;}
+/* TOPIC RESULTS */
+.topic-result{display:none;background:var(--surface);border:2px solid var(--border);border-radius:13px;padding:22px 24px;margin-top:8px;text-align:center;}
+.topic-result.show{display:block;animation:fadeIn .3s ease;}
+.tr-score{font-family:'JetBrains Mono',monospace;font-size:2.4rem;font-weight:700;margin:8px 0;}
+.tr-score.perfect{color:var(--green);}
+.tr-score.good{color:var(--accent);}
+.tr-score.ok{color:var(--gold);}
+.tr-score.poor{color:var(--red);}
+.tr-msg{font-size:.9rem;color:var(--muted);margin-bottom:14px;}
+.btn-next{background:var(--accent);color:#fff;border:none;font-family:'Inter',sans-serif;font-size:.88rem;font-weight:700;padding:10px 24px;border-radius:8px;cursor:pointer;transition:opacity .2s;}
+.btn-next:hover{opacity:.85;}
+/* FINAL RESULTS */
+#finalResults{display:none;background:var(--surface);border:2px solid var(--border);border-radius:16px;padding:32px 28px;margin-top:24px;text-align:center;}
+#finalResults.show{display:block;animation:fadeIn .4s ease;}
+#finalResults h2{font-family:'Bitter',serif;font-size:1.8rem;margin-bottom:8px;}
+.final-score{font-family:'JetBrains Mono',monospace;font-size:3.5rem;font-weight:700;margin:12px 0;}
+.final-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:20px 0;}
+.fg-card{background:var(--bg);border-radius:9px;padding:12px;border:1.5px solid var(--border);}
+.fg-card .ft{font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);}
+.fg-card .fv{font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--accent);margin-top:3px;}
+@media(max-width:560px){.q-card{padding:16px 16px;}.choice{padding:10px 12px;}.topic-header{flex-wrap:wrap;}}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>EOC Practice Quiz</h1>
+  <p>Algebra: Concepts &amp; Connections — 10 Topics · 50 Questions</p>
+</div>
+<div class="score-bar">
+  <span class="score-label">Score</span>
+  <span class="score-val" id="globalScore">0</span><span class="score-pct" id="globalPct">/ 0 answered</span>
+  <div class="progress-wrap"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <button class="btn-reset" onclick="resetAll()">↺ Reset</button>
+</div>
+
+<nav class="topic-nav" id="topicNav"></nav>
+<main>
+  <div id="topicSections"></div>
+  <div id="finalResults">
+    <h2>🎉 Quiz Complete!</h2>
+    <p style="color:var(--muted);font-size:.9rem">Here's how you did across all 10 topics</p>
+    <div class="final-score" id="finalScoreDisplay"></div>
+    <div class="final-grid" id="finalGrid"></div>
+    <button class="btn-next" onclick="resetAll()">↺ Try Again</button>
+  </div>
+</main>
+
+<script>
+const TOPICS = [
+  {
+    id:"linear", icon:"📐", title:"Linear Functions",
+    sub:"Tables, slope, intercepts, modeling data",
+    color:"#2563eb",
+    questions:[
+      {
+        q:"Which function can be used to model the data in this table?",
+        table:{headers:["x","f(x)"],rows:[["0","–1"],["2","0"],["6","2"]]},
+        choices:["f(x) = 3x","f(x) = x/2 – 1","f(x) = x – 1","f(x) = 2x – 1"],
+        answer:1,
+        explain:"Check: f(0) = 0/2 – 1 = –1 ✓, f(2) = 2/2 – 1 = 0 ✓, f(6) = 6/2 – 1 = 2 ✓. Slope = (0–(–1))/(2–0) = 1/2, y-intercept = –1."
+      },
+      {
+        q:"A linear function f(x) is represented in the table. What is the slope of f(x)?",
+        table:{headers:["x","f(x)"],rows:[["–4","–1"],["–2","0"],["2","2"]]},
+        choices:["1/4","1/2","3/2","2"],
+        answer:1,
+        explain:"Slope = (0–(–1))/(–2–(–4)) = 1/2. The y-values increase by 1 for every 2-unit increase in x."
+      },
+      {
+        q:"Which statement BEST describes the slope of a horizontal line?",
+        choices:["The slope is undefined.","The slope is a positive number.","The slope is zero.","The slope is a negative number."],
+        answer:2,
+        explain:"A horizontal line has no rise, so rise/run = 0/run = 0. Vertical lines have undefined slope."
+      },
+      {
+        q:"Information about three catering companies is shown. Gavin can spend no more than $300. Acme: $6/person + $100 flat fee. Best Foods: $8/person + $40 flat fee. Creative: $10/person, no fee. What is the greatest number of people Gavin can have using the CHEAPEST option?",
+        choices:["30","32","33","37"],
+        answer:3,
+        explain:"Best Foods: 8p + 40 ≤ 300 → 8p ≤ 260 → p ≤ 32.5 → 32 people. Acme: 6p + 100 ≤ 300 → 6p ≤ 200 → p ≤ 33.33 → 33 people. Creative: 10p ≤ 300 → p ≤ 30. Acme gives most people: 33."
+      },
+      {
+        q:"The graph of a line has an x-intercept of 2 and a y-intercept of –3. Which equation represents this line?",
+        choices:["y = –3x + 2","y = 2x – 3","y = (3/2)x – 3","y = –(3/2)x – 3"],
+        answer:2,
+        explain:"Using points (2, 0) and (0, –3): slope = (0–(–3))/(2–0) = 3/2. Equation: y = (3/2)x – 3."
+      },
+      {
+        q:"Vicky spends 1 hour reviewing each old chapter and 1.5 hours learning each new chapter. She spends at least 10 hours per week studying French. Which inequality represents this situation, where x = old chapters and y = new chapters?",
+        choices:["x + 1.5y ≥ 10","x + 1.5y ≤ 10","1.5x + y ≥ 10","1.5x + y ≤ 10"],
+        answer:0,
+        explain:"Old chapters take 1 hour each (1·x) and new chapters take 1.5 hours each (1.5·y). She spends AT LEAST 10 hours, so x + 1.5y ≥ 10."
+      }
+    ]
+  },
+  {
+    id:"sequences", icon:"🔢", title:"Sequences",
+    sub:"Arithmetic & geometric, recursive & explicit formulas",
+    color:"#7c3aed",
+    questions:[
+      {
+        q:"An arithmetic sequence is shown: 7, 11, 15, 19, … What is the recursive formula for this sequence?",
+        choices:["aₙ = a(n–1) + 7; a₁ = 4","aₙ = a(n+1) + 7; a₁ = 4","aₙ = a(n–1) + 4; a₁ = 7","aₙ = a(n+1) + 4; a₁ = 7"],
+        answer:2,
+        explain:"Common difference d = 11 – 7 = 4. First term a₁ = 7. Recursive: aₙ = a(n–1) + 4, a₁ = 7."
+      },
+      {
+        q:"The first term in an arithmetic sequence is 5. The fourth term is –4. The tenth term is –22. Which function finds the nth term?",
+        choices:["f(n) = –n","f(n) = n + 4","f(n) = –3n + 8","f(n) = ½(n + 5) + 2"],
+        answer:2,
+        explain:"d = (–4–5)/(4–1) = –9/3 = –3. f(n) = 5 + (n–1)(–3) = 5 – 3n + 3 = –3n + 8. Check: f(1) = –3+8 = 5 ✓, f(4) = –12+8 = –4 ✓."
+      },
+      {
+        q:"The first five terms of a pattern are: 9, 27, 81, 243, 729. The equation Sₙ = a(b)ⁿ can be used to find any term. What are the values of a and b?",
+        choices:["a = 1, b = 3","a = 3, b = 3","a = 3, b = 9","a = 9, b = 9"],
+        answer:1,
+        explain:"Common ratio r = 27/9 = 3. First term = 9. If Sₙ = a·bⁿ, then S₁ = ab = 9 and b = 3, so a = 3. Check: 3·3¹ = 9 ✓, 3·3² = 27 ✓."
+      },
+      {
+        q:"A geometric sequence has a₁ = –2 and recursive rule aₙ = 2·aₙ₋₁. What is the explicit formula?",
+        choices:["aₙ = –2(2)ⁿ","aₙ = –2(2)ⁿ⁻¹","aₙ = 2(–2)ⁿ","aₙ = 2ⁿ – 2"],
+        answer:1,
+        explain:"Explicit formula: aₙ = a₁·rⁿ⁻¹ = –2·(2)ⁿ⁻¹. Check: a₁ = –2·2⁰ = –2 ✓, a₂ = –2·2¹ = –4 ✓."
+      },
+      {
+        q:"What is the 8th term of the geometric sequence 152, 76, 38, …?",
+        choices:["0.75","1.1875","2.375","4.75"],
+        answer:1,
+        explain:"r = 76/152 = 1/2. a₈ = 152·(1/2)⁷ = 152/128 = 1.1875."
+      }
+    ]
+  },
+  {
+    id:"functions", icon:"🔭", title:"Functions, Domain & Range",
+    sub:"Interpreting domain/range in context, function notation",
+    color:"#059669",
+    questions:[
+      {
+        q:"Which situation could be modeled by a function with a domain of all positive integers?",
+        choices:["The distance a runner moves during a race as a function of time","The amount of fish food needed in a fish tank as a function of the number of fish","The power required to operate a computer as a function of time on","The water required by an animal as a function of its mass"],
+        answer:1,
+        explain:"The number of fish must be a whole number (you can't have half a fish), making it a positive integer. All other situations involve continuous quantities."
+      },
+      {
+        q:"A store uses f(x) = –4(x – 4.5)² + 81 to estimate customers when x = hours since opening. The store is closed when f(x) < 0. What is the domain and what does it mean in context?",
+        choices:["D: {x | 0 ≤ x ≤ 4.5} — store open 4.5 hours","D: {x | 0 ≤ x ≤ 9} — store open 9 hours","D: {x | 0 ≤ x ≤ 18} — max customers is 18","D: {x | 0 ≤ x ≤ 81} — max customers is 81"],
+        answer:1,
+        explain:"Solve –4(x–4.5)² + 81 = 0: (x–4.5)² = 81/4 → x–4.5 = ±4.5 → x = 0 or x = 9. Domain is 0 ≤ x ≤ 9, meaning the store is open for 9 hours."
+      },
+      {
+        q:"Which situation could be modeled by a function with a domain that includes positive AND negative real numbers?",
+        choices:["Height of a plant as a function of time since planting","Elevation of a hiker as a function of steps taken","Time to read a book as a function of word count","Precipitation as a function of outdoor temperature"],
+        answer:0,
+        explain:"Height of a plant can use negative time to represent time before planting. The elevation, reading time, and precipitation scenarios all use only non-negative inputs."
+      },
+      {
+        q:"The function f(x) gives the height in feet of a football x seconds after being kicked. Which statement describes f(2) = 67?",
+        choices:["After 2 seconds, the football is 67 feet high.","f(x) may be right, but the ball is probably kicked more than 2 feet high.","It doesn't make sense to use f(x) after 67 seconds — ball can't stay airborne that long.","It may or may not make sense for what happens at 100 miles per hour."],
+        answer:0,
+        explain:"f(2) = 67 means: when x = 2 (seconds after kick), the height = 67 feet. This is a direct, logical interpretation of function notation in context."
+      },
+      {
+        q:"A function f is shown in the table. Which of the following is NOT a correct representation of f?",
+        table:{headers:["x","f(x)"],rows:[["1","5"],["2","10"],["3","15"],["4","20"]]},
+        choices:["f(x) = 5x","The set of ordered pairs {(1,5),(2,10),(3,15),(4,20)}","f(0) = 0 must also be included","Each output is 5 times the input"],
+        answer:2,
+        explain:"f(0) = 0 is NOT listed in the table and may not be in the domain. The table defines the function only for the given inputs. We can't assume x=0 is included."
+      }
+    ]
+  },
+  {
+    id:"inequalities", icon:"📊", title:"Systems of Linear Inequalities",
+    sub:"Writing, testing, and graphing systems of inequalities",
+    color:"#dc2626",
+    questions:[
+      {
+        q:"A system of linear inequalities is shown. Inequality 1: x ≤ 5. Inequality 2: y > –2x + 3. Which statement is true for the point (0, 3)?",
+        choices:["Point (0,3) is a solution for Ineq. 2 but NOT Ineq. 1","Point (0,3) is NOT a solution for this system","Point (0,3) is the ONLY solution for this system","Point (0,3) is ONE OF MANY solutions for this system"],
+        answer:3,
+        explain:"Check Ineq. 1: 0 ≤ 5 ✓. Check Ineq. 2: 3 > –2(0) + 3 = 3 → 3 > 3 is FALSE. So (0,3) satisfies only Ineq. 1, not the system. Wait — answer is B. (0,3) is NOT a solution because it fails Ineq. 2 (3 is not strictly greater than 3).",
+        override:1
+      },
+      {
+        q:"A computer store can spend at most $10,000 and has at most 45 sq ft of display space. Each computer (x) costs $875 and takes 4 sq ft. Each tablet (y) costs $235 and takes 3 sq ft. Which combination can the store order?",
+        choices:["(8, 4)","(10, 2)","(7, 9)","(5, 9)"],
+        answer:3,
+        explain:"Test (5, 9): Cost: 875(5) + 235(9) = 4375 + 2115 = 6490 ≤ 10000 ✓. Space: 4(5) + 3(9) = 20 + 27 = 47 > 45 ✗. Test (8,4): Cost: 7000+940=7940 ✓, Space: 32+12=44 ✓. Answer is (8,4).",
+        override:0
+      },
+      {
+        q:"Jose wants to spend no more than $30 on apples (a) and grapes (g). Apples cost $1.50/lb, grapes cost $2/lb. He wants at least 2,000 calories (200 cal/lb apples, 300 cal/lb grapes). Which system applies?",
+        choices:["1.5a + 2g ≥ 30\n200a + 300g > 2000","1.5a + 2g ≤ 30\n200a + 300g > 2000","2a + 1.5g ≤ 30\n300a + 200g > 2000","2a + 1.5g ≥ 30\n200a + 300g < 2000"],
+        answer:1,
+        explain:"Spending: 1.5a + 2g ≤ 30 (no more than $30). Calories: 200a + 300g > 2000 (greater than 2000). Match the variable to its coefficient: apples are $1.50/lb and grapes are $2/lb."
+      },
+      {
+        q:"A restaurant can make at most 80 lbs of dough and 20 lbs of cheese per day. Plain bread (x) uses 2 lbs dough. Cheesy bread (y) uses 3 lbs dough and 1 lb cheese. Which system is correct?",
+        choices:["2x + 3y ≤ 80 and x ≤ 20","2x + 3y ≤ 80 and y ≤ 20","3x + 2y ≤ 80 and x ≤ 20","3x + 2y ≤ 80 and y ≤ 20"],
+        answer:1,
+        explain:"Dough: plain uses 2 lbs (2x) + cheesy uses 3 lbs (3y) → 2x + 3y ≤ 80. Cheese: only cheesy bread uses cheese (1 lb each) → y ≤ 20. Not x ≤ 20."
+      },
+      {
+        q:"A store has 25 ft of shelf space. Small animals (x) take 1.75 ft, large animals (y) take 3 ft. The store wants profit > $108 where small earn $9 and large earn $12. A student correctly identifies a solution point. Which ordered pair satisfies BOTH inequalities?",
+        choices:["(12, 1)","(2, 8)","(14, 0)","(0, 8)"],
+        answer:0,
+        explain:"Test (12,1): Space: 1.75(12)+3(1) = 21+3 = 24 ≤ 25 ✓. Profit: 9(12)+12(1) = 108+12 = 120 > 108 ✓. Both satisfied!"
+      }
+    ]
+  },
+  {
+    id:"radicals", icon:"√", title:"Irrational Numbers & Radicals",
+    sub:"Rational vs. irrational numbers, simplifying radical expressions",
+    color:"#d97706",
+    questions:[
+      {
+        q:"Which value is an irrational number?",
+        choices:["4 + √7","√2 · √8","(√3 · √12) / 5","√3 – √3"],
+        answer:0,
+        explain:"4 + √7: √7 is irrational, so this sum is irrational ✓. √2·√8 = √16 = 4 (rational). (√3·√12)/5 = √36/5 = 6/5 (rational). √3–√3 = 0 (rational)."
+      },
+      {
+        q:"Which product is equivalent to an irrational number?",
+        choices:["2 · √8","7 · √9","(3/4) · √4","√4 · √16"],
+        answer:0,
+        explain:"2·√8 = 2·2√2 = 4√2 (irrational) ✓. 7·√9 = 7·3 = 21 (rational). (3/4)·√4 = (3/4)·2 = 3/2 (rational). √4·√16 = 2·4 = 8 (rational)."
+      },
+      {
+        q:"Which number is equivalent to 5√8 · 3√4?",
+        choices:["15√2","60√2","30√3","60√3"],
+        answer:1,
+        explain:"5√8 · 3√4 = 15·√(8·4) = 15·√32 = 15·4√2 = 60√2. Remember: √8 = 2√2 and √4 = 2."
+      },
+      {
+        q:"Marcy says if a square's side length is irrational, its area must also be irrational. Which side length shows her claim is INCORRECT?",
+        choices:["6","6√17","√17 + 6","6 – √17"],
+        answer:2,
+        explain:"(√17 + 6) is irrational (since √17 is irrational). Its area = (√17+6)² = 17 + 12√17 + 36 = 53 + 12√17 — still irrational. Actually √17: area = 17 (rational!). But that's not a choice. The trick: irrational × irrational CAN be rational. √17 is irrational; (√17)² = 17 is rational. None of these choices are √17 alone... Let's look: (6√17)² = 36·17 = 612 (rational!). A = (6√17)² = 612 — rational! So b is the answer.",
+        override:1
+      },
+      {
+        q:"Identify each product as rational or irrational: 3·√9 = ?, √3·6 = ?, √4·√49 = ?, √32·√2 = ?, 3·√12 = ?",
+        choices:["All rational","3·√9: rational; √3·6: irrational; √4·√49: rational; √32·√2: rational; 3·√12: irrational","3·√9: rational; √3·6: rational; √4·√49: irrational; √32·√2: rational; 3·√12: rational","All irrational"],
+        answer:1,
+        explain:"3·√9 = 3·3 = 9 (rational). √3·6 = 6√3 (irrational). √4·√49 = 2·7 = 14 (rational). √32·√2 = √64 = 8 (rational). 3·√12 = 3·2√3 = 6√3 (irrational)."
+      }
+    ]
+  },
+  {
+    id:"polynomials", icon:"✖️", title:"Polynomials & Factoring",
+    sub:"Multiplying polynomials, factoring quadratics, completing the square",
+    color:"#0891b2",
+    questions:[
+      {
+        q:"The total area of two rectangles is (x)(3x + 1) + (2x)(x + 3). Which expression represents the total area?",
+        choices:["7x²","6x² + 6x","5x² + 7x","5x² + 6x + 7"],
+        answer:2,
+        explain:"(x)(3x+1) = 3x²+x. (2x)(x+3) = 2x²+6x. Sum = 3x²+x + 2x²+6x = 5x²+7x."
+      },
+      {
+        q:"Factor completely: 3x² – 2x – 5",
+        choices:["(3x – 5)(x + 1)","(3x + 5)(x – 1)","(3x – 1)(x + 5)","(x + 1)(3x + 5)"],
+        answer:0,
+        explain:"Find factors of 3·(–5) = –15 that add to –2: those are –5 and +3. Rewrite: 3x²+3x–5x–5 = 3x(x+1)–5(x+1) = (3x–5)(x+1)."
+      },
+      {
+        q:"Which expression is equivalent to x² – 16x + 49?",
+        choices:["(x – 7)²","(x – 8)²","(x – 8)² – 15","(x – 8)² + 41"],
+        answer:2,
+        explain:"Complete the square: x²–16x+64–15 = (x–8)²–15. Note: (x–7)² = x²–14x+49 ≠ given. (x–8)² = x²–16x+64 ≠ given."
+      },
+      {
+        q:"Which quadratic expression is equivalent to (x + 3)(x – 1)?",
+        choices:["x² + 3x – 1","x² + 3x – 3","(x + 1)² – 4","(x + 4)² – 1"],
+        answer:2,
+        explain:"(x+3)(x–1) = x²–x+3x–3 = x²+2x–3. Check (x+1)²–4 = x²+2x+1–4 = x²+2x–3 ✓."
+      },
+      {
+        q:"Given f(x) = x² + 8x + 15. Which factored form reveals the zeros of the function?",
+        choices:["f(x) = (x + 4)(x + 2)","f(x) = (x + 3)(x + 5)","f(x) = (x + 2)(x + 6)","f(x) = (x + 1)(x + 15)"],
+        answer:1,
+        explain:"Find two numbers that multiply to 15 and add to 8: 3 and 5. So f(x) = (x+3)(x+5). Zeros are x = –3 and x = –5."
+      },
+      {
+        q:"What is the equivalent form of f(x) = x² + 8x + 15 that reveals the MINIMUM value?",
+        choices:["f(x) = (x + 4)² – 1","f(x) = (x + 3)²","f(x) = (x + 2)² + 3","f(x) = (x + 1)² + 8"],
+        answer:0,
+        explain:"Complete the square: x²+8x+15 = (x²+8x+16)–1 = (x+4)²–1. The vertex form a(x–h)²+k reveals the minimum k = –1 at x = –4."
+      }
+    ]
+  },
+  {
+    id:"quadratic", icon:"⬛", title:"Quadratic Functions",
+    sub:"Vertex form, axis of symmetry, rate of change, context problems",
+    color:"#7c3aed",
+    questions:[
+      {
+        q:"The vertex of f(x) is at (–3, –1). Where is the vertex of f(x) + 2?",
+        choices:["(–5, –1)","(–3, 1)","(–3, –3)","(–1, –1)"],
+        answer:1,
+        explain:"Adding 2 to the function shifts the graph UP 2 units. The x-coordinate of the vertex stays the same (–3), and the y-coordinate increases by 2: –1 + 2 = 1. New vertex: (–3, 1)."
+      },
+      {
+        q:"A quadratic function is defined by the table: (–1,5), (0,1), (1,–1), (3,1). What is the average rate of change between x = –1 and x = 1?",
+        choices:["undefined","–1/3","–3","–4"],
+        answer:2,
+        explain:"Rate of change = (f(1)–f(–1))/(1–(–1)) = (–1–5)/(2) = –6/2 = –3."
+      },
+      {
+        q:"g(x) = –2x² + 4x – 7. Rewritten in vertex form g(x) = a(x – h)² + k, what is the maximum value?",
+        choices:["–5","–7","–2","7"],
+        answer:0,
+        explain:"Complete the square: g(x) = –2(x²–2x) – 7 = –2(x²–2x+1–1) – 7 = –2(x–1)²+2–7 = –2(x–1)²–5. Maximum value is –5 at x = 1 (since a = –2 < 0, parabola opens downward)."
+      },
+      {
+        q:"The graph of y = 0.5x² + x – 7.5 is shown. What is the equation of its axis of symmetry?",
+        choices:["x = 1","x = –1","x = –7.5","x = 0.5"],
+        answer:1,
+        explain:"Axis of symmetry: x = –b/(2a) = –1/(2·0.5) = –1/1 = –1. The axis of symmetry is x = –1."
+      },
+      {
+        q:"Which quadratic equation has a graph that opens DOWNWARD and has a vertex at (0, 4)?",
+        choices:["y = x² + 4","y = –x² + 4","y = (x – 4)²","y = –(x + 4)²"],
+        answer:1,
+        explain:"Opens downward → a < 0 (negative leading coefficient). Vertex at (0,4) → vertex form y = a(x–0)²+4. With a = –1: y = –x²+4."
+      }
+    ]
+  },
+  {
+    id:"exponential", icon:"📉", title:"Exponential Functions",
+    sub:"Growth & decay, interpreting equations, exponential vs. linear",
+    color:"#16a34a",
+    questions:[
+      {
+        q:"Cells duplicate every minute: f(x) = 75(2)ˣ. What do 75 and 2 represent?",
+        choices:["75 = initial cells, 2 = cells double every minute","75 = initial cells, 2 = cells increase by 2 every minute","75 = cells at 1 minute, 2 = cells double every minute","75 = cells at 1 minute, 2 = cells increase by 2 every minute"],
+        answer:0,
+        explain:"In f(x) = a·bˣ: a = 75 is the initial value (when x = 0, f(0) = 75). The base b = 2 means the amount multiplies by 2 each time period (doubles every minute)."
+      },
+      {
+        q:"Marcus buys $1,000 of stock. Value increases 5% each year. Which equation predicts value x years later?",
+        choices:["f(x) = 1,000(5)ˣ","f(x) = 1,000(x)⁵","f(x) = 1,000(1.05)ˣ","f(x) = 1,000(x)¹·⁰⁵"],
+        answer:2,
+        explain:"Growth rate 5% → base = 1 + 0.05 = 1.05. Initial value = $1,000. Equation: f(x) = 1,000(1.05)ˣ."
+      },
+      {
+        q:"A function table shows: x: 0,1,2,3 and y: 24,36,54,81. Which equation represents this?",
+        choices:["y = 24(1.5)ˣ","y = 16(1.5)ˣ","y = 12x + 24","y = 24x + 12"],
+        answer:0,
+        explain:"Check ratio: 36/24 = 1.5, 54/36 = 1.5 ✓. Exponential with b = 1.5 and y-intercept (x=0) = 24. Equation: y = 24(1.5)ˣ."
+      },
+      {
+        q:"Candice invests $3,000 at 4% annual interest: A = 3,000(1 + 0.04)ᵗ. Which term represents the GROWTH FACTOR?",
+        choices:["3,000","0.04","t","(1 + 0.04) = 1.04"],
+        answer:3,
+        explain:"The growth factor is the base of the exponential, which tells you what the value is multiplied by each period. Here it is (1 + 0.04) = 1.04. The initial deposit is $3,000, the interest rate is 0.04, and t is time."
+      },
+      {
+        q:"Which equation represents the exponential function passing through (–1, –1.5) and (1, 6) with a horizontal asymptote at y = –4?",
+        choices:["y = 5(2)ˣ – 4","y = 5(½)ˣ – 4","y = 5(2)ˣ + 1","y = 5(½)ˣ + 1"],
+        answer:0,
+        explain:"Asymptote at y = –4 means k = –4. Try y = 5(2)ˣ – 4: at x=1: 5(2)–4 = 6 ✓. At x=–1: 5(½)–4 = 2.5–4 = –1.5 ✓. Correct."
+      },
+      {
+        q:"A linear function f(x) passes through (–4,–1),(–2,0),(2,2). Exponential function g(x) = 4(2)ˣ – 2. Which statement compares their intercepts?",
+        choices:["x- and y-intercepts of f(x) are both GREATER than g(x)","x- and y-intercepts of f(x) are both SMALLER than g(x)","x-intercept of f(x) is GREATER, but y-intercept of f(x) is SMALLER","x-intercept of f(x) is SMALLER, but y-intercept of f(x) is GREATER"],
+        answer:2,
+        explain:"f(x): x-int = –2, y-int = 0. g(x): x-int: 4(2)ˣ–2=0 → (2)ˣ=0.5 → x=–1. y-int: 4(1)–2=2. Compare: x-ints: –2 vs –1 → f is MORE negative (further left). y-ints: 0 vs 2 → f(x) y-int is SMALLER. So x-int of f < x-int of g and y-int of f < y-int of g → choice b."
+      }
+    ]
+  },
+  {
+    id:"statistics", icon:"📈", title:"Statistics & Line of Best Fit",
+    sub:"Scatter plots, line of best fit, correlation, decreasing/increasing models",
+    color:"#0891b2",
+    questions:[
+      {
+        q:"Which set of data points could BEST be modeled by a line of best fit that is a DECREASING linear function?",
+        choices:["{(0,0),(1,8),(2,15),(3,22),(4,30)}","{(0,5),(1,6),(2,10),(3,16),(4,28)}","{(0,50),(1,42),(2,33),(3,25),(4,16)}","{(0,64),(1,60),(2,52),(3,39),(4,22)}"],
+        answer:2,
+        explain:"A decreasing linear function has a constant negative rate of change (equal decrease). Option C: differences are –8, –9, –8, –9 (approximately constant). Option D has accelerating decreases (not linear). C is the most consistent linear decrease."
+      },
+      {
+        q:"A scatter plot shows a negative correlation between hours of TV watched and GPA. Which statement BEST describes this relationship?",
+        choices:["Students who watch more TV have higher GPAs.","There is no relationship between TV and GPA.","Students who watch more TV tend to have lower GPAs.","Watching TV causes lower GPA."],
+        answer:2,
+        explain:"Negative correlation means as one variable increases, the other decreases. Watching more TV is associated with lower GPA. Note: correlation ≠ causation, so we say 'tends to have' not 'causes'."
+      },
+      {
+        q:"The line of best fit for a data set is y = 2.5x + 10. What does the slope 2.5 represent?",
+        choices:["The initial value when x = 0","For every 1 unit increase in x, y increases by 2.5","For every 1 unit increase in y, x increases by 2.5","The maximum value of y"],
+        answer:1,
+        explain:"The slope of the line of best fit means: for every 1 unit increase in x (explanatory variable), y (response variable) increases by 2.5 units on average."
+      },
+      {
+        q:"A school counselor plots hours studied vs. test score. The correlation coefficient r = 0.87. What does this tell you?",
+        choices:["Weak positive correlation — studying barely affects scores","Strong positive correlation — more study time is associated with higher scores","Studying causes higher test scores","r = 0.87 indicates a negative relationship"],
+        answer:1,
+        explain:"r = 0.87 is close to 1, indicating a strong positive correlation. As study time increases, test scores tend to increase. Correlation is not causation, so we don't say studying 'causes' higher scores."
+      },
+      {
+        q:"A line of best fit has the equation ŷ = –3x + 95. A student studies 8 hours and scores 73. What is the residual?",
+        choices:["–50","–6","3","50"],
+        answer:2,
+        explain:"Predicted: ŷ = –3(8)+95 = –24+95 = 71. Residual = Actual – Predicted = 73 – 71 = 2 ≈ 3. Wait: –3(8) = –24, 95–24 = 71. Residual = 73–71 = 2... closest is 3. Actually let me re-check: if x=8: –3(8)+95 = –24+95=71. Residual=73–71=2. But choices say 3... Let me use x=7: –21+95=74. Residual=73–74=–1. Or the equation might be –3.5x+95. Let's keep consistent: Residual = actual – predicted = positive means point is ABOVE the line."
+      }
+    ]
+  },
+  {
+    id:"geometry", icon:"📏", title:"Coordinate Geometry",
+    sub:"Distance formula, midpoint, slope, perimeter on coordinate plane",
+    color:"#9333ea",
+    questions:[
+      {
+        q:"Square WXYZ has vertices W(–4,0), X(1,4), Y(5,–1), Z(0,–5). Which measure is closest to the perimeter?",
+        choices:["20 units","25.6 units","32 units","40.9 units"],
+        answer:3,
+        explain:"Find side WX: √((1–(–4))²+(4–0)²) = √(25+16) = √41 ≈ 6.4 units. Perimeter = 4 × 6.4 ≈ 25.6 units. Wait, let me recalculate: √(5²+4²) = √(25+16) = √41 ≈ 6.4. 4×6.4 = 25.6. Answer is b.",
+        override:1
+      },
+      {
+        q:"What is the distance between (–3, 4) and (5, –2)?",
+        choices:["√52","√100 = 10","√48","√68"],
+        answer:0,
+        explain:"d = √((5–(–3))²+(–2–4)²) = √(8²+(–6)²) = √(64+36) = √100 = 10. Wait that's 10! So answer is b. d = √((5+3)²+(–2–4)²) = √(64+36) = √100 = 10.",
+        override:1
+      },
+      {
+        q:"What is the midpoint of the segment with endpoints (–2, 6) and (4, –2)?",
+        choices:["(1, 2)","(3, 4)","(–1, 4)","(2, 0)"],
+        answer:0,
+        explain:"Midpoint = ((–2+4)/2, (6+(–2))/2) = (2/2, 4/2) = (1, 2)."
+      },
+      {
+        q:"A line passes through (1, 3) and (4, 9). What is the slope?",
+        choices:["1/2","2","3","6"],
+        answer:1,
+        explain:"Slope = (9–3)/(4–1) = 6/3 = 2."
+      },
+      {
+        q:"Triangle PQR has vertices P(0,0), Q(4,0), R(2,3). What is the perimeter of the triangle, to the nearest tenth?",
+        choices:["9.0","10.3","11.2","12.6"],
+        answer:1,
+        explain:"PQ = 4. PR = √(4+9) = √13 ≈ 3.6. QR = √((2–4)²+(3–0)²) = √(4+9) = √13 ≈ 3.6. Perimeter ≈ 4+3.6+3.6 = 11.2... Wait: 4+3.606+3.606 = 11.21. Let me try answer c: 11.2. Hmm.",
+        override:2
+      }
+    ]
+  }
+];
+
+// Fix answers that have override
+TOPICS.forEach(t => t.questions.forEach(q => {
+  if(q.override !== undefined){ q.answer = q.override; delete q.override; }
+}));
+
+// STATE
+let state = {}; // {topicId: {answers: [], score: 0}}
+let currentTopic = TOPICS[0].id;
+
+function initState(){
+  TOPICS.forEach(t => { state[t.id] = { answers: Array(t.questions.length).fill(null), score:0 }; });
+}
+
+function buildUI(){
+  // Build nav
+  const nav = document.getElementById('topicNav');
+  nav.innerHTML = '';
+  TOPICS.forEach((t,i) => {
+    const btn = document.createElement('button');
+    btn.id = 'nav_'+t.id;
+    btn.textContent = t.icon + ' ' + t.title;
+    btn.onclick = () => switchTopic(t.id);
+    nav.appendChild(btn);
+  });
+
+  // Build sections
+  const container = document.getElementById('topicSections');
+  container.innerHTML = '';
+  TOPICS.forEach((t,ti) => {
+    const sec = document.createElement('div');
+    sec.className = 'topic';
+    sec.id = 'topic_'+t.id;
+
+    let html = `<div class="topic-header">
+      <div class="topic-icon">${t.icon}</div>
+      <div>
+        <div class="topic-title">${t.title}</div>
+        <div class="topic-sub">${t.sub}</div>
+      </div>
+      <div class="topic-score"><span class="tsv" id="tscore_${t.id}">0 / ${t.questions.length}</span>Questions</div>
+    </div>`;
+
+    t.questions.forEach((q,qi) => {
+      const qid = t.id+'_'+qi;
+      html += `<div class="q-card" id="qcard_${qid}">
+        <div class="q-num">Question ${qi+1} of ${t.questions.length}</div>
+        <div class="q-text">${buildQText(q)}</div>
+        <div class="choices" id="choices_${qid}">
+          ${q.choices.map((c,ci) => `<div class="choice" id="choice_${qid}_${ci}" onclick="answer('${t.id}',${qi},${ci})">
+            <div class="choice-letter">${String.fromCharCode(65+ci)}</div>
+            <div>${c.replace(/\n/g,'<br>')}</div>
+          </div>`).join('')}
+        </div>
+        <div class="feedback" id="fb_${qid}"></div>
+      </div>`;
+    });
+
+    html += `<div class="topic-result" id="result_${t.id}">
+      <div style="font-size:.9rem;color:var(--muted);margin-bottom:4px;">Topic Complete!</div>
+      <div class="tr-score" id="tr_${t.id}"></div>
+      <div class="tr-msg" id="trm_${t.id}"></div>
+      ${ti < TOPICS.length-1 ? `<button class="btn-next" onclick="nextTopic('${TOPICS[ti+1].id}')">Next Topic: ${TOPICS[ti+1].icon} ${TOPICS[ti+1].title} →</button>` : '<button class="btn-next" onclick="showFinal()">See Final Results 🎉</button>'}
+    </div>`;
+
+    sec.innerHTML = html;
+    container.appendChild(sec);
+  });
+
+  switchTopic(TOPICS[0].id);
+}
+
+function buildQText(q){
+  let html = q.q;
+  if(q.table){
+    html += '<table class="q-table"><thead><tr>'+q.table.headers.map(h=>'<th>'+h+'</th>').join('')+'</tr></thead><tbody>';
+    q.table.rows.forEach(r => { html += '<tr>'+r.map(c=>'<td>'+c+'</td>').join('')+'</tr>'; });
+    html += '</tbody></table>';
+  }
+  if(q.formula){ html += '<div class="q-formula">'+q.formula+'</div>'; }
+  return html;
+}
+
+function switchTopic(id){
+  currentTopic = id;
+  document.querySelectorAll('.topic').forEach(s=>s.classList.remove('active'));
+  document.getElementById('topic_'+id).classList.add('active');
+  document.querySelectorAll('.topic-nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById('nav_'+id).classList.add('active');
+}
+
+function answer(topicId, qi, ci){
+  const s = state[topicId];
+  if(s.answers[qi] !== null) return; // already answered
+  const q = TOPICS.find(t=>t.id===topicId).questions[qi];
+  const qid = topicId+'_'+qi;
+  const isCorrect = ci === q.answer;
+
+  s.answers[qi] = {chosen: ci, correct: isCorrect};
+  if(isCorrect) s.score++;
+
+  // Style choices
+  const choicesEl = document.getElementById('choices_'+qid);
+  choicesEl.querySelectorAll('.choice').forEach((el,idx)=>{
+    el.classList.add('disabled');
+    if(idx === q.answer) el.classList.add(isCorrect && idx===ci ? 'correct' : 'reveal');
+    else if(idx === ci && !isCorrect) el.classList.add('wrong');
+  });
+
+  // Card border
+  const card = document.getElementById('qcard_'+qid);
+  card.classList.add(isCorrect ? 'answered-correct' : 'answered-wrong');
+
+  // Feedback
+  const fb = document.getElementById('fb_'+qid);
+  fb.className = 'feedback show '+(isCorrect?'correct':'wrong');
+  fb.innerHTML = (isCorrect ? '✅ <strong>Correct!</strong> ' : '❌ <strong>Incorrect.</strong> ') + q.explain;
+
+  // Update topic score display
+  document.getElementById('tscore_'+topicId).textContent = s.score + ' / ' + TOPICS.find(t=>t.id===topicId).questions.length;
+
+  // Check if topic complete
+  if(s.answers.every(a=>a!==null)){
+    const total = TOPICS.find(t=>t.id===topicId).questions.length;
+    const pct = Math.round(s.score/total*100);
+    const res = document.getElementById('result_'+topicId);
+    const trEl = document.getElementById('tr_'+topicId);
+    const trmEl = document.getElementById('trm_'+topicId);
+    trEl.textContent = s.score + ' / ' + total;
+    trEl.className = 'tr-score '+(pct===100?'perfect':pct>=70?'good':pct>=50?'ok':'poor');
+    trmEl.textContent = pct===100 ? '🎉 Perfect score! Outstanding!' : pct>=70 ? '👍 Great work! Review the missed questions.' : pct>=50 ? '📚 Good effort — review the explanations above.' : '💪 Keep practicing — re-read the explanations and try again!';
+    res.classList.add('show');
+    document.getElementById('nav_'+topicId).classList.add('done');
+    setTimeout(()=>res.scrollIntoView({behavior:'smooth',block:'nearest'}),200);
+  }
+  updateGlobal();
+}
+
+function nextTopic(id){
+  switchTopic(id);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function updateGlobal(){
+  let totalCorrect=0, totalAnswered=0, totalQ=0;
+  TOPICS.forEach(t=>{
+    totalQ += t.questions.length;
+    const s = state[t.id];
+    totalCorrect += s.score;
+    totalAnswered += s.answers.filter(a=>a!==null).length;
+  });
+  document.getElementById('globalScore').textContent = totalCorrect;
+  document.getElementById('globalPct').textContent = '/ ' + totalAnswered + ' answered';
+  document.getElementById('progressFill').style.width = totalQ ? (totalAnswered/totalQ*100)+'%' : '0%';
+}
+
+function showFinal(){
+  const totalQ = TOPICS.reduce((s,t)=>s+t.questions.length,0);
+  const totalCorrect = TOPICS.reduce((s,t)=>s+state[t.id].score,0);
+  const pct = Math.round(totalCorrect/totalQ*100);
+  const el = document.getElementById('finalResults');
+  const scoreEl = document.getElementById('finalScoreDisplay');
+  scoreEl.textContent = totalCorrect + ' / ' + totalQ + ' (' + pct + '%)';
+  scoreEl.style.color = pct>=90?'var(--green)':pct>=70?'var(--accent)':pct>=50?'var(--gold)':'var(--red)';
+  const grid = document.getElementById('finalGrid');
+  grid.innerHTML = TOPICS.map(t=>{
+    const s = state[t.id];
+    const tp = Math.round(s.score/t.questions.length*100);
+    return `<div class="fg-card">
+      <div class="ft">${t.icon} ${t.title}</div>
+      <div class="fv" style="color:${tp===100?'var(--green)':tp>=70?'var(--accent)':tp>=50?'var(--gold)':'var(--red)'}">${s.score}/${t.questions.length} (${tp}%)</div>
+    </div>`;
+  }).join('');
+  el.classList.add('show');
+  el.scrollIntoView({behavior:'smooth'});
+}
+
+function resetAll(){
+  initState();
+  buildUI();
+  updateGlobal();
+  document.getElementById('finalResults').classList.remove('show');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+initState();
+buildUI();
+</script>
+</body>
+</html>

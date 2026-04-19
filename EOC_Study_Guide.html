@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EOC Study Guide — Algebra: Concepts & Connections</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,600;0,700;1,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f3ee;--surface:#ffffff;--card:#fdfcf9;--border:#e0d9cc;
+  --text:#1c1712;--muted:#7a6e5f;--accent:#1d6954;--alight:rgba(29,105,84,.08);
+  --red:#c0392b;--rlight:rgba(192,57,43,.07);
+  --blue:#1a5276;--blight:rgba(26,82,118,.07);
+  --gold:#b7770d;--glight:rgba(183,119,13,.07);
+  --purple:#6c3483;--plight:rgba(108,52,131,.07);
+  --teal:#117a65;--tlight:rgba(17,122,101,.08);
+  --slate:#2c3e50;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;}
+
+/* ── HEADER ── */
+.site-header{
+  background:var(--slate);color:#fff;
+  padding:26px 24px 20px;text-align:center;
+  border-bottom:4px solid var(--accent);
+}
+.site-header h1{font-family:'Lora',serif;font-size:clamp(1.5rem,4vw,2.3rem);font-weight:700;letter-spacing:-.01em;margin-bottom:4px;}
+.site-header p{font-size:.87rem;opacity:.6;}
+
+/* ── TOPIC NAV ── */
+.topic-nav-wrap{background:var(--surface);border-bottom:1.5px solid var(--border);position:sticky;top:0;z-index:100;padding:10px 18px;display:flex;gap:5px;flex-wrap:wrap;align-items:center;}
+.topic-nav-wrap button{
+  background:transparent;border:1.5px solid var(--border);color:var(--muted);
+  font-family:'Inter',sans-serif;font-size:.73rem;font-weight:600;
+  padding:5px 11px;border-radius:20px;cursor:pointer;transition:all .18s;white-space:nowrap;
+}
+.topic-nav-wrap button:hover{border-color:var(--accent);color:var(--accent);}
+.topic-nav-wrap button.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+
+/* ── MAIN ── */
+main{max-width:1000px;margin:0 auto;padding:24px 20px 80px;}
+
+/* ── TOPIC SECTION ── */
+.topic-sec{display:none;animation:fadeUp .3s ease;}
+.topic-sec.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── TOPIC HERO ── */
+.topic-hero{
+  display:flex;align-items:center;gap:16px;
+  padding:20px 24px;border-radius:14px;margin-bottom:22px;
+  border-left:5px solid var(--accent);
+  background:linear-gradient(135deg,var(--surface) 60%,var(--alight));
+  border:1.5px solid var(--border);
+}
+.topic-hero .th-icon{font-size:2.8rem;flex-shrink:0;}
+.topic-hero .th-title{font-family:'Lora',serif;font-size:1.7rem;font-weight:700;margin-bottom:3px;}
+.topic-hero .th-sub{font-size:.87rem;color:var(--muted);line-height:1.6;}
+.topic-hero .th-tag{
+  margin-left:auto;padding:5px 13px;border-radius:20px;
+  font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;
+  background:var(--alight);color:var(--accent);border:1px solid rgba(29,105,84,.2);
+  white-space:nowrap;align-self:flex-start;
+}
+
+/* ── SECTION GRID ── */
+.sec-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+.sec-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:16px;}
+
+/* ── CARDS ── */
+.card{background:var(--surface);border:1.5px solid var(--border);border-radius:13px;padding:20px 22px;margin-bottom:16px;}
+.card-header{display:flex;align-items:center;gap:9px;margin-bottom:14px;}
+.card-header .ch-icon{font-size:1.25rem;}
+.card-header .ch-label{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1.4px;color:var(--muted);}
+.card-header .ch-title{font-family:'Lora',serif;font-size:1.1rem;font-weight:600;color:var(--text);line-height:1.2;}
+
+/* ── VOCAB ── */
+.vocab-list{display:flex;flex-direction:column;gap:10px;}
+.vocab-item{display:flex;flex-direction:column;gap:3px;padding:11px 14px;background:var(--bg);border-radius:9px;border-left:3px solid var(--accent);}
+.vocab-term{font-weight:700;font-size:.88rem;color:var(--accent);}
+.vocab-def{font-size:.83rem;color:var(--muted);line-height:1.55;}
+.vocab-ex{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--slate);margin-top:2px;}
+
+/* ── KEY IDEAS ── */
+.idea-list{display:flex;flex-direction:column;gap:8px;}
+.idea-item{display:flex;gap:10px;align-items:flex-start;padding:10px 13px;background:var(--bg);border-radius:8px;}
+.idea-bullet{min-width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;flex-shrink:0;background:var(--accent);color:#fff;}
+.idea-text{font-size:.87rem;line-height:1.6;}
+.idea-text strong{color:var(--text);}
+.idea-text em{font-style:italic;color:var(--muted);}
+
+/* ── FORMULA BOX ── */
+.formula-box{font-family:'JetBrains Mono',monospace;font-size:.95rem;text-align:center;padding:12px 18px;background:var(--glight);border:1.5px solid rgba(183,119,13,.2);border-radius:9px;margin:10px 0;color:var(--gold);}
+.formula-label{font-family:'Inter',sans-serif;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:4px;}
+
+/* ── FORMULA GRID ── */
+.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:10px;}
+.fcard{background:var(--bg);border-radius:9px;padding:12px 14px;border:1px solid var(--border);}
+.fcard .fl{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:4px;}
+.fcard .fv{font-family:'JetBrains Mono',monospace;font-size:.92rem;color:var(--slate);}
+.fcard .fd{font-size:.78rem;color:var(--muted);margin-top:3px;}
+
+/* ── TABLE ── */
+.ref-table{width:100%;border-collapse:collapse;font-size:.85rem;margin-top:10px;}
+.ref-table th{background:var(--slate);color:#fff;padding:9px 13px;text-align:left;font-size:.7rem;text-transform:uppercase;letter-spacing:.8px;}
+.ref-table td{padding:9px 13px;border-bottom:1px solid var(--border);}
+.ref-table tr:last-child td{border:none;}
+.ref-table tr:nth-child(even) td{background:var(--bg);}
+.ref-table .mono{font-family:'JetBrains Mono',monospace;color:var(--accent);}
+
+/* ── APPLICATIONS ── */
+.app-list{display:flex;flex-direction:column;gap:9px;}
+.app-item{display:flex;gap:11px;padding:12px 15px;background:var(--tlight);border:1px solid rgba(17,122,101,.15);border-radius:9px;font-size:.86rem;line-height:1.55;}
+.app-icon{font-size:1.3rem;flex-shrink:0;}
+
+/* ── GRAPH CANVAS ── */
+.graph-wrap{background:#0f1923;border-radius:11px;overflow:hidden;border:1.5px solid #2c3e50;}
+.graph-label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);text-align:center;margin-bottom:6px;}
+canvas.gc{width:100%;display:block;}
+
+/* ── GRAPH FEATURES TABLE ── */
+.gf-list{display:flex;flex-direction:column;gap:7px;margin-top:10px;}
+.gf-item{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:var(--bg);border-radius:7px;font-size:.84rem;border:1px solid var(--border);}
+.gf-key{font-weight:600;color:var(--muted);font-size:.75rem;text-transform:uppercase;letter-spacing:.7px;}
+.gf-val{font-family:'JetBrains Mono',monospace;font-size:.88rem;color:var(--accent);}
+
+/* ── COMPARISON BOX ── */
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px;}
+.comp-card{border-radius:10px;padding:14px 16px;}
+.comp-card.green{background:rgba(29,105,84,.08);border:1.5px solid rgba(29,105,84,.2);}
+.comp-card.red{background:rgba(192,57,43,.08);border:1.5px solid rgba(192,57,43,.2);}
+.comp-card.blue{background:rgba(26,82,118,.07);border:1.5px solid rgba(26,82,118,.2);}
+.comp-card.gold{background:rgba(183,119,13,.07);border:1.5px solid rgba(183,119,13,.2);}
+.comp-title{font-weight:700;font-size:.88rem;margin-bottom:7px;}
+.comp-card.green .comp-title{color:var(--teal);}
+.comp-card.red .comp-title{color:var(--red);}
+.comp-card.blue .comp-title{color:var(--blue);}
+.comp-card.gold .comp-title{color:var(--gold);}
+.comp-item{font-size:.81rem;color:var(--muted);padding:3px 0;border-bottom:1px solid rgba(0,0,0,.06);}
+.comp-item:last-child{border:none;}
+
+/* ── BADGE ── */
+.badge{display:inline-block;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;padding:2px 9px;border-radius:20px;margin-left:6px;}
+.badge-green{background:var(--tlight);color:var(--teal);border:1px solid rgba(17,122,101,.25);}
+.badge-blue{background:var(--blight);color:var(--blue);border:1px solid rgba(26,82,118,.2);}
+.badge-red{background:var(--rlight);color:var(--red);border:1px solid rgba(192,57,43,.2);}
+.badge-gold{background:var(--glight);color:var(--gold);border:1px solid rgba(183,119,13,.2);}
+
+/* ── HIGHLIGHT BOX ── */
+.highlight{padding:13px 16px;border-radius:10px;font-size:.87rem;margin:12px 0;line-height:1.6;}
+.highlight.green{background:var(--tlight);border-left:4px solid var(--teal);}
+.highlight.gold{background:var(--glight);border-left:4px solid var(--gold);}
+.highlight.red{background:var(--rlight);border-left:4px solid var(--red);}
+.highlight.blue{background:var(--blight);border-left:4px solid var(--blue);}
+
+/* RESPONSIVE */
+@media(max-width:620px){
+  .sec-grid,.sec-grid-3,.compare-grid{grid-template-columns:1fr;}
+  .topic-hero{flex-wrap:wrap;}
+  .topic-hero .th-tag{margin-left:0;}
+}
+</style>
+</head>
+<body>
+
+<div class="site-header">
+  <h1>📚 EOC Algebra Study Guide</h1>
+  <p>Algebra: Concepts &amp; Connections · 10 Topics · Concepts · Vocabulary · Graphs · Applications</p>
+</div>
+
+<div class="topic-nav-wrap" id="topicNav"></div>
+<main id="mainContent"></main>
+
+<script>
+// ── TOPIC DATA ──
+const TOPICS = [
+
+// ════════════════════════════════════════
+// 1. LINEAR FUNCTIONS
+// ════════════════════════════════════════
+{id:"linear",icon:"📐",title:"Linear Functions",tag:"Algebra",
+ sub:"Slope, intercepts, forms of a line, modeling data",
+ color:"#1d6954",
+ overview:"A linear function creates a straight-line graph. The rate of change (slope) is constant. It is one of the most fundamental function types in algebra.",
+ vocab:[
+   {term:"Linear Function",def:"A function whose graph is a straight line.",ex:"f(x) = 2x + 3"},
+   {term:"Slope (m)",def:"The rate of change; rise over run. How steep the line is.",ex:"m = (y₂−y₁)/(x₂−x₁)"},
+   {term:"y-Intercept (b)",def:"Where the line crosses the y-axis (when x = 0).",ex:"In y=2x+3, b=3"},
+   {term:"x-Intercept",def:"Where the line crosses the x-axis (when y = 0).",ex:"Set f(x)=0 and solve for x"},
+   {term:"Slope-Intercept Form",def:"y = mx + b, where m is slope and b is y-intercept.",ex:"y = ½x − 4"},
+   {term:"Rate of Change",def:"How much y changes per 1-unit increase in x. Same as slope.",ex:"If m=3, y increases by 3 each time x increases by 1"},
+ ],
+ ideas:[
+   "Positive slope → line rises left to right. Negative slope → line falls left to right.",
+   "Zero slope → horizontal line. Undefined slope → vertical line.",
+   "To find slope from a table: m = Δy/Δx (change in y divided by change in x).",
+   "To find slope from two points: m = (y₂ − y₁)/(x₂ − x₁)",
+   "y-intercept: set x = 0 and solve. x-intercept: set y = 0 and solve.",
+   "A function is linear if its table has a CONSTANT rate of change (equal differences in y for equal differences in x).",
+ ],
+ apps:[
+   {icon:"🚗",text:"Distance = rate × time. If a car travels at 60 mph, d(t) = 60t is linear."},
+   {icon:"💰",text:"Catering: Cost = per-person fee × guests + flat fee. C(x) = 6x + 100 is linear."},
+   {icon:"📱",text:"Phone plan: Monthly bill = $0.10 per text + $25 base. B(t) = 0.1t + 25."},
+   {icon:"🌡️",text:"Converting Celsius to Fahrenheit: F = (9/5)C + 32 — a linear function."},
+ ],
+ formulas:[
+   {l:"Slope",v:"m = (y₂−y₁)/(x₂−x₁)",d:"Rise over run between two points"},
+   {l:"Slope-Intercept",v:"y = mx + b",d:"Most common form"},
+   {l:"Point-Slope",v:"y−y₁ = m(x−x₁)",d:"Given slope + one point"},
+   {l:"Standard Form",v:"Ax + By = C",d:"A, B, C are integers"},
+ ],
+ graphFeatures:[
+   {k:"Shape",v:"Straight line"},
+   {k:"Slope > 0",v:"Line rises (↗)"},
+   {k:"Slope < 0",v:"Line falls (↘)"},
+   {k:"Slope = 0",v:"Horizontal line (→)"},
+   {k:"y-intercept",v:"Point (0, b)"},
+   {k:"x-intercept",v:"Point (−b/m, 0)"},
+ ],
+ graphFn: "linear"
+},
+
+// ════════════════════════════════════════
+// 2. SEQUENCES
+// ════════════════════════════════════════
+{id:"sequences",icon:"🔢",title:"Sequences",tag:"Patterns",
+ sub:"Arithmetic & geometric, recursive & explicit formulas",
+ color:"#6c3483",
+ overview:"A sequence is an ordered list of numbers following a pattern. Arithmetic sequences add a constant (common difference). Geometric sequences multiply by a constant (common ratio).",
+ vocab:[
+   {term:"Arithmetic Sequence",def:"Each term is found by ADDING a constant (d) to the previous term.",ex:"3, 7, 11, 15 … (d = +4)"},
+   {term:"Geometric Sequence",def:"Each term is found by MULTIPLYING by a constant ratio (r).",ex:"2, 6, 18, 54 … (r = 3)"},
+   {term:"Common Difference (d)",def:"The constant added in an arithmetic sequence.",ex:"In 5, 8, 11, 14 … d = 3"},
+   {term:"Common Ratio (r)",def:"The constant multiplied in a geometric sequence.",ex:"In 4, 12, 36 … r = 3"},
+   {term:"Recursive Formula",def:"Defines each term using the PREVIOUS term. Must also state a₁.",ex:"aₙ = aₙ₋₁ + 4; a₁ = 7"},
+   {term:"Explicit Formula",def:"Finds any term directly using n (position number). No prior term needed.",ex:"aₙ = 3n + 4 or aₙ = 2(3)ⁿ⁻¹"},
+ ],
+ ideas:[
+   "Arithmetic: To find d, subtract any term from the next term: d = aₙ − aₙ₋₁",
+   "Geometric: To find r, divide any term by the previous term: r = aₙ ÷ aₙ₋₁",
+   "Arithmetic explicit: aₙ = a₁ + (n−1)d — also written as a linear function f(n) = mn + b",
+   "Geometric explicit: aₙ = a₁ · rⁿ⁻¹ — notice this is like an exponential function!",
+   "Recursive formulas always need two pieces: the rule AND the first term (a₁).",
+   "If ratio is constant → geometric. If difference is constant → arithmetic.",
+ ],
+ apps:[
+   {icon:"🏦",text:"Compound interest generates a geometric sequence: each year's balance = previous × (1 + r)."},
+   {icon:"🏃",text:"A runner adds 0.5 miles per week: 3, 3.5, 4, 4.5 … arithmetic sequence."},
+   {icon:"🦠",text:"Bacteria that double every hour: 1, 2, 4, 8, 16 … geometric sequence with r = 2."},
+   {icon:"📅",text:"A salary that increases by $2,000/year: $45,000; $47,000; $49,000 … arithmetic."},
+ ],
+ formulas:[
+   {l:"Arithmetic Explicit",v:"aₙ = a₁ + (n−1)d",d:"nth term of arithmetic sequence"},
+   {l:"Geometric Explicit",v:"aₙ = a₁ · rⁿ⁻¹",d:"nth term of geometric sequence"},
+   {l:"Arithmetic Recursive",v:"aₙ = aₙ₋₁ + d; a₁",d:"Needs a₁ stated separately"},
+   {l:"Geometric Recursive",v:"aₙ = r · aₙ₋₁; a₁",d:"Needs a₁ stated separately"},
+ ],
+ graphFeatures:[
+   {k:"Arithmetic graph",v:"Straight line (linear)"},
+   {k:"Geometric graph",v:"Curved (exponential)"},
+   {k:"Arithmetic domain",v:"Positive integers only"},
+   {k:"r > 1",v:"Geometric increases"},
+   {k:"0 < r < 1",v:"Geometric decreases"},
+   {k:"r < 0",v:"Geometric alternates +/−"},
+ ],
+ graphFn:"sequences"
+},
+
+// ════════════════════════════════════════
+// 3. FUNCTIONS, DOMAIN & RANGE
+// ════════════════════════════════════════
+{id:"functions",icon:"🔭",title:"Functions, Domain & Range",tag:"Functions",
+ sub:"Function notation, domain, range, context restrictions",
+ color:"#1a5276",
+ overview:"A function assigns exactly ONE output to each input. The domain is the set of valid inputs and the range is the set of possible outputs. Context often restricts these.",
+ vocab:[
+   {term:"Function",def:"A rule where each input (x) has exactly ONE output (y). Passes the vertical line test.",ex:"f(x) = 3x + 1"},
+   {term:"Domain",def:"The set of all valid INPUT values (x-values).",ex:"D: {x | x ≥ 0} or D: all positive integers"},
+   {term:"Range",def:"The set of all possible OUTPUT values (y-values, or f(x) values).",ex:"R: {y | y > −4}"},
+   {term:"Function Notation",def:"f(x) means 'the value of function f at x'. The output when x is the input.",ex:"f(3) = 2(3) + 1 = 7"},
+   {term:"Continuous Domain",def:"Domain that includes all real numbers in an interval (no gaps).",ex:"Time, distance, temperature"},
+   {term:"Discrete Domain",def:"Domain made of separate, countable values (often integers).",ex:"Number of people, number of animals"},
+ ],
+ ideas:[
+   "Domain restriction from context: you can't have negative time, fractional people, or zero items.",
+   "Discrete vs. Continuous: counting things (integers) vs. measuring things (real numbers).",
+   "f(a) = b means: when the input is a, the output is b. x is the input, f(x) is the output.",
+   "The vertical line test: if any vertical line touches the graph more than once, it is NOT a function.",
+   "A function can have the same output for different inputs, but NOT the same input giving different outputs.",
+   "For a quadratic domain restricted by context: solve f(x) = 0 to find the endpoints of the domain.",
+ ],
+ apps:[
+   {icon:"🐟",text:"Fish food needed (y) as a function of number of fish (x): domain = positive integers."},
+   {icon:"🏃",text:"Distance a runner travels (y) as a function of time (x): domain = non-negative real numbers."},
+   {icon:"🏪",text:"Store customers f(x) = –4(x–4.5)²+81: domain restricted to hours when f(x) ≥ 0, so 0 ≤ x ≤ 9."},
+   {icon:"🌱",text:"Plant height as function of time since planting: domain includes negatives if 'time before' matters."},
+ ],
+ formulas:[
+   {l:"Function Notation",v:"f(x) → read 'f of x'",d:"Output when input is x"},
+   {l:"Domain from Context",v:"Solve for where f(x) is valid",d:"Consider real-world restrictions"},
+   {l:"Vertical Line Test",v:"1 intersection = function",d:"More than 1 = NOT a function"},
+   {l:"Average Rate of Change",v:"[f(b)−f(a)] / (b−a)",d:"Over interval [a, b]"},
+ ],
+ graphFeatures:[
+   {k:"Discrete graph",v:"Isolated points (dots only)"},
+   {k:"Continuous graph",v:"Unbroken curve or line"},
+   {k:"Domain on graph",v:"Left-right extent (x-span)"},
+   {k:"Range on graph",v:"Up-down extent (y-span)"},
+   {k:"x-intercept",v:"Where graph crosses x-axis"},
+   {k:"y-intercept",v:"Where graph crosses y-axis"},
+ ],
+ graphFn:"functions"
+},
+
+// ════════════════════════════════════════
+// 4. SYSTEMS OF LINEAR INEQUALITIES
+// ════════════════════════════════════════
+{id:"inequalities",icon:"📊",title:"Systems of Linear Inequalities",tag:"Systems",
+ sub:"Writing, graphing, shading, testing points",
+ color:"#922b21",
+ overview:"A system of linear inequalities has two or more inequalities. The solution is the REGION where both shaded areas overlap on the coordinate plane.",
+ vocab:[
+   {term:"Linear Inequality",def:"Like a linear equation but with <, >, ≤, or ≥ instead of =.",ex:"2x + 3y ≤ 80"},
+   {term:"Boundary Line",def:"The line you graph first. Solid line for ≤ or ≥; dashed line for < or >.",ex:"Graph 2x+3y=80 as a solid line"},
+   {term:"Solution Region",def:"The shaded area satisfying both inequalities. Any point inside satisfies the system.",ex:"The overlap/intersection of both shaded regions"},
+   {term:"Test Point",def:"A point you substitute into both inequalities to check if it's a solution.",ex:"Test (0,0): does 0 ≤ 5? Yes. Does 0 > 3? No."},
+   {term:"System of Inequalities",def:"Two or more inequalities that must be satisfied at the same time.",ex:"x + y ≤ 10 AND 2x + y ≥ 6"},
+ ],
+ ideas:[
+   "Graph each inequality separately, then find where BOTH shaded regions overlap.",
+   "Solid line (≤ or ≥): points ON the line ARE solutions. Dashed line (< or >): points on the line are NOT.",
+   "To shade: pick a test point NOT on the line (like (0,0)). If it satisfies the inequality, shade that side.",
+   "To check if a point is a solution: substitute into ALL inequalities. It must satisfy EVERY one.",
+   "Context clue: 'at most' → ≤ ; 'at least' → ≥ ; 'more than' → > ; 'less than' → <",
+   "Two inequalities with the same variables form a system. The solution is their intersection region.",
+ ],
+ apps:[
+   {icon:"🏪",text:"Computer store: 875x + 235y ≤ 10,000 (budget) AND 4x + 3y ≤ 45 (space). x=computers, y=tablets."},
+   {icon:"🍎",text:"Jose: 1.5a + 2g ≤ 30 (spending) AND 200a + 300g > 2000 (calories). a=apples, g=grapes."},
+   {icon:"🐻",text:"Stuffed animals: 1.75x + 3y ≤ 25 (shelf space) AND 9x + 12y > 108 (profit)."},
+   {icon:"🍞",text:"Restaurant: 2x + 3y ≤ 80 (dough) AND y ≤ 20 (cheese). x=plain, y=cheesy bread."},
+ ],
+ formulas:[
+   {l:"Budget constraint",v:"cost₁·x + cost₂·y ≤ budget",d:"At most = ≤"},
+   {l:"Minimum requirement",v:"value₁·x + value₂·y ≥ min",d:"At least = ≥"},
+   {l:"Test a point",v:"Substitute (x,y) into each",d:"Must satisfy ALL inequalities"},
+   {l:"Slope of boundary",v:"Rewrite as y = mx + b",d:"Then shade above or below"},
+ ],
+ graphFeatures:[
+   {k:"≤ or ≥ boundary",v:"SOLID line"},
+   {k:"< or > boundary",v:"DASHED line"},
+   {k:"Shade above boundary",v:"For y > or y ≥"},
+   {k:"Shade below boundary",v:"For y < or y ≤"},
+   {k:"Solution region",v:"Overlap of both shadings"},
+   {k:"Feasible point",v:"Any point in overlap region"},
+ ],
+ graphFn:"inequalities"
+},
+
+// ════════════════════════════════════════
+// 5. IRRATIONAL NUMBERS & RADICALS
+// ════════════════════════════════════════
+{id:"radicals",icon:"√",title:"Irrational Numbers & Radicals",tag:"Number Sense",
+ sub:"Rational vs. irrational, simplifying, operations with radicals",
+ color:"#b7770d",
+ overview:"A rational number can be written as a fraction p/q. An irrational number cannot — its decimal is non-terminating and non-repeating. Square roots of non-perfect squares are irrational.",
+ vocab:[
+   {term:"Rational Number",def:"Any number that can be written as a fraction p/q where p and q are integers and q ≠ 0.",ex:"1/2, 0.75, –3, √9 = 3"},
+   {term:"Irrational Number",def:"A number that CANNOT be written as a fraction. Decimal goes on forever without repeating.",ex:"√2, √7, π, √3 + 1"},
+   {term:"Perfect Square",def:"A number whose square root is a whole number.",ex:"1, 4, 9, 16, 25, 36, 49, 64, 81, 100"},
+   {term:"Radical",def:"The √ symbol, indicating a square root (or other root).",ex:"√50 = 5√2"},
+   {term:"Simplified Radical",def:"A radical with no perfect square factors under the radical sign.",ex:"√48 = 4√3 (not 2√12)"},
+ ],
+ ideas:[
+   "Rational × Rational = Rational. Irrational × Irrational can be EITHER (e.g. √2×√2 = 2, but √2×√3 = √6).",
+   "Rational + Irrational = Irrational. Irrational + Irrational could be rational (e.g. √3 − √3 = 0).",
+   "To simplify: find the largest perfect square factor. √48 = √(16·3) = 4√3.",
+   "To multiply radicals: √a · √b = √(ab). Then simplify.",
+   "Perfect squares to know: 1,4,9,16,25,36,49,64,81,100,121,144",
+   "√non-perfect square is ALWAYS irrational. √perfect square is ALWAYS rational.",
+ ],
+ apps:[
+   {icon:"📐",text:"Pythagorean theorem: c = √(a²+b²). Most answers are irrational (e.g. a=3,b=4 → c=5 rational; a=1,b=1 → c=√2 irrational)."},
+   {icon:"⬜",text:"Area of a square = s². If s = √7, then area = 7 (rational!). Irrational side can give rational area."},
+   {icon:"📏",text:"Distance formula uses square roots. Distances between points are often irrational."},
+   {icon:"🔢",text:"√2 ≈ 1.41421356… goes on forever — can never be written exactly as a fraction."},
+ ],
+ formulas:[
+   {l:"Multiply radicals",v:"√a · √b = √(ab)",d:"Then simplify"},
+   {l:"Simplify",v:"√(a·b) = √a · √b",d:"Factor out perfect squares"},
+   {l:"Perfect squares",v:"1,4,9,16,25,36,49,64…",d:"Their roots are integers"},
+   {l:"Irrational test",v:"Is √n a whole number?",d:"No → irrational"},
+ ],
+ graphFeatures:[
+   {k:"√4 = 2",v:"Rational (perfect square)"},
+   {k:"√7 ≈ 2.646",v:"Irrational (non-perfect)"},
+   {k:"√2 · √8",v:"√16 = 4 → Rational"},
+   {k:"√3 · √5",v:"√15 → Irrational"},
+   {k:"4 + √7",v:"Rational + Irrational = Irrational"},
+   {k:"√3 − √3",v:"= 0 → Rational"},
+ ],
+ graphFn:"radicals"
+},
+
+// ════════════════════════════════════════
+// 6. POLYNOMIALS & FACTORING
+// ════════════════════════════════════════
+{id:"polynomials",icon:"✖️",title:"Polynomials & Factoring",tag:"Algebra",
+ sub:"Multiplying polynomials, factoring, completing the square",
+ color:"#0e6251",
+ overview:"Polynomials are algebraic expressions with multiple terms. Multiplying uses the distributive property (FOIL). Factoring is the reverse — breaking a polynomial into its factors.",
+ vocab:[
+   {term:"Polynomial",def:"An expression with one or more terms involving variables and coefficients.",ex:"3x² − 2x + 5"},
+   {term:"Standard Form",def:"Polynomial written with terms in descending order of degree.",ex:"4x³ + 2x² − x + 7"},
+   {term:"Factored Form",def:"Polynomial written as a product of its factors.",ex:"x² + 5x + 6 = (x+2)(x+3)"},
+   {term:"Zero / Root",def:"Value of x where the function equals zero. Found from factored form.",ex:"(x+3)(x+5)=0 → x=−3, x=−5"},
+   {term:"Vertex Form",def:"Quadratic written as a(x−h)²+k, revealing the vertex (h,k).",ex:"y = 2(x−3)²+1, vertex at (3,1)"},
+   {term:"Completing the Square",def:"Converting standard form to vertex form by adding and subtracting (b/2)².",ex:"x²+6x+5 → (x+3)²−4"},
+ ],
+ ideas:[
+   "FOIL: (a+b)(c+d) = ac + ad + bc + bd (First, Outer, Inner, Last)",
+   "Factoring ax²+bx+c: find two numbers that multiply to a·c and add to b.",
+   "Difference of squares: a²−b² = (a+b)(a−b)",
+   "To complete the square: take half of b, square it, add and subtract: x²+bx = (x+b/2)²−(b/2)²",
+   "Vertex form a(x−h)²+k reveals: vertex = (h,k), axis of symmetry x=h, min/max = k",
+   "Factored form (x−p)(x−q) reveals: zeros at x=p and x=q",
+ ],
+ apps:[
+   {icon:"📦",text:"Area of two rectangles: (x)(3x+1) + (2x)(x+3) = 3x²+x + 2x²+6x = 5x²+7x."},
+   {icon:"🏟️",text:"Area of a field: (x+4)(x+3) = x²+7x+12 where x = extra length beyond 4 meters."},
+   {icon:"🚀",text:"Height of a projectile: h(t) = −16t²+64t+5. Factoring reveals when it hits the ground."},
+   {icon:"📐",text:"Trapezoid area: A = ½h(b₁+b₂). If bases are polynomial expressions, multiply out."},
+ ],
+ formulas:[
+   {l:"FOIL",v:"(a+b)(c+d)=ac+ad+bc+bd",d:"Multiply two binomials"},
+   {l:"Factor x²+bx+c",v:"Find p,q: pq=c and p+q=b",d:"Then (x+p)(x+q)"},
+   {l:"Factor ax²+bx+c",v:"Find pq=ac, p+q=b, split",d:"Group and factor"},
+   {l:"Complete the Square",v:"x²+bx = (x+b/2)²−(b/2)²",d:"Add/subtract (b/2)²"},
+ ],
+ graphFeatures:[
+   {k:"Factored → zeros",v:"x=−p, x=−q from (x+p)(x+q)"},
+   {k:"Vertex form → vertex",v:"(h, k) from a(x−h)²+k"},
+   {k:"a > 0",v:"Opens upward (∪), minimum"},
+   {k:"a < 0",v:"Opens downward (∩), maximum"},
+   {k:"Axis of symmetry",v:"x = h (midpoint of zeros)"},
+   {k:"y-intercept",v:"Set x=0: equals c in ax²+bx+c"},
+ ],
+ graphFn:"polynomials"
+},
+
+// ════════════════════════════════════════
+// 7. QUADRATIC FUNCTIONS
+// ════════════════════════════════════════
+{id:"quadratic",icon:"⬛",title:"Quadratic Functions",tag:"Functions",
+ sub:"Vertex form, axis of symmetry, transformations, context",
+ color:"#6c3483",
+ overview:"A quadratic function graphs as a parabola — a U-shape (or ∩-shape). The vertex is the highest or lowest point. The axis of symmetry is the vertical line through the vertex.",
+ vocab:[
+   {term:"Quadratic Function",def:"A function of the form f(x) = ax² + bx + c where a ≠ 0.",ex:"f(x) = 2x² − 4x + 1"},
+   {term:"Parabola",def:"The U-shaped (or ∩-shaped) graph of a quadratic function.",ex:"y = x² opens upward"},
+   {term:"Vertex",def:"The highest or lowest point of a parabola. Located at (h, k) in vertex form.",ex:"y = 2(x−3)² + 1 has vertex (3,1)"},
+   {term:"Axis of Symmetry",def:"The vertical line x = h that divides the parabola into two mirror halves.",ex:"For vertex (3,1), axis of sym: x = 3"},
+   {term:"Maximum",def:"Highest point; occurs when a < 0 (parabola opens down).",ex:"g(x) = −2x²+4x−7 has max at vertex"},
+   {term:"Minimum",def:"Lowest point; occurs when a > 0 (parabola opens up).",ex:"f(x) = (x+4)²−1 has min at (−4,−1)"},
+ ],
+ ideas:[
+   "If a > 0: parabola opens UP (∪). Vertex = minimum. Range: y ≥ k",
+   "If a < 0: parabola opens DOWN (∩). Vertex = maximum. Range: y ≤ k",
+   "Axis of symmetry formula: x = −b / (2a)",
+   "Vertex form f(x) = a(x−h)²+k: vertex = (h, k). Reveals min/max directly.",
+   "Adding c to f(x): shifts graph UP c units. Subtracting c shifts DOWN.",
+   "Average rate of change between x=a and x=b: [f(b)−f(a)]/(b−a) — the slope of the secant line.",
+ ],
+ apps:[
+   {icon:"🏈",text:"Football height: h(x) = −4(x−4.5)²+81. Vertex (4.5,81) = maximum height of 81 feet at 4.5 seconds."},
+   {icon:"🚗",text:"Car braking distance: d = 0.05v² where v = speed. Quadratic — not linear!"},
+   {icon:"💹",text:"Ticket pricing: profit = (price)(quantity). As price increases, quantity drops. Parabolic relationship."},
+   {icon:"🏗️",text:"Trapezoid area: if one dimension is x, area might be a quadratic function of x."},
+ ],
+ formulas:[
+   {l:"Standard Form",v:"f(x) = ax² + bx + c",d:"c is y-intercept"},
+   {l:"Vertex Form",v:"f(x) = a(x−h)² + k",d:"Vertex = (h, k)"},
+   {l:"Axis of Symmetry",v:"x = −b/(2a)",d:"Or x = h from vertex form"},
+   {l:"Avg Rate of Change",v:"[f(b)−f(a)] / (b−a)",d:"Slope over interval [a,b]"},
+ ],
+ graphFeatures:[
+   {k:"Vertex (h, k)",v:"Highest or lowest point"},
+   {k:"a > 0",v:"Opens up ∪, minimum at k"},
+   {k:"a < 0",v:"Opens down ∩, maximum at k"},
+   {k:"Axis of symmetry",v:"x = h (vertical line)"},
+   {k:"y-intercept",v:"f(0) = c (constant term)"},
+   {k:"x-intercepts (zeros)",v:"Solve ax²+bx+c = 0"},
+ ],
+ graphFn:"quadratic"
+},
+
+// ════════════════════════════════════════
+// 8. EXPONENTIAL FUNCTIONS
+// ════════════════════════════════════════
+{id:"exponential",icon:"📉",title:"Exponential Functions",tag:"Functions",
+ sub:"Growth & decay, asymptotes, interpreting a and b",
+ color:"#1d6954",
+ overview:"Exponential functions grow or decay by a constant FACTOR each period. They model doubling, population growth, compound interest, and radioactive decay.",
+ vocab:[
+   {term:"Exponential Function",def:"f(x) = a·bˣ where a ≠ 0, b > 0, b ≠ 1. The variable is in the EXPONENT.",ex:"f(x) = 3(2)ˣ"},
+   {term:"Initial Value (a)",def:"The value of the function when x = 0. The starting amount (y-intercept).",ex:"f(0) = a·b⁰ = a"},
+   {term:"Base (b)",def:"The growth or decay factor — what the function is multiplied by each period.",ex:"b=1.05 means 5% growth per period"},
+   {term:"Growth (b > 1)",def:"Function increases. Rate of growth r satisfies b = 1 + r.",ex:"f(x) = 500(1.08)ˣ — 8% growth"},
+   {term:"Decay (0 < b < 1)",def:"Function decreases. Rate of decay r satisfies b = 1 − r.",ex:"f(x) = 200(0.85)ˣ — 15% decay"},
+   {term:"Asymptote",def:"A horizontal line the graph approaches but never crosses. For f(x) = a·bˣ+k, it is y = k.",ex:"y = 2(3)ˣ − 4 has asymptote y = −4"},
+ ],
+ ideas:[
+   "Growth: b > 1 (graph rises left to right). Decay: 0 < b < 1 (graph falls left to right).",
+   "To identify the equation: a = y-intercept (when x=0). b = ratio between consecutive terms.",
+   "Growth model: f(x) = a(1+r)ˣ where r is the growth rate as a decimal.",
+   "Decay model: f(x) = a(1−r)ˣ where r is the decay rate as a decimal.",
+   "Compound interest: A = P(1 + r/n)^(nt). Special case of exponential growth.",
+   "Horizontal asymptote shifts with +k: f(x) = a·bˣ + k has asymptote y = k.",
+ ],
+ apps:[
+   {icon:"💰",text:"Marcus invests $1,000 at 5% growth: f(x) = 1000(1.05)ˣ. After 10 years: f(10) = $1,628.89."},
+   {icon:"🦠",text:"Bacteria doubling every minute: f(x) = 75(2)ˣ. After 5 min: 75(32) = 2,400 bacteria."},
+   {icon:"☢️",text:"Radioactive decay: substance loses 10% per year: f(x) = 500(0.90)ˣ."},
+   {icon:"🏦",text:"Candice: A = 3000(1.04)ᵗ. Initial deposit=$3,000, growth factor=1.04, rate=4%."},
+ ],
+ formulas:[
+   {l:"Exponential",v:"f(x) = a · bˣ",d:"a=initial, b=factor"},
+   {l:"Growth Model",v:"f(x) = a(1+r)ˣ",d:"r = growth rate (decimal)"},
+   {l:"Decay Model",v:"f(x) = a(1−r)ˣ",d:"r = decay rate (decimal)"},
+   {l:"Compound Interest",v:"A = P(1+r/n)^(nt)",d:"n=periods/yr, t=years"},
+ ],
+ graphFeatures:[
+   {k:"b > 1",v:"Increasing (left → right)"},
+   {k:"0 < b < 1",v:"Decreasing (left → right)"},
+   {k:"y-intercept",v:"Always at (0, a)"},
+   {k:"Asymptote",v:"y = k (horizontal line)"},
+   {k:"Domain",v:"All real numbers (−∞, ∞)"},
+   {k:"Range (a > 0, k=0)",v:"(0, +∞) — never reaches 0"},
+ ],
+ graphFn:"exponential"
+},
+
+// ════════════════════════════════════════
+// 9. STATISTICS & LINE OF BEST FIT
+// ════════════════════════════════════════
+{id:"statistics",icon:"📈",title:"Statistics & Line of Best Fit",tag:"Statistics",
+ sub:"Scatter plots, correlation, regression, residuals",
+ color:"#117a65",
+ overview:"A scatter plot shows the relationship between two quantitative variables. The line (or curve) of best fit models the trend. Correlation measures the strength and direction of a linear relationship.",
+ vocab:[
+   {term:"Scatter Plot",def:"A graph of ordered pairs showing the relationship between two quantitative variables.",ex:"Hours studied vs. Test score"},
+   {term:"Correlation",def:"The strength and direction of a linear relationship. Measured by r (−1 to 1).",ex:"r = 0.87 = strong positive"},
+   {term:"Line of Best Fit",def:"The line that best represents the trend in the scatter plot data.",ex:"ŷ = 2.5x + 10"},
+   {term:"Positive Correlation",def:"As x increases, y increases. Points slope upward left to right.",ex:"Hours studied and test score"},
+   {term:"Negative Correlation",def:"As x increases, y decreases. Points slope downward left to right.",ex:"Hours of TV and GPA"},
+   {term:"Residual",def:"Actual y − Predicted y. How far a point is from the line.",ex:"Actual=85, predicted=80 → residual=+5"},
+ ],
+ ideas:[
+   "Correlation coefficient r: closer to ±1 = stronger. Closer to 0 = weaker.",
+   "r > 0: positive correlation. r < 0: negative correlation. r ≈ 0: no correlation.",
+   "Correlation does NOT mean causation — a lurking variable may explain the relationship.",
+   "Slope of line of best fit: for each 1-unit increase in x, y changes by slope units on average.",
+   "y-intercept: predicted value of y when x = 0 (check context — may not make sense).",
+   "Residual > 0: actual is ABOVE the line. Residual < 0: actual is BELOW the line.",
+ ],
+ apps:[
+   {icon:"📚",text:"Hours studied vs. test score: positive correlation. Line of best fit predicts future scores."},
+   {icon:"📺",text:"Hours of TV vs. GPA: negative correlation — students who watch more TV tend to have lower GPA."},
+   {icon:"🏠",text:"House size (sq ft) vs. price: positive correlation. y = 0.11x + 98.25 (thousands)."},
+   {icon:"⚙️",text:"Safety training hours vs. job accidents: negative correlation — more training, fewer accidents."},
+ ],
+ formulas:[
+   {l:"Line of Best Fit",v:"ŷ = ax + b",d:"a=slope, b=y-intercept"},
+   {l:"Residual",v:"actual y − predicted ŷ",d:"+: above line, −: below"},
+   {l:"Slope in context",v:"y changes by a per 1 unit of x",d:"Include units in interpretation"},
+   {l:"r² (R-squared)",v:"% of variation explained",d:"Closer to 1 = better fit"},
+ ],
+ graphFeatures:[
+   {k:"Positive correlation",v:"Points trend upward ↗"},
+   {k:"Negative correlation",v:"Points trend downward ↘"},
+   {k:"No correlation",v:"Points scattered randomly"},
+   {k:"Strong correlation",v:"Points close to the line"},
+   {k:"Weak correlation",v:"Points far from the line"},
+   {k:"Residual on graph",v:"Vertical distance: point to line"},
+ ],
+ graphFn:"statistics"
+},
+
+// ════════════════════════════════════════
+// 10. COORDINATE GEOMETRY
+// ════════════════════════════════════════
+{id:"geometry",icon:"📏",title:"Coordinate Geometry",tag:"Geometry",
+ sub:"Distance formula, midpoint, slope, perimeter on coordinate plane",
+ color:"#1a5276",
+ overview:"Coordinate geometry uses the coordinate plane to explore geometric properties algebraically. The distance formula and midpoint formula come directly from the Pythagorean theorem.",
+ vocab:[
+   {term:"Distance Formula",def:"Finds the length of a segment between two points using Pythagorean theorem.",ex:"d = √((x₂−x₁)² + (y₂−y₁)²)"},
+   {term:"Midpoint Formula",def:"Finds the point exactly halfway between two endpoints.",ex:"M = ((x₁+x₂)/2, (y₁+y₂)/2)"},
+   {term:"Slope",def:"Steepness of a line: rise over run, or change in y over change in x.",ex:"m = (y₂−y₁)/(x₂−x₁)"},
+   {term:"Coordinate Plane",def:"A two-dimensional grid formed by the x-axis and y-axis intersecting at the origin.",ex:"Point (3, −2) is 3 right, 2 down"},
+   {term:"Perimeter on Grid",def:"Sum of all side lengths, each calculated using the distance formula.",ex:"Triangle perimeter = d(AB)+d(BC)+d(CA)"},
+ ],
+ ideas:[
+   "Distance formula is the Pythagorean theorem: d² = (Δx)² + (Δy)², so d = √((Δx)²+(Δy)²).",
+   "Midpoint: average the x-coordinates, average the y-coordinates.",
+   "To find perimeter of a polygon on the coordinate plane: use distance formula for EACH side.",
+   "Parallel lines have EQUAL slopes. Perpendicular lines have slopes that are negative reciprocals.",
+   "Collinear points lie on the same line — check by computing slopes between pairs.",
+   "Horizontal segments: distance = |x₂ − x₁|. Vertical segments: distance = |y₂ − y₁|.",
+ ],
+ apps:[
+   {icon:"🗺️",text:"GPS: distance between two locations on a coordinate map uses the distance formula."},
+   {icon:"🏟️",text:"Square WXYZ on grid: find side length using distance formula, multiply by 4 for perimeter."},
+   {icon:"🏗️",text:"Construction: midpoint formula finds the center point of a beam or wall."},
+   {icon:"🎮",text:"Video game movement: distance from character to target uses the distance formula."},
+ ],
+ formulas:[
+   {l:"Distance",v:"d = √((x₂−x₁)²+(y₂−y₁)²)",d:"Length of any segment"},
+   {l:"Midpoint",v:"M = ((x₁+x₂)/2, (y₁+y₂)/2)",d:"Center of a segment"},
+   {l:"Slope",v:"m = (y₂−y₁)/(x₂−x₁)",d:"Rise over run"},
+   {l:"Perimeter",v:"Sum of all side distances",d:"Apply distance formula per side"},
+ ],
+ graphFeatures:[
+   {k:"Horizontal line",v:"Slope = 0"},
+   {k:"Vertical line",v:"Slope = undefined"},
+   {k:"Parallel lines",v:"Same slope, different b"},
+   {k:"Perpendicular lines",v:"Slopes: m and −1/m"},
+   {k:"Distance",v:"√((Δx)²+(Δy)²)"},
+   {k:"Midpoint",v:"Average x, average y"},
+ ],
+ graphFn:"geometry"
+}
+
+]; // end TOPICS
+
+// ── BUILD UI ──
+function buildNav(){
+  const nav = document.getElementById('topicNav');
+  TOPICS.forEach(t => {
+    const btn = document.createElement('button');
+    btn.id = 'nav_'+t.id;
+    btn.textContent = t.icon+' '+t.title;
+    btn.onclick = () => switchTopic(t.id);
+    nav.appendChild(btn);
+  });
+}
+
+function buildContent(){
+  const main = document.getElementById('mainContent');
+  TOPICS.forEach(t => {
+    const sec = document.createElement('div');
+    sec.id = 'topic_'+t.id;
+    sec.className = 'topic-sec';
+
+    sec.innerHTML = `
+<!-- HERO -->
+<div class="topic-hero">
+  <div class="th-icon">${t.icon}</div>
+  <div>
+    <div class="th-title">${t.title}</div>
+    <div class="th-sub">${t.sub}</div>
+  </div>
+  <div class="th-tag">${t.tag}</div>
+</div>
+
+<!-- ROW 1: Overview + Vocab -->
+<div class="sec-grid">
+  <div>
+    <div class="card">
+      <div class="card-header"><div class="ch-icon">💡</div><div><div class="ch-label">Overview</div><div class="ch-title">What Is This Topic?</div></div></div>
+      <p style="font-size:.88rem;line-height:1.7;color:var(--muted);">${t.overview}</p>
+      <div class="card" style="margin-top:14px;padding:14px 16px;background:var(--bg);">
+        <div class="card-header" style="margin-bottom:10px;"><div class="ch-icon">📋</div><div><div class="ch-label">Formulas at a Glance</div></div></div>
+        <div class="fgrid">${t.formulas.map(f=>`<div class="fcard"><div class="fl">${f.l}</div><div class="fv">${f.v}</div><div class="fd">${f.d}</div></div>`).join('')}</div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header"><div class="ch-icon">📖</div><div><div class="ch-label">Vocabulary</div><div class="ch-title">Key Terms</div></div></div>
+    <div class="vocab-list">${t.vocab.map(v=>`<div class="vocab-item"><div class="vocab-term">${v.term}</div><div class="vocab-def">${v.def}</div><div class="vocab-ex">Ex: ${v.ex}</div></div>`).join('')}</div>
+  </div>
+</div>
+
+<!-- ROW 2: Key Ideas + Applications -->
+<div class="sec-grid">
+  <div class="card">
+    <div class="card-header"><div class="ch-icon">🔑</div><div><div class="ch-label">Main Ideas</div><div class="ch-title">Rules to Remember</div></div></div>
+    <div class="idea-list">${t.ideas.map((idea,i)=>`<div class="idea-item"><div class="idea-bullet">${i+1}</div><div class="idea-text">${idea}</div></div>`).join('')}</div>
+  </div>
+  <div class="card">
+    <div class="card-header"><div class="ch-icon">🌍</div><div><div class="ch-label">Applications</div><div class="ch-title">Real-World Uses</div></div></div>
+    <div class="app-list">${t.apps.map(a=>`<div class="app-item"><div class="app-icon">${a.icon}</div><div>${a.text}</div></div>`).join('')}</div>
+  </div>
+</div>
+
+<!-- ROW 3: Graph + Features -->
+<div class="sec-grid">
+  <div class="card">
+    <div class="card-header"><div class="ch-icon">📊</div><div><div class="ch-label">Graphing</div><div class="ch-title">Visual Features</div></div></div>
+    <div class="graph-label" id="glbl_${t.id}">Loading graph…</div>
+    <div class="graph-wrap"><canvas class="gc" id="gc_${t.id}" width="460" height="280"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="card-header"><div class="ch-icon">🗂️</div><div><div class="ch-label">Graph Features</div><div class="ch-title">What to Identify</div></div></div>
+    <div class="gf-list">${t.graphFeatures.map(g=>`<div class="gf-item"><span class="gf-key">${g.k}</span><span class="gf-val">${g.v}</span></div>`).join('')}</div>
+  </div>
+</div>`;
+
+    main.appendChild(sec);
+  });
+}
+
+function switchTopic(id){
+  document.querySelectorAll('.topic-sec').forEach(s=>s.classList.remove('active'));
+  document.getElementById('topic_'+id).classList.add('active');
+  document.querySelectorAll('.topic-nav-wrap button').forEach(b=>b.classList.remove('active'));
+  document.getElementById('nav_'+id).classList.add('active');
+  drawGraph(id);
+}
+
+// ── GRAPH DRAWING ENGINE ──
+function gx(c){ return c.getContext('2d'); }
+
+function drawAxes(ctx, W, H, pad, xMin, xMax, yMin, yMax){
+  const tx = v => pad + (v-xMin)/(xMax-xMin)*(W-2*pad);
+  const ty = v => H-pad - (v-yMin)/(yMax-yMin)*(H-2*pad);
+  ctx.fillStyle='#0f1923'; ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle='rgba(255,255,255,.1)'; ctx.lineWidth=1;
+  for(let x=Math.ceil(xMin);x<=xMax;x++){ctx.beginPath();ctx.moveTo(tx(x),pad);ctx.lineTo(tx(x),H-pad);ctx.stroke();}
+  for(let y=Math.ceil(yMin);y<=yMax;y++){ctx.beginPath();ctx.moveTo(pad,ty(y));ctx.lineTo(W-pad,ty(y));ctx.stroke();}
+  ctx.strokeStyle='rgba(255,255,255,.55)'; ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(pad,ty(0));ctx.lineTo(W-pad,ty(0));ctx.stroke();
+  ctx.beginPath();ctx.moveTo(tx(0),pad);ctx.lineTo(tx(0),H-pad);ctx.stroke();
+  ctx.fillStyle='rgba(255,255,255,.35)'; ctx.font='10px JetBrains Mono,monospace'; ctx.textAlign='center';
+  for(let x=Math.ceil(xMin);x<=xMax;x+=2){if(x!==0)ctx.fillText(x,tx(x),H-pad+13);}
+  ctx.textAlign='right';
+  for(let y=Math.ceil(yMin);y<=yMax;y+=2){if(y!==0)ctx.fillText(y,pad-4,ty(y)+4);}
+  return {tx,ty};
+}
+
+function curve(ctx,tx,ty,fn,color,W,pad,xMin,xMax,yMin,yMax,lw){
+  ctx.strokeStyle=color; ctx.lineWidth=lw||2.5; ctx.beginPath();
+  let started=false;
+  for(let px=pad;px<=W-pad;px++){
+    const x=xMin+(px-pad)/(W-2*pad)*(xMax-xMin);
+    const y=fn(x);
+    if(!isFinite(y)||y<yMin-30||y>yMax+30){started=false;continue;}
+    if(!started){ctx.moveTo(px,ty(y));started=true;}else ctx.lineTo(px,ty(y));
+  }
+  ctx.stroke();
+}
+
+function dot(ctx,tx,ty,x,y,color,r){
+  ctx.beginPath();ctx.arc(tx(x),ty(y),r||5.5,0,2*Math.PI);ctx.fillStyle=color;ctx.fill();
+}
+
+function lbl(ctx,tx,ty,x,y,text,color,dx,dy){
+  ctx.fillStyle=color||'#fff'; ctx.font='11px JetBrains Mono,monospace'; ctx.textAlign='left';
+  ctx.fillText(text,tx(x)+(dx||6),ty(y)+(dy||4));
+}
+
+function drawGraph(id){
+  const canvas = document.getElementById('gc_'+id);
+  const lblEl = document.getElementById('glbl_'+id);
+  if(!canvas) return;
+  const W=canvas.width, H=canvas.height;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0,0,W,H);
+
+  const G = {
+    linear(){
+      lblEl.textContent='Example: y = (3/2)x − 3 · Slope = 3/2 · y-int = −3';
+      const{tx,ty}=drawAxes(ctx,W,H,32,-6,6,-6,6);
+      curve(ctx,tx,ty,x=>1.5*x-3,'#2ecc71',W,32,-6,6,-6,6,2.5);
+      dot(ctx,tx,ty,0,-3,'#f1c40f');lbl(ctx,tx,ty,0,-3,'(0,−3)','#f1c40f',6,-8);
+      dot(ctx,tx,ty,2,0,'#f1c40f');lbl(ctx,tx,ty,2,0,'(2,0)','#f1c40f',6,-8);
+      ctx.strokeStyle='rgba(255,255,255,.25)';ctx.setLineDash([5,4]);ctx.lineWidth=1;
+      ctx.beginPath();ctx.moveTo(tx(0),ty(-3));ctx.lineTo(tx(2),ty(-3));ctx.stroke();
+      ctx.beginPath();ctx.moveTo(tx(2),ty(-3));ctx.lineTo(tx(2),ty(0));ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle='rgba(46,204,113,.8)';ctx.font='11px Inter,sans-serif';ctx.textAlign='left';
+      ctx.fillText('y = (3/2)x − 3',tx(-5.5),ty(5));
+      ctx.fillText('m = 3/2  b = −3',tx(-5.5),ty(4.1));
+    },
+
+    sequences(){
+      lblEl.textContent='Blue: Arithmetic (linear). Orange: Geometric (exponential)';
+      ctx.fillStyle='#0f1923';ctx.fillRect(0,0,W,H);
+      const pad=36,xMin=0,xMax=7,yMin=0,yMax=70;
+      const tx=v=>pad+(v-xMin)/(xMax-xMin)*(W-2*pad);
+      const ty=v=>H-pad-(v-yMin)/(yMax-yMin)*(H-2*pad);
+      ctx.strokeStyle='rgba(255,255,255,.1)';ctx.lineWidth=1;
+      for(let x=0;x<=7;x++){ctx.beginPath();ctx.moveTo(tx(x),pad);ctx.lineTo(tx(x),H-pad);ctx.stroke();}
+      ctx.strokeStyle='rgba(255,255,255,.5)';ctx.lineWidth=1.5;
+      ctx.beginPath();ctx.moveTo(pad,H-pad);ctx.lineTo(W-pad,H-pad);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(pad,pad);ctx.lineTo(pad,H-pad);ctx.stroke();
+      // Arithmetic: a(n) = 5 + (n-1)*8
+      const arith = [1,2,3,4,5,6,7].map(n=>({n,v:5+(n-1)*8}));
+      ctx.strokeStyle='#3498db'; ctx.lineWidth=1.5; ctx.setLineDash([4,3]);
+      ctx.beginPath();arith.forEach((p,i)=>{if(i===0)ctx.moveTo(tx(p.n),ty(p.v));else ctx.lineTo(tx(p.n),ty(p.v));});ctx.stroke();ctx.setLineDash([]);
+      arith.forEach(p=>{ctx.beginPath();ctx.arc(tx(p.n),ty(p.v),5,0,2*Math.PI);ctx.fillStyle='#3498db';ctx.fill();});
+      // Geometric: a(n) = 2^(n-1)
+      const geom = [1,2,3,4,5,6].map(n=>({n,v:Math.pow(2,n-1)}));
+      ctx.strokeStyle='#e67e22'; ctx.lineWidth=1.5; ctx.setLineDash([4,3]);
+      ctx.beginPath();geom.forEach((p,i)=>{if(i===0)ctx.moveTo(tx(p.n),ty(p.v));else ctx.lineTo(tx(p.n),ty(p.v));});ctx.stroke();ctx.setLineDash([]);
+      geom.forEach(p=>{ctx.beginPath();ctx.arc(tx(p.n),ty(p.v),5,0,2*Math.PI);ctx.fillStyle='#e67e22';ctx.fill();});
+      ctx.font='11px Inter,sans-serif';ctx.textAlign='left';
+      ctx.fillStyle='#3498db';ctx.fillText('Arithmetic: aₙ = 5+(n−1)·8',tx(0.2),ty(68));
+      ctx.fillStyle='#e67e22';ctx.fillText('Geometric: aₙ = 2ⁿ⁻¹',tx(0.2),ty(62));
+      for(let x=1;x<=7;x++){ctx.fillStyle='rgba(255,255,255,.35)';ctx.font='10px monospace';ctx.textAlign='center';ctx.fillText('n='+x,tx(x),H-pad+13);}
+    },
+
+    functions(){
+      lblEl.textContent='Discrete (dots) vs Continuous (line) domains';
+      ctx.fillStyle='#0f1923';ctx.fillRect(0,0,W,H);
+      const pad=36,W2=W/2;
+      // Left: Continuous
+      const tx1=v=>pad+(v+1)/11*(W2-2*pad+10);
+      const ty1=v=>H-pad-(v)/10*(H-2*pad);
+      ctx.strokeStyle='rgba(255,255,255,.1)';ctx.lineWidth=1;
+      ctx.beginPath();ctx.moveTo(pad,H-pad);ctx.lineTo(W2-10,H-pad);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(pad,pad);ctx.lineTo(pad,H-pad);ctx.stroke();
+      ctx.strokeStyle='#2ecc71';ctx.lineWidth=2.5;ctx.beginPath();
+      for(let px=pad;px<=W2-10;px++){const x=-1+(px-pad)/(W2-10-pad)*11;const y=2*x+2;if(y>=0&&y<=10){if(px===pad)ctx.moveTo(px,ty1(y));else ctx.lineTo(px,ty1(y));}}ctx.stroke();
+      ctx.fillStyle='rgba(255,255,255,.5)';ctx.font='10px Inter,sans-serif';ctx.textAlign='center';ctx.fillText('Continuous Domain',W2/2,H-6);
+      ctx.fillStyle='rgba(46,204,113,.7)';ctx.fillText('f(x)=2x+2',tx1(1),ty1(9));
+      // Right: Discrete
+      const tx2=v=>W2+pad+(v-1)/6*(W2-2*pad);
+      const ty2=v=>H-pad-(v)/25*(H-2*pad);
+      ctx.beginPath();ctx.moveTo(W2+pad,H-pad);ctx.lineTo(W-pad,H-pad);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(W2+pad,pad);ctx.lineTo(W2+pad,H-pad);ctx.stroke();
+      const pts=[{x:1,y:3},{x:2,y:6},{x:3,y:9},{x:4,y:12},{x:5,y:15},{x:6,y:18}];
+      pts.forEach(p=>{ctx.beginPath();ctx.arc(tx2(p.x),ty2(p.y),5.5,0,2*Math.PI);ctx.fillStyle='#e74c3c';ctx.fill();});
+      ctx.fillStyle='rgba(255,255,255,.5)';ctx.textAlign='center';ctx.fillText('Discrete Domain (integers)',W2+(W-W2)/2,H-6);
+      ctx.fillStyle='rgba(231,76,60,.8)';ctx.fillText('f(n)=3n',tx2(5),ty2(20));
+      // Labels
+      ctx.fillStyle='rgba(255,255,255,.25)';ctx.beginPath();ctx.moveTo(W2,0);ctx.lineTo(W2,H);ctx.stroke();
+    },
+
+    inequalities(){
+      lblEl.textContent='Shaded region = solution to both inequalities';
+      const{tx,ty}=drawAxes(ctx,W,H,32,-1,10,-1,10);
+      // Inequality 1: y ≤ -x + 8 (solid, shade below)
+      ctx.strokeStyle='#e74c3c'; ctx.lineWidth=2; ctx.beginPath();
+      ctx.moveTo(tx(-1),ty(9));ctx.lineTo(tx(10),ty(-2));ctx.stroke();
+      // Shade below ineq1
+      ctx.fillStyle='rgba(231,76,60,.15)';ctx.beginPath();
+      ctx.moveTo(tx(-1),ty(9));ctx.lineTo(tx(10),ty(-2));ctx.lineTo(tx(10),ty(-1));ctx.lineTo(tx(-1),ty(-1));ctx.closePath();ctx.fill();
+      // Inequality 2: y ≥ x - 2 (dashed, shade above)
+      ctx.strokeStyle='#3498db'; ctx.lineWidth=2; ctx.setLineDash([6,4]);
+      ctx.beginPath();ctx.moveTo(tx(-1),ty(-3));ctx.lineTo(tx(10),ty(8));ctx.stroke();ctx.setLineDash([]);
+      // Shade above ineq2
+      ctx.fillStyle='rgba(52,152,219,.15)';ctx.beginPath();
+      ctx.moveTo(tx(-1),ty(-3));ctx.lineTo(tx(10),ty(8));ctx.lineTo(tx(10),ty(10));ctx.lineTo(tx(-1),ty(10));ctx.closePath();ctx.fill();
+      // Intersection region
+      ctx.fillStyle='rgba(46,204,113,.22)';ctx.beginPath();
+      ctx.moveTo(tx(-1),ty(9));ctx.lineTo(tx(5),ty(3));ctx.lineTo(tx(10),ty(8));ctx.lineTo(tx(10),ty(10));ctx.lineTo(tx(-1),ty(10));ctx.closePath();ctx.fill();
+      ctx.fillStyle='rgba(255,255,255,.7)';ctx.font='11px Inter,sans-serif';ctx.textAlign='left';
+      ctx.fillStyle='rgba(231,76,60,.9)';ctx.fillText('y ≤ −x + 8 (solid)',tx(0.2),ty(9.5));
+      ctx.fillStyle='rgba(52,152,219,.9)';ctx.fillText('y ≥ x − 2 (dashed)',tx(4),ty(0.5));
+      ctx.fillStyle='rgba(46,204,113,.9)';ctx.fillText('Solution',tx(0.2),ty(8));
+      dot(ctx,tx,ty,5,3,'#f1c40f',5);lbl(ctx,tx,ty,5,3,'intersection','rgba(255,255,255,.6)',6,-10);
+    },
+
+    radicals(){
+      lblEl.textContent='Number line showing rational vs. irrational values';
+      ctx.fillStyle='#0f1923';ctx.fillRect(0,0,W,H);
+      const pad=36;const tx=v=>pad+(v)/(6)*(W-2*pad);const cy=H/2;
+      ctx.strokeStyle='rgba(255,255,255,.5)';ctx.lineWidth=2;
+      ctx.beginPath();ctx.moveTo(pad,cy);ctx.lineTo(W-pad,cy);ctx.stroke();
+      const pts=[
+        {v:0,lbl:'0',rat:true},{v:1,lbl:'1',rat:true},{v:2,lbl:'2',rat:true},
+        {v:3,lbl:'3',rat:true},{v:4,lbl:'4',rat:true},
+        {v:Math.sqrt(2),lbl:'√2≈1.41',rat:false},
+        {v:Math.sqrt(3),lbl:'√3≈1.73',rat:false},
+        {v:Math.sqrt(5),lbl:'√5≈2.24',rat:false},
+        {v:Math.PI,lbl:'π≈3.14',rat:false},
+      ];
+      pts.forEach((p,i)=>{
+        const x=tx(p.v);
+        ctx.beginPath();ctx.moveTo(x,cy-8);ctx.lineTo(x,cy+8);ctx.strokeStyle='rgba(255,255,255,.5)';ctx.lineWidth=1.5;ctx.stroke();
+        ctx.beginPath();ctx.arc(x,cy,p.rat?6:7,0,2*Math.PI);
+        ctx.fillStyle=p.rat?'#2ecc71':'#e74c3c';ctx.fill();
+        ctx.fillStyle=p.rat?'#2ecc71':'#e74c3c';ctx.font='10px JetBrains Mono,monospace';
+        ctx.textAlign='center';ctx.fillText(p.lbl,x,i%2===0?cy-18:cy+22);
+      });
+      ctx.fillStyle='rgba(46,204,113,.9)';ctx.font='11px Inter,sans-serif';ctx.textAlign='left';ctx.fillText('● Rational (exact)',pad,H-20);
+      ctx.fillStyle='rgba(231,76,60,.9)';ctx.fillText('● Irrational (non-terminating)',pad+130,H-20);
+    },
+
+    polynomials(){
+      lblEl.textContent='f(x) = (x+3)(x+5) = x²+8x+15 · Zeros at x=−3, −5';
+      const{tx,ty}=drawAxes(ctx,W,H,32,-8,2,-4,10);
+      curve(ctx,tx,ty,x=>(x+3)*(x+5),'#9b59b6',W,32,-8,2,-4,10,2.5);
+      dot(ctx,tx,ty,-3,0,'#e74c3c');lbl(ctx,tx,ty,-3,0,'x=−3','rgba(255,255,255,.8)',4,-14);
+      dot(ctx,tx,ty,-5,0,'#e74c3c');lbl(ctx,tx,ty,-5,0,'x=−5','rgba(255,255,255,.8)',4,-14);
+      dot(ctx,tx,ty,-4,-1,'#f1c40f');lbl(ctx,tx,ty,-4,-1,'vertex','rgba(255,255,255,.7)',6,4);
+      dot(ctx,tx,ty,0,15,'');
+      ctx.strokeStyle='rgba(255,255,255,.2)';ctx.setLineDash([5,4]);ctx.lineWidth=1;
+      ctx.beginPath();ctx.moveTo(tx(-4),ty(-4));ctx.lineTo(tx(-4),ty(10));ctx.stroke();ctx.setLineDash([]);
+      ctx.fillStyle='rgba(155,89,182,.9)';ctx.font='11px JetBrains Mono,monospace';ctx.textAlign='left';
+      ctx.fillText('f(x)=(x+3)(x+5)',tx(-7.5),ty(9));
+      ctx.fillStyle='rgba(231,76,60,.8)';ctx.fillText('zeros: −3, −5',tx(-7.5),ty(7.8));
+      ctx.fillStyle='rgba(241,196,15,.8)';ctx.fillText('vertex: (−4,−1)',tx(-7.5),ty(6.6));
+    },
+
+    quadratic(){
+      lblEl.textContent='f(x) = −2(x−1)²−5 · Vertex (1,−5) · Opens down · Max = −5';
+      const{tx,ty}=drawAxes(ctx,W,H,32,-4,6,-14,4);
+      curve(ctx,tx,ty,x=>-2*(x-1)**2-5,'#e74c3c',W,32,-4,6,-14,4,2.5);
+      dot(ctx,tx,ty,1,-5,'#f1c40f');lbl(ctx,tx,ty,1,-5,'vertex (1,−5)','#f1c40f',7,-4);
+      ctx.strokeStyle='rgba(241,196,15,.45)';ctx.setLineDash([5,4]);ctx.lineWidth=1.5;
+      ctx.beginPath();ctx.moveTo(tx(1),ty(-14));ctx.lineTo(tx(1),ty(4));ctx.stroke();ctx.setLineDash([]);
+      ctx.fillStyle='rgba(241,196,15,.8)';ctx.font='10px Inter,sans-serif';ctx.textAlign='center';ctx.fillText('x=1 (axis)',tx(1),ty(-13));
+      ctx.fillStyle='rgba(231,76,60,.9)';ctx.font='11px JetBrains Mono,monospace';ctx.textAlign='left';
+      ctx.fillText('f(x)=−2(x−1)²−5',tx(-3.5),ty(3));
+      ctx.fillStyle='rgba(255,255,255,.6)';ctx.fillText('Opens down (a<0)',tx(-3.5),ty(1.7));
+      ctx.fillStyle='rgba(241,196,15,.8)';ctx.fillText('Maximum = −5',tx(-3.5),ty(0.4));
+    },
+
+    exponential(){
+      lblEl.textContent='Blue = Growth f(x)=2(1.5)ˣ · Red = Decay g(x)=6(0.6)ˣ';
+      const{tx,ty}=drawAxes(ctx,W,H,32,-5,5,-1,12);
+      curve(ctx,tx,ty,x=>2*Math.pow(1.5,x),'#2ecc71',W,32,-5,5,-1,12,2.5);
+      curve(ctx,tx,ty,x=>6*Math.pow(0.6,x),'#e74c3c',W,32,-5,5,-1,12,2.5);
+      ctx.strokeStyle='rgba(255,255,255,.3)';ctx.setLineDash([5,4]);ctx.lineWidth=1;
+      ctx.beginPath();ctx.moveTo(tx(-5),ty(0));ctx.lineTo(tx(5),ty(0));ctx.stroke();ctx.setLineDash([]);
+      dot(ctx,tx,ty,0,2,'#2ecc71',4);lbl(ctx,tx,ty,0,2,'(0,2)','rgba(46,204,113,.9)',6,-4);
+      dot(ctx,tx,ty,0,6,'#e74c3c',4);lbl(ctx,tx,ty,0,6,'(0,6)','rgba(231,76,60,.9)',6,4);
+      ctx.fillStyle='rgba(46,204,113,.9)';ctx.font='11px JetBrains Mono,monospace';ctx.textAlign='left';
+      ctx.fillText('f(x)=2(1.5)ˣ Growth',tx(-4.5),ty(11.2));
+      ctx.fillStyle='rgba(231,76,60,.9)';ctx.fillText('g(x)=6(0.6)ˣ Decay',tx(-4.5),ty(10));
+      ctx.fillStyle='rgba(255,255,255,.4)';ctx.font='10px Inter,sans-serif';ctx.fillText('asymptote y=0',tx(2),ty(0.5));
+    },
+
+    statistics(){
+      lblEl.textContent='Scatter plot with line of best fit · Positive correlation r ≈ 0.92';
+      ctx.fillStyle='#0f1923';ctx.fillRect(0,0,W,H);
+      const pad=36;const xMin=0,xMax=10,yMin=0,yMax=100;
+      const tx=v=>pad+(v-xMin)/(xMax-xMin)*(W-2*pad);
+      const ty=v=>H-pad-(v-yMin)/(yMax-yMin)*(H-2*pad);
+      ctx.strokeStyle='rgba(255,255,255,.1)';ctx.lineWidth=1;
+      for(let x=0;x<=10;x+=2){ctx.beginPath();ctx.moveTo(tx(x),pad);ctx.lineTo(tx(x),H-pad);ctx.stroke();}
+      for(let y=0;y<=100;y+=20){ctx.beginPath();ctx.moveTo(pad,ty(y));ctx.lineTo(W-pad,ty(y));ctx.stroke();}
+      ctx.strokeStyle='rgba(255,255,255,.4)';ctx.lineWidth=1.5;
+      ctx.beginPath();ctx.moveTo(pad,H-pad);ctx.lineTo(W-pad,H-pad);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(pad,pad);ctx.lineTo(pad,H-pad);ctx.stroke();
+      // Scatter data
+      const pts=[[1,22],[1.5,28],[2,35],[2.5,38],[3,42],[3.5,50],[4,55],[4.5,58],[5,60],[5.5,65],[6,68],[6.5,72],[7,75],[7.5,80],[8,82],[8.5,88],[9,90],[9.5,95]];
+      pts.forEach(([x,y])=>{ctx.beginPath();ctx.arc(tx(x),ty(y),4,0,2*Math.PI);ctx.fillStyle='rgba(52,152,219,.75)';ctx.fill();});
+      // Line of best fit
+      ctx.strokeStyle='#f1c40f';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(tx(0),ty(10));ctx.lineTo(tx(10),ty(95));ctx.stroke();
+      // Residuals (two)
+      ctx.strokeStyle='rgba(231,76,60,.6)';ctx.lineWidth=1.5;ctx.setLineDash([3,3]);
+      ctx.beginPath();ctx.moveTo(tx(3),ty(42));ctx.lineTo(tx(3),ty(37));ctx.stroke();
+      ctx.beginPath();ctx.moveTo(tx(7),ty(75));ctx.lineTo(tx(7),ty(73));ctx.stroke();ctx.setLineDash([]);
+      ctx.fillStyle='rgba(241,196,15,.8)';ctx.font='11px JetBrains Mono,monospace';ctx.textAlign='left';
+      ctx.fillText('ŷ = 8.5x + 10',tx(0.3),ty(96));
+      ctx.fillStyle='rgba(255,255,255,.5)';ctx.font='10px Inter,sans-serif';
+      ctx.fillText('Hours Studied (x)',W/2,H-6);
+      ctx.save();ctx.translate(14,H/2);ctx.rotate(-Math.PI/2);ctx.fillText('Test Score (y)',0,0);ctx.restore();
+    },
+
+    geometry(){
+      lblEl.textContent='Distance, Midpoint, and Slope on the coordinate plane';
+      lblEl.textContent='Distance, Midpoint, and Slope on the coordinate plane';
+      const{tx,ty}=drawAxes(ctx,W,H,32,-1,8,-1,8);
+      // Triangle
+      const pts=[[1,2],[6,2],[4,7]];
+      const cols=['#e74c3c','#2ecc71','#3498db'];
+      ctx.strokeStyle='rgba(255,255,255,.7)';ctx.lineWidth=2;
+      ctx.beginPath();ctx.moveTo(tx(pts[0][0]),ty(pts[0][1]));
+      ctx.lineTo(tx(pts[1][0]),ty(pts[1][1]));ctx.lineTo(tx(pts[2][0]),ty(pts[2][1]));ctx.closePath();ctx.stroke();
+      pts.forEach(([x,y],i)=>{ctx.beginPath();ctx.arc(tx(x),ty(y),6,0,2*Math.PI);ctx.fillStyle=cols[i];ctx.fill();});
+      lbl(ctx,tx,ty,pts[0][0],pts[0][1],'A(1,2)','rgba(255,255,255,.9)',-32,-4);
+      lbl(ctx,tx,ty,pts[1][0],pts[1][1],'B(6,2)','rgba(255,255,255,.9)',7,-4);
+      lbl(ctx,tx,ty,pts[2][0],pts[2][1],'C(4,7)','rgba(255,255,255,.9)',7,-4);
+      // Midpoint of AB
+      const mx=(pts[0][0]+pts[1][0])/2,my=(pts[0][1]+pts[1][1])/2;
+      ctx.beginPath();ctx.arc(tx(mx),ty(my),4.5,0,2*Math.PI);ctx.fillStyle='#f1c40f';ctx.fill();
+      lbl(ctx,tx,ty,mx,my,'M(3.5,2)','#f1c40f',6,-12);
+      // Distance annotation
+      ctx.fillStyle='rgba(255,255,255,.7)';ctx.font='10px JetBrains Mono,monospace';ctx.textAlign='center';
+      ctx.fillText('AB = 5',tx(3.5),ty(1.4));
+      ctx.fillText('BC = √(4+25) ≈ 5.4',tx(5.5),ty(4.6));
+      ctx.fillText('d = √(Δx²+Δy²)',tx(2),ty(7.5));
+    }
+  };
+
+  if(G[TOPICS.find(t=>t.id===id).graphFn]) G[TOPICS.find(t=>t.id===id).graphFn]();
+}
+
+
+window.onerror = function(msg, src, line, col, err) {
+  console.error('Error:', msg, 'at line', line, col);
+  return false;
+};
+// INIT
+buildNav();
+buildContent();
+switchTopic(TOPICS[0].id);
+</script>
+</body>
+</html>

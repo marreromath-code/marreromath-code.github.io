@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scatterplots & Bivariate Data — Interactive Lab</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07111f;--surface:#0c1b2e;--card:#102035;--card2:#162840;
+  --border:#1e3554;--text:#ddeeff;--muted:#6a8caa;
+  --teal:#00c9b1;--teal-dim:rgba(0,201,177,.11);
+  --coral:#ff6b6b;--coral-dim:rgba(255,107,107,.11);
+  --sky:#5db8fe;--sky-dim:rgba(93,184,254,.11);
+  --amber:#ffb347;--amber-dim:rgba(255,179,71,.1);
+  --violet:#c084fc;--violet-dim:rgba(192,132,252,.1);
+  --lime:#a3e635;--lime-dim:rgba(163,230,53,.1);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:100;background:rgba(7,17,31,.96);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);display:flex;gap:3px;padding:9px 14px;overflow-x:auto;}
+nav::-webkit-scrollbar{height:0;}
+nav button{background:transparent;border:1px solid transparent;color:var(--muted);
+  font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;padding:6px 13px;
+  border-radius:6px;cursor:pointer;transition:all .2s;white-space:nowrap;}
+nav button:hover{color:var(--text);border-color:var(--border);}
+nav button.active{background:var(--teal-dim);color:var(--teal);border-color:rgba(0,201,177,.35);}
+
+/* ── SECTIONS ── */
+section{display:none;padding:30px 18px 64px;max-width:940px;margin:0 auto;}
+section.active{display:block;animation:fadeIn .3s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── HERO ── */
+.hero{text-align:center;padding:44px 16px 34px;}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(2.2rem,8vw,4.8rem);line-height:1.05;
+  background:linear-gradient(130deg,var(--teal) 0%,var(--sky) 55%,var(--violet) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:12px;}
+.hero-sub{color:var(--muted);font-size:.95rem;margin:0 auto 32px;max-width:420px;line-height:1.65;}
+.nav-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:9px;max-width:740px;margin:0 auto;}
+.nav-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:17px 10px;
+  cursor:pointer;transition:all .2s;text-align:center;}
+.nav-card:hover{border-color:var(--teal);transform:translateY(-3px);background:var(--card2);}
+.nav-card .icon{font-size:1.8rem;margin-bottom:6px;}
+.nav-card .lbl{font-size:.77rem;font-weight:600;color:var(--muted);}
+.nav-card:hover .lbl{color:var(--text);}
+
+/* ── TYPOGRAPHY ── */
+.sec-title{font-family:'DM Serif Display',serif;font-size:1.85rem;margin-bottom:5px;}
+.sec-sub{color:var(--muted);font-size:.9rem;margin-bottom:24px;line-height:1.65;}
+
+/* ── CARDS ── */
+.card{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:20px;margin-bottom:16px;}
+.card-title{font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:1.6px;color:var(--muted);margin-bottom:12px;}
+
+/* ── CANVAS ── */
+canvas.plot{width:100%;display:block;border-radius:11px;border:1px solid var(--border);background:#050d18;cursor:crosshair;}
+
+/* ── SLIDERS ── */
+.sl-row{display:flex;align-items:center;gap:10px;margin:8px 0;}
+.sl-lbl{font-family:'JetBrains Mono',monospace;font-size:.85rem;width:52px;text-align:right;flex-shrink:0;}
+.sl-val{font-family:'JetBrains Mono',monospace;font-size:.85rem;width:50px;flex-shrink:0;}
+input[type=range]{flex:1;-webkit-appearance:none;height:4px;border-radius:2px;
+  background:var(--border);outline:none;cursor:pointer;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;height:15px;
+  border-radius:50%;background:var(--teal);cursor:pointer;transition:transform .1s;}
+input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.45);}
+
+/* ── EQ BOX ── */
+.eq-box{font-family:'JetBrains Mono',monospace;font-size:1.1rem;color:var(--amber);text-align:center;
+  padding:11px 16px;background:var(--amber-dim);border:1px solid rgba(255,179,71,.22);
+  border-radius:9px;margin:12px 0;}
+
+/* ── BUTTONS ── */
+.btn{background:var(--card2);border:1px solid var(--border);color:var(--text);
+  font-family:'DM Sans',sans-serif;font-size:.86rem;font-weight:600;
+  padding:7px 15px;border-radius:7px;cursor:pointer;transition:all .2s;}
+.btn:hover{border-color:var(--teal);color:var(--teal);}
+.btn.tl{background:var(--teal-dim);border-color:rgba(0,201,177,.35);color:var(--teal);}
+.btn.co{background:var(--coral-dim);border-color:rgba(255,107,107,.35);color:var(--coral);}
+.btn.am{background:var(--amber-dim);border-color:rgba(255,179,71,.35);color:var(--amber);}
+.btn-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px;}
+
+/* ── PILLS ── */
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:13px;}
+.pill{font-family:'JetBrains Mono',monospace;font-size:.73rem;
+  background:var(--card2);border:1px solid var(--border);color:var(--muted);
+  padding:4px 11px;border-radius:20px;cursor:pointer;transition:all .2s;}
+.pill:hover,.pill.on{background:var(--teal-dim);border-color:rgba(0,201,177,.35);color:var(--teal);}
+
+/* ── TABLE ── */
+.tbl{width:100%;border-collapse:collapse;font-size:.87rem;}
+.tbl th{text-align:left;padding:9px 12px;background:var(--card2);color:var(--muted);
+  font-size:.66rem;text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid var(--border);}
+.tbl td{padding:9px 12px;border-bottom:1px solid rgba(30,53,84,.5);vertical-align:top;}
+.tbl tr:last-child td{border:none;}
+.tbl .fc{font-family:'JetBrains Mono',monospace;color:var(--amber);}
+.tbl td.pos{color:var(--teal);}
+.tbl td.neg{color:var(--coral);}
+
+/* ── TWO COL ── */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+
+/* ── STEP LIST ── */
+.step-list{display:flex;flex-direction:column;gap:1px;}
+.step-item{display:flex;gap:11px;padding:9px 0;border-bottom:1px solid rgba(30,53,84,.45);}
+.step-item:last-child{border:none;}
+.step-num{min-width:25px;height:25px;background:var(--teal-dim);border:1px solid rgba(0,201,177,.3);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',monospace;font-size:.73rem;color:var(--teal);flex-shrink:0;margin-top:1px;}
+.step-body .st{font-weight:600;font-size:.88rem;margin-bottom:2px;}
+.step-body .sm{font-family:'JetBrains Mono',monospace;font-size:.81rem;color:var(--muted);}
+
+/* ── INPUTS ── */
+.num-in{background:var(--surface);border:1px solid var(--border);color:var(--text);
+  font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:600;
+  padding:8px 10px;border-radius:7px;width:100%;outline:none;transition:border-color .2s;}
+.num-in:focus{border-color:var(--teal);}
+
+/* ── RESULT BOX ── */
+.res-box{border-radius:10px;padding:13px 17px;margin-top:13px;}
+.res-box.tl{background:var(--teal-dim);border:1px solid rgba(0,201,177,.25);}
+.res-box.co{background:var(--coral-dim);border:1px solid rgba(255,107,107,.25);}
+.res-box.am{background:var(--amber-dim);border:1px solid rgba(255,179,71,.25);}
+.res-lbl{font-size:.66rem;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin-bottom:4px;}
+.res-val{font-family:'JetBrains Mono',monospace;font-size:1.05rem;font-weight:700;}
+.res-box.tl .res-val{color:var(--teal);}
+.res-box.co .res-val{color:var(--coral);}
+.res-box.am .res-val{color:var(--amber);}
+
+/* ── CORRELATION METER ── */
+.r-meter{height:28px;border-radius:8px;position:relative;overflow:hidden;margin:14px 0;
+  background:linear-gradient(90deg,#1a3a6a 0%,#ff6b6b 0%,#ff6b6b 10%,#ffb347 25%,#aaa 45%,#aaa 55%,#ffb347 75%,#00c9b1 90%,#00c9b1 100%);}
+.r-needle{position:absolute;top:0;bottom:0;width:3px;background:#fff;border-radius:2px;transition:left .4s ease;transform:translateX(-50%);}
+.r-labels{display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--muted);margin-top:4px;}
+
+/* ── CORRELATION BADGE ── */
+.cor-badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:.72rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:1px;margin-left:8px;}
+.cor-badge.pos{background:var(--teal-dim);color:var(--teal);border:1px solid rgba(0,201,177,.35);}
+.cor-badge.neg{background:var(--coral-dim);color:var(--coral);border:1px solid rgba(255,107,107,.35);}
+.cor-badge.non{background:rgba(100,120,140,.12);color:var(--muted);border:1px solid var(--border);}
+
+/* ── SCATTER CANVAS SMALL ── */
+.trio{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+
+/* ── CAUSATION DIAGRAM ── */
+.cause-tabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px;}
+.cause-tab{background:var(--card2);border:1px solid var(--border);color:var(--muted);
+  font-size:.83rem;font-weight:600;padding:7px 16px;border-radius:8px;cursor:pointer;transition:all .2s;}
+.cause-tab:hover{color:var(--text);}
+.cause-tab.on{background:var(--sky-dim);color:var(--sky);border-color:rgba(93,184,254,.35);}
+.cause-diagram{background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  padding:24px;min-height:200px;display:flex;align-items:center;justify-content:center;}
+
+/* ── DIAGRAM NODES ── */
+.dg{display:flex;align-items:center;gap:0;flex-wrap:wrap;justify-content:center;}
+.node{background:var(--card2);border:2px solid var(--border);border-radius:10px;padding:10px 16px;
+  font-size:.83rem;font-weight:700;text-align:center;min-width:90px;}
+.node.ex{border-color:var(--sky);color:var(--sky);background:var(--sky-dim);}
+.node.re{border-color:var(--teal);color:var(--teal);background:var(--teal-dim);}
+.node.lv{border-color:var(--amber);color:var(--amber);background:var(--amber-dim);}
+.arrow{font-size:1.4rem;color:var(--muted);margin:0 6px;align-self:center;}
+.arrow.dashed{opacity:.45;font-style:italic;font-size:.75rem;color:var(--violet);}
+.dg-col{display:flex;flex-direction:column;gap:8px;align-items:center;}
+.dg-row{display:flex;align-items:center;gap:0;}
+
+/* ── RESIDUAL TABLE ── */
+.res-tbl th{background:var(--surface);}
+.res-tbl td.hi{color:var(--coral);font-weight:700;}
+.res-tbl td.ok{color:var(--teal);}
+.res-tbl td.zero{color:var(--muted);}
+
+/* ── R2 BAR ── */
+.r2-bar-wrap{background:var(--surface);border-radius:8px;overflow:hidden;height:26px;margin:10px 0;position:relative;}
+.r2-bar-fill{height:100%;border-radius:8px;transition:width .5s ease;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;}
+.r2-bar-lbl{font-family:'JetBrains Mono',monospace;font-size:.78rem;font-weight:700;}
+
+/* ── SMALL SCATTER ── */
+.scatter-mini{width:100%;border-radius:9px;border:1px solid var(--border);background:#050d18;}
+
+/* ── BADGE ── */
+.badge{display:inline-block;font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;
+  padding:2px 9px;border-radius:20px;margin-left:7px;}
+.badge.tl{background:var(--teal-dim);color:var(--teal);border:1px solid rgba(0,201,177,.35);}
+.badge.co{background:var(--coral-dim);color:var(--coral);border:1px solid rgba(255,107,107,.35);}
+.badge.am{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(255,179,71,.35);}
+
+/* ── VARS PAIR ── */
+.var-pair{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0;}
+.var-box{flex:1;min-width:120px;border-radius:9px;padding:12px 14px;}
+.var-box.ex{background:var(--sky-dim);border:1px solid rgba(93,184,254,.25);}
+.var-box.re{background:var(--teal-dim);border:1px solid rgba(0,201,177,.25);}
+.var-box .vl{font-size:.64rem;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin-bottom:3px;}
+.var-box .vv{font-size:.92rem;font-weight:700;}
+.var-box.ex .vv{color:var(--sky);}
+.var-box.re .vv{color:var(--teal);}
+
+@media(max-width:560px){
+  .two-col,.three-col,.trio{grid-template-columns:1fr;}
+  .eq-box{font-size:.93rem;}
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <button class="active" onclick="go('home')">🏠 Home</button>
+  <button onclick="go('scatter')">📍 Scatterplots</button>
+  <button onclick="go('correlation')">📊 Correlation</button>
+  <button onclick="go('lobf')">📈 Line of Best Fit</button>
+  <button onclick="go('causation')">🔍 Causation</button>
+  <button onclick="go('residuals')">📐 Residuals & R²</button>
+  <button onclick="go('reference')">📋 Reference</button>
+</nav>
+
+<!-- ══════════════════════ HOME ══════════════════════ -->
+<section id="home" class="active">
+  <div class="hero">
+    <h1>Scatterplots &<br>Bivariate Data</h1>
+    <p class="hero-sub">GSE Statistics — Interactive Lab<br>Explore relationships between two quantitative variables 📊</p>
+  </div>
+  <div class="nav-grid">
+    <div class="nav-card" onclick="go('scatter')"><div class="icon">📍</div><div class="lbl">Scatterplots</div></div>
+    <div class="nav-card" onclick="go('correlation')"><div class="icon">📊</div><div class="lbl">Correlation</div></div>
+    <div class="nav-card" onclick="go('lobf')"><div class="icon">📈</div><div class="lbl">Line of Best Fit</div></div>
+    <div class="nav-card" onclick="go('causation')"><div class="icon">🔍</div><div class="lbl">Causation</div></div>
+    <div class="nav-card" onclick="go('residuals')"><div class="icon">📐</div><div class="lbl">Residuals & R²</div></div>
+    <div class="nav-card" onclick="go('reference')"><div class="icon">📋</div><div class="lbl">Reference</div></div>
+  </div>
+</section>
+
+<!-- ══════════════════════ SCATTERPLOTS ══════════════════════ -->
+<section id="scatter">
+  <div class="sec-title">📍 Intro to Scatterplots</div>
+  <div class="sec-sub">A scatterplot displays the relationship between 2 <strong>quantitative</strong> variables measured on the <strong>same individual</strong>. Each individual becomes an ordered pair (x, y).</div>
+
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title">Explanatory Variable (x)</div>
+      <div style="font-size:.88rem;color:var(--sky);font-weight:700;margin-bottom:4px;">= INDEPENDENT variable</div>
+      <div style="font-size:.83rem;color:var(--muted);">EXPLAINS or causes changes in the response. Goes on the x-axis.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Response Variable (y)</div>
+      <div style="font-size:.88rem;color:var(--teal);font-weight:700;margin-bottom:4px;">= DEPENDENT variable</div>
+      <div style="font-size:.83rem;color:var(--muted);">Measures the outcome or result. Goes on the y-axis.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Examples — Identify Explanatory & Response Variables</div>
+    <div class="pills" id="varPills">
+      <span class="pill on" onclick="pickVar(0,this)">Video games & GPA</span>
+      <span class="pill" onclick="pickVar(1,this)">Height & Shoe Size</span>
+      <span class="pill" onclick="pickVar(2,this)">Science EOC & Geo EOC</span>
+      <span class="pill" onclick="pickVar(3,this)">YouTube Subscribers</span>
+      <span class="pill" onclick="pickVar(4,this)">Body & Backpack Weight</span>
+    </div>
+    <div id="varDisplay"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Interactive Scatterplot — Click the canvas to add data points!</div>
+    <div style="font-size:.8rem;color:var(--muted);margin-bottom:8px;">Click to add points. The plot will describe the relationship as you build it.</div>
+    <canvas id="clickCanvas" class="plot" width="860" height="400" onclick="addPoint(event)"></canvas>
+    <div id="clickDesc" style="margin-top:10px;font-size:.88rem;color:var(--muted);text-align:center;">
+      No points yet — click the canvas to start plotting!
+    </div>
+    <div class="btn-row">
+      <button class="btn co" onclick="clearClick()">Clear Points</button>
+      <button class="btn tl" onclick="loadDataset(0)">Load: Backpackers</button>
+      <button class="btn" onclick="loadDataset(1)">Load: Study Time</button>
+      <button class="btn" onclick="loadDataset(2)">Load: TV & GPA</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">How to Construct a Scatterplot</div>
+    <div class="step-list">
+      <div class="step-item"><div class="step-num">1</div><div class="step-body"><div class="st">Decide which variable is explanatory (x) and which is response (y)</div></div></div>
+      <div class="step-item"><div class="step-num">2</div><div class="step-body"><div class="st">Label and scale each axis appropriately</div></div></div>
+      <div class="step-item"><div class="step-num">3</div><div class="step-body"><div class="st">Plot each individual as an ordered pair (x, y)</div></div></div>
+      <div class="step-item"><div class="step-num">4</div><div class="step-body"><div class="st">Draw a conclusion about the relationship in a complete sentence</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ CORRELATION ══════════════════════ -->
+<section id="correlation">
+  <div class="sec-title">📊 Correlation</div>
+  <div class="sec-sub">Correlation measures how well a <strong>line</strong> represents a set of data points. Denoted by <em>r</em> (correlation coefficient), always between −1 and 1. Described by <strong>direction</strong> and <strong>strength</strong>.</div>
+
+  <div class="card">
+    <div class="card-title">Live Correlation Visualizer — drag r to see any scatter pattern</div>
+    <div class="sl-row">
+      <div class="sl-lbl" style="color:var(--amber);">r =</div>
+      <input type="range" id="rSlider" min="-1" max="1" step="0.01" value="0.75" oninput="updateCorr()">
+      <div class="sl-val" id="rVal" style="color:var(--amber);">0.75</div>
+    </div>
+    <div class="r-meter"><div class="r-needle" id="rNeedle"></div></div>
+    <div class="r-labels"><span>−1</span><span>−0.8</span><span>−0.6</span><span>0</span><span>0.6</span><span>0.8</span><span>1</span></div>
+    <div id="rBadgeArea" style="margin:10px 0;font-size:.92rem;"></div>
+    <canvas id="corrCanvas" class="plot" width="860" height="320"></canvas>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Strength Guide for r</div>
+    <div style="overflow-x:auto;">
+    <table class="tbl">
+      <tr><th>Label</th><th>r Range</th><th>What it looks like</th></tr>
+      <tr><td><strong>Very Strong</strong></td><td class="fc">|r| ≥ 0.8</td><td>Points very tightly packed around the line</td></tr>
+      <tr><td><strong>Strong</strong></td><td class="fc">0.6 ≤ |r| &lt; 0.8</td><td>Points close to the line, clear trend</td></tr>
+      <tr><td><strong>Moderate</strong></td><td class="fc">0.4 ≤ |r| &lt; 0.6</td><td>Some scatter, trend still visible</td></tr>
+      <tr><td><strong>Weak</strong></td><td class="fc">0.2 ≤ |r| &lt; 0.4</td><td>Wide scatter, barely makes a line</td></tr>
+      <tr><td><strong>No Correlation</strong></td><td class="fc">|r| &lt; 0.2</td><td>Points appear random, no line pattern</td></tr>
+    </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">r Classifier — Describe Any Correlation Coefficient</div>
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+      <div style="flex:0 0 160px;">
+        <label style="font-size:.75rem;color:var(--muted);display:block;margin-bottom:3px;">Enter r =</label>
+        <input type="number" class="num-in" id="rClassIn" value="0.75" min="-1" max="1" step="0.01" oninput="classifyR()">
+      </div>
+      <div id="rClassResult" style="flex:1;font-size:.93rem;"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Practice Examples from Notes</div>
+    <div class="three-col" style="margin-bottom:12px;">
+      <div style="background:var(--surface);border-radius:8px;padding:11px;text-align:center;">
+        <div style="font-family:monospace;color:var(--amber);font-size:.9rem;margin-bottom:4px;">r = 0.75</div>
+        <div style="font-size:.8rem;color:var(--teal);">Strong Positive</div>
+      </div>
+      <div style="background:var(--surface);border-radius:8px;padding:11px;text-align:center;">
+        <div style="font-family:monospace;color:var(--amber);font-size:.9rem;margin-bottom:4px;">r = −0.5</div>
+        <div style="font-size:.8rem;color:var(--coral);">Moderate Negative</div>
+      </div>
+      <div style="background:var(--surface);border-radius:8px;padding:11px;text-align:center;">
+        <div style="font-family:monospace;color:var(--amber);font-size:.9rem;margin-bottom:4px;">r = −0.96</div>
+        <div style="font-size:.8rem;color:var(--coral);">Very Strong Negative</div>
+      </div>
+      <div style="background:var(--surface);border-radius:8px;padding:11px;text-align:center;">
+        <div style="font-family:monospace;color:var(--amber);font-size:.9rem;margin-bottom:4px;">r = 0.02</div>
+        <div style="font-size:.8rem;color:var(--muted);">No Correlation</div>
+      </div>
+      <div style="background:var(--surface);border-radius:8px;padding:11px;text-align:center;">
+        <div style="font-family:monospace;color:var(--amber);font-size:.9rem;margin-bottom:4px;">r = 0.35</div>
+        <div style="font-size:.8rem;color:var(--teal);">Weak Positive</div>
+      </div>
+      <div style="background:var(--surface);border-radius:8px;padding:11px;text-align:center;">
+        <div style="font-family:monospace;color:var(--amber);font-size:.9rem;margin-bottom:4px;">r = 0.15</div>
+        <div style="font-size:.8rem;color:var(--muted);">No Correlation</div>
+      </div>
+    </div>
+    <div style="background:var(--surface);border-radius:9px;padding:12px;font-size:.83rem;color:var(--muted);">
+      ⭐ <strong style="color:var(--text)">Characteristics of r:</strong> Closer to ±1 = stronger correlation.
+      Switching explanatory/response variables does <strong style="color:var(--amber)">NOT</strong> change r.
+      Adding/removing units does <strong style="color:var(--amber)">NOT</strong> change r.
+      Outliers affect r — removing outliers <strong style="color:var(--teal)">increases</strong> correlation strength.
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ LINE OF BEST FIT ══════════════════════ -->
+<section id="lobf">
+  <div class="sec-title">📈 Line of Best Fit</div>
+  <div class="sec-sub">A line that lies as <strong>close as possible</strong> to all data points. Calculated via <em>linear regression</em>. About half of non-line points should be above, half below.</div>
+
+  <div class="card">
+    <div class="card-title">Form: y = ax + b &nbsp;|&nbsp; a = slope &nbsp;|&nbsp; b = y-intercept</div>
+    <div class="two-col">
+      <div style="background:var(--surface);border-radius:9px;padding:14px;">
+        <div style="font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;">Slope (a) means…</div>
+        <div style="font-size:.87rem;color:var(--sky);">As x increases by 1, y increases (or decreases) by <em>a</em></div>
+      </div>
+      <div style="background:var(--surface);border-radius:9px;padding:14px;">
+        <div style="font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;">Y-Intercept (b) means…</div>
+        <div style="font-size:.87rem;color:var(--teal);">When x = 0, the predicted y-value is <em>b</em> (check context!)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Worked Example — Test Scores vs. Chapter Number</div>
+    <div class="eq-box">y = 1.26x + 81.93 &nbsp;|&nbsp; r = 0.91</div>
+    <div class="pills" id="lobfPills">
+      <span class="pill on" onclick="pickLobf(0,this)">Slope Meaning</span>
+      <span class="pill" onclick="pickLobf(1,this)">Y-Intercept Meaning</span>
+      <span class="pill" onclick="pickLobf(2,this)">Predict Chapter 9</span>
+      <span class="pill" onclick="pickLobf(3,this)">Solve for 94% avg</span>
+      <span class="pill" onclick="pickLobf(4,this)">Switching Variables?</span>
+      <span class="pill" onclick="pickLobf(5,this)">Curve by 5 pts?</span>
+    </div>
+    <div id="lobfDisplay"></div>
+    <canvas id="lobfCanvas" class="plot" style="margin-top:14px;" width="860" height="340"></canvas>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Prediction Calculator — Use Any Line of Best Fit</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px;">
+      <div>
+        <label style="font-size:.73rem;color:var(--muted);display:block;margin-bottom:3px;">Slope (a)</label>
+        <input type="number" class="num-in" id="predA" value="1.26" step="0.01" oninput="calcPred()">
+      </div>
+      <div>
+        <label style="font-size:.73rem;color:var(--muted);display:block;margin-bottom:3px;">Y-intercept (b)</label>
+        <input type="number" class="num-in" id="predB" value="81.93" step="0.01" oninput="calcPred()">
+      </div>
+      <div>
+        <label style="font-size:.73rem;color:var(--muted);display:block;margin-bottom:3px;">x value</label>
+        <input type="number" class="num-in" id="predX" value="9" step="1" oninput="calcPred()">
+      </div>
+    </div>
+    <div id="predResult"></div>
+  </div>
+</section>
+
+<!-- ══════════════════════ CAUSATION ══════════════════════ -->
+<section id="causation">
+  <div class="sec-title">🔍 Correlation, Causation & Lurking Variables</div>
+  <div class="sec-sub">Correlation does <strong>NOT</strong> mean causation. A lurking variable can hide in the background and explain an observed relationship.</div>
+
+  <div class="card" style="background:var(--coral-dim);border-color:rgba(255,107,107,.25);">
+    <div style="font-size:.88rem;"><strong style="color:var(--coral);">Key Distinction:</strong>
+      <span style="color:var(--muted);"> Just because two variables are correlated does not mean one <em>causes</em> the other to change. Example: video games ↔ violence — this is correlation, not causation. Smoking → lung cancer — this IS causation.</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Three Types of Relationships — Click to Explore</div>
+    <div class="cause-tabs">
+      <span class="cause-tab on" onclick="pickCause(0,this)">✅ Causation</span>
+      <span class="cause-tab" onclick="pickCause(1,this)">🔄 Common Response</span>
+      <span class="cause-tab" onclick="pickCause(2,this)">🌀 Confounding</span>
+    </div>
+    <div class="cause-diagram" id="causeDiagram"></div>
+    <div id="causeDesc" style="margin-top:13px;font-size:.88rem;color:var(--muted);line-height:1.65;"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Real-World Examples — Click to Classify</div>
+    <div class="pills" id="causePills">
+      <span class="pill on" onclick="pickCauseEx(0,this)">Smoking & Lung Cancer</span>
+      <span class="pill" onclick="pickCauseEx(1,this)">Firefighters & Damage</span>
+      <span class="pill" onclick="pickCauseEx(2,this)">Polio & Ice Cream</span>
+      <span class="pill" onclick="pickCauseEx(3,this)">Nationality & SAT Math</span>
+      <span class="pill" onclick="pickCauseEx(4,this)">Exercise & Weight</span>
+    </div>
+    <div id="causeExDisplay"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Sunscreen & Skin Cancer — Find the Lurking Variable</div>
+    <div style="font-size:.87rem;color:var(--muted);margin-bottom:10px;">
+      There is a strong positive correlation between wearing sunscreen and getting skin cancer. Does sunscreen cause cancer?
+    </div>
+    <div id="sunscreenAnswer" style="background:var(--surface);border-radius:9px;padding:14px;font-size:.87rem;cursor:pointer;border:1px dashed var(--border);" onclick="revealSunscreen()">
+      <span style="color:var(--muted);">🤔 Think about it… then click to reveal the lurking variable.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ RESIDUALS & R² ══════════════════════ -->
+<section id="residuals">
+  <div class="sec-title">📐 Residuals & R²</div>
+  <div class="sec-sub">Residuals measure how far each actual point is from the predicted value. R² tells us what percentage of the variation can be explained by our regression line.</div>
+
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title">Residual Formula</div>
+      <div class="eq-box" style="font-size:.95rem;">residual = actual y − predicted y</div>
+      <div style="font-size:.83rem;color:var(--muted);margin-top:8px;">
+        ✅ <span style="color:var(--teal)">Positive residual</span> → actual is <strong>above</strong> the line (heavier backpack than predicted)<br>
+        ❌ <span style="color:var(--coral)">Negative residual</span> → actual is <strong>below</strong> the line (lighter backpack than predicted)<br>
+        ⭐ Residuals should be <strong>small and close to zero</strong> for a good fit
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">R-Squared (R²) Formula</div>
+      <div class="eq-box" style="font-size:.95rem;">R² = r²</div>
+      <div style="font-size:.83rem;color:var(--muted);margin-top:8px;">
+        R² = the <strong>percentage</strong> of the difference in y-values that can be explained by the regression line.<br>
+        <span style="color:var(--amber)">100 − R²</span> = percentage due to lurking variables
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Backpacker Residual Table — y = 0.09x + 16.26</div>
+    <div style="overflow-x:auto;">
+    <table class="tbl res-tbl" id="resTable">
+      <tr><th>x (Body wt)</th><th>Actual y</th><th>Predicted y</th><th>Residual</th><th>Status</th></tr>
+    </table>
+    </div>
+    <canvas id="resCanvas" class="plot" style="margin-top:14px;" width="860" height="320"></canvas>
+    <div id="resConclusion" style="margin-top:12px;"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">R² Calculator & Interpreter</div>
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:14px;">
+      <div style="flex:0 0 160px;">
+        <label style="font-size:.73rem;color:var(--muted);display:block;margin-bottom:3px;">Correlation coefficient r =</label>
+        <input type="number" class="num-in" id="r2In" value="0.795" min="-1" max="1" step="0.001" oninput="calcR2()">
+      </div>
+      <div id="r2Result" style="flex:1;"></div>
+    </div>
+    <div id="r2Bars"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Residual Calculator</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:9px;margin-bottom:12px;">
+      <div>
+        <label style="font-size:.73rem;color:var(--muted);display:block;margin-bottom:3px;">Slope (a)</label>
+        <input type="number" class="num-in" id="rA" value="0.09" step="0.01" oninput="calcResidual()">
+      </div>
+      <div>
+        <label style="font-size:.73rem;color:var(--muted);display:block;margin-bottom:3px;">Y-intercept (b)</label>
+        <input type="number" class="num-in" id="rB" value="16.26" step="0.01" oninput="calcResidual()">
+      </div>
+      <div>
+        <label style="font-size:.73rem;color:var(--muted);display:block;margin-bottom:3px;">x value</label>
+        <input type="number" class="num-in" id="rX" value="165" step="1" oninput="calcResidual()">
+      </div>
+      <div>
+        <label style="font-size:.73rem;color:var(--muted);display:block;margin-bottom:3px;">Actual y</label>
+        <input type="number" class="num-in" id="rY" value="35" step="1" oninput="calcResidual()">
+      </div>
+    </div>
+    <div id="residCalcResult"></div>
+  </div>
+</section>
+
+<!-- ══════════════════════ REFERENCE ══════════════════════ -->
+<section id="reference">
+  <div class="sec-title">📋 Quick Reference</div>
+  <div class="sec-sub">All key vocabulary and formulas from the unit in one place.</div>
+
+  <div class="card">
+    <div class="card-title">Vocabulary</div>
+    <table class="tbl">
+      <tr><th>Term</th><th>Definition</th></tr>
+      <tr><td><strong>Scatterplot</strong></td><td>Graph showing relationship between 2 quantitative variables on the same individual</td></tr>
+      <tr><td><strong>Explanatory (x)</strong></td><td>Independent variable — explains changes in the response</td></tr>
+      <tr><td><strong>Response (y)</strong></td><td>Dependent variable — the outcome being measured</td></tr>
+      <tr><td><strong>Correlation (r)</strong></td><td>Measures how well a line fits the data; between −1 and 1</td></tr>
+      <tr><td><strong>Line of Best Fit</strong></td><td>y = ax + b; lies as close as possible to all data points</td></tr>
+      <tr><td><strong>Slope (a)</strong></td><td>For every 1 unit increase in x, y changes by a units</td></tr>
+      <tr><td><strong>Y-Intercept (b)</strong></td><td>Predicted y when x = 0</td></tr>
+      <tr><td><strong>Residual</strong></td><td>Actual y − Predicted y; positive = above line, negative = below</td></tr>
+      <tr><td><strong>R-Squared (R²)</strong></td><td>r² — percentage of variation in y explained by the line</td></tr>
+      <tr><td><strong>Lurking Variable</strong></td><td>A hidden variable that affects the relationship between x and y</td></tr>
+      <tr><td><strong>Causation</strong></td><td>One variable directly causes the other to change</td></tr>
+      <tr><td><strong>Common Response</strong></td><td>Both x and y respond to a lurking variable independently</td></tr>
+      <tr><td><strong>Confounding</strong></td><td>Lurking AND explanatory variable both affect response — can't distinguish which</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">r Strength Scale</div>
+    <table class="tbl">
+      <tr><th>Strength</th><th>r Range</th></tr>
+      <tr><td><strong>Very Strong</strong></td><td class="fc">|r| ≥ 0.8 &nbsp;(−1 to −0.8 or 0.8 to 1)</td></tr>
+      <tr><td><strong>Strong</strong></td><td class="fc">0.6 ≤ |r| &lt; 0.8</td></tr>
+      <tr><td><strong>Moderate</strong></td><td class="fc">0.4 ≤ |r| &lt; 0.6</td></tr>
+      <tr><td><strong>Weak</strong></td><td class="fc">0.2 ≤ |r| &lt; 0.4</td></tr>
+      <tr><td><strong>No Correlation</strong></td><td class="fc">|r| &lt; 0.2</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Characteristics of r (Important!)</div>
+    <div style="font-size:.88rem;line-height:2;color:var(--muted);">
+      ✦ Closer to ±1 → <strong style="color:var(--text)">stronger</strong> correlation<br>
+      ✦ Does <strong style="color:var(--coral)">NOT</strong> change when we change units of measurement<br>
+      ✦ Does <strong style="color:var(--coral)">NOT</strong> change if we switch explanatory and response variables<br>
+      ✦ Is <strong style="color:var(--amber)">very</strong> affected by outliers — removing outliers increases strength
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ JAVASCRIPT ══════════════════════ -->
+<script>
+// ── NAV ──
+const SECS=['home','scatter','correlation','lobf','causation','residuals','reference'];
+function go(id){
+  SECS.forEach(s=>{document.getElementById(s).classList.toggle('active',s===id);});
+  document.querySelectorAll('nav button').forEach((b,i)=>b.classList.toggle('active',SECS[i]===id));
+  const init={
+    scatter:()=>{pickVar(0,document.querySelector('#varPills .pill'));loadDataset(0);},
+    correlation:()=>{updateCorr();classifyR();},
+    lobf:()=>{pickLobf(0,document.querySelector('#lobfPills .pill'));calcPred();drawLobfCanvas();},
+    causation:()=>{pickCause(0,document.querySelector('.cause-tab.on'));pickCauseEx(0,document.querySelector('#causePills .pill'));},
+    residuals:()=>{buildResTable();calcR2();calcResidual();}
+  };
+  if(init[id]) init[id]();
+}
+
+// ── CANVAS HELPERS ──
+function ctx(id){const c=document.getElementById(id);return{c,x:c.getContext('2d'),W:c.width,H:c.height};}
+function clear(id,col){const{c,x,W,H}=ctx(id);x.fillStyle=col||'#050d18';x.fillRect(0,0,W,H);return ctx(id);}
+function grid(x,W,H,tx,ty,x0,x1,y0,y1){
+  x.strokeStyle='rgba(30,53,84,.4)';x.lineWidth=1;
+  for(let v=Math.ceil(x0);v<=x1;v++){x.beginPath();x.moveTo(tx(v),0);x.lineTo(tx(v),H);x.stroke();}
+  for(let v=Math.ceil(y0);v<=y1;v+=2){x.beginPath();x.moveTo(0,ty(v));x.lineTo(W,ty(v));x.stroke();}
+  x.strokeStyle='rgba(100,140,180,.45)';x.lineWidth=1.5;
+  x.beginPath();x.moveTo(0,ty(0));x.lineTo(W,ty(0));x.stroke();
+  x.beginPath();x.moveTo(tx(0),0);x.lineTo(tx(0),H);x.stroke();
+}
+
+// ── SCATTERPLOTS ──
+const VARS=[
+  {e:'Amount of Time Playing Video Games',r:'GPA',note:'x causes y, clear explanatory/response'},
+  {e:'Height',r:'Shoe Size',note:'x causes y, clear explanatory/response'},
+  {e:'n/a — just a relationship',r:'n/a — just a relationship',note:'Physical Science EOC & Geometry EOC are just related — neither clearly explains the other'},
+  {e:'Amount of Subscribers',r:'Number of Views',note:'x causes y, clear explanatory/response'},
+  {e:'Body Weight (lbs.)',r:'Backpack Weight (lbs.)',note:'x explains y, clear explanatory/response'},
+];
+function pickVar(i,el){
+  document.querySelectorAll('#varPills .pill').forEach(p=>p.classList.remove('on'));
+  if(el)el.classList.add('on');
+  const v=VARS[i];
+  document.getElementById('varDisplay').innerHTML=`
+    <div class="var-pair">
+      <div class="var-box ex"><div class="vl">Explanatory (x)</div><div class="vv">${v.e}</div></div>
+      <div class="var-box re"><div class="vl">Response (y)</div><div class="vv">${v.r}</div></div>
+    </div>
+    <div style="font-size:.82rem;color:var(--muted);margin-top:4px;">💡 ${v.note}</div>`;
+}
+
+// Click canvas
+let clickPts=[];
+const DATASETS=[
+  {pts:[{x:120,y:26},{x:187,y:30},{x:109,y:26},{x:103,y:24},{x:131,y:29},{x:165,y:35},{x:158,y:31},{x:116,y:28}],xl:'Body Weight (lbs)',yl:'Backpack Weight (lbs)'},
+  {pts:[{x:1,y:58},{x:2,y:70},{x:3,y:75},{x:4,y:82},{x:5,y:78},{x:6,y:88},{x:7,y:91},{x:8,y:95},{x:2,y:65},{x:5,y:80}],xl:'Hours Studying',yl:'Test Score'},
+  {pts:[{x:2,y:92},{x:4,y:88},{x:3,y:90},{x:6,y:78},{x:8,y:72},{x:5,y:82},{x:7,y:75},{x:9,y:68},{x:10,y:65},{x:1,y:95}],xl:'Hours of TV/day',yl:'GPA (×25)'},
+];
+let currDataset=DATASETS[0];
+
+// Current scale used by the canvas — updated every draw
+let _cScale = {xMin:0,xMax:10,yMin:0,yMax:10,pad:44};
+
+function niceStep(range){
+  if(!range||range<=0) return 1;
+  const raw=range/5, mag=Math.pow(10,Math.floor(Math.log10(raw)));
+  const n=raw/mag;
+  return n<1.5?mag:n<3.5?2*mag:n<7.5?5*mag:10*mag;
+}
+function niceRange(vals,margin){
+  const mn=Math.min(...vals), mx=Math.max(...vals), rng=mx-mn||1;
+  const step=niceStep(rng);
+  return {lo:Math.floor((mn-rng*margin)/step)*step,
+          hi:Math.ceil((mx+rng*margin)/step)*step, step};
+}
+
+function addPoint(e){
+  const c=document.getElementById('clickCanvas');
+  const rect=c.getBoundingClientRect();
+  const scaleX=c.width/rect.width, scaleY=c.height/rect.height;
+  const px=(e.clientX-rect.left)*scaleX, py=(e.clientY-rect.top)*scaleY;
+  const {xMin,xMax,yMin,yMax,pad}=_cScale;
+  const W=c.width,H=c.height;
+  const x=xMin+(px-pad)/(W-2*pad)*(xMax-xMin);
+  const y=yMin+(H-pad-py)/(H-2*pad)*(yMax-yMin);
+  if(x<xMin-1||x>xMax+1||y<yMin-1||y>yMax+1) return;
+  clickPts.push({x:parseFloat(x.toFixed(2)),y:parseFloat(y.toFixed(2))});
+  drawClickCanvas();
+}
+
+function clearClick(){clickPts=[];drawClickCanvas();}
+function loadDataset(i){currDataset=DATASETS[i];clickPts=[...currDataset.pts];drawClickCanvas();}
+
+function drawClickCanvas(){
+  const c=document.getElementById('clickCanvas');
+  const ctx=c.getContext('2d'), W=c.width, H=c.height;
+  ctx.fillStyle='#060b18'; ctx.fillRect(0,0,W,H);
+  const pad=44;
+
+  // ── AUTO-SCALE from actual data ──
+  let xMin,xMax,yMin,yMax,xStep,yStep;
+  if(clickPts.length>0){
+    const xs=clickPts.map(p=>p.x), ys=clickPts.map(p=>p.y);
+    const rx=niceRange(xs,0.12), ry=niceRange(ys,0.15);
+    xMin=rx.lo; xMax=rx.hi; xStep=rx.step;
+    yMin=ry.lo; yMax=ry.hi; yStep=ry.step;
+  } else {
+    xMin=0;xMax=10;yMin=0;yMax=10;xStep=2;yStep=2;
+  }
+  _cScale={xMin,xMax,yMin,yMax,pad};
+
+  const tx=v=>pad+(v-xMin)/(xMax-xMin)*(W-2*pad);
+  const ty=v=>H-pad-(v-yMin)/(yMax-yMin)*(H-2*pad);
+
+  // Grid lines
+  ctx.strokeStyle='rgba(46,63,107,.38)'; ctx.lineWidth=1;
+  for(let v=xMin;v<=xMax+0.001;v+=xStep){
+    ctx.beginPath();ctx.moveTo(tx(v),pad);ctx.lineTo(tx(v),H-pad);ctx.stroke();
+  }
+  for(let v=yMin;v<=yMax+0.001;v+=yStep){
+    ctx.beginPath();ctx.moveTo(pad,ty(v));ctx.lineTo(W-pad,ty(v));ctx.stroke();
+  }
+  // Axes
+  ctx.strokeStyle='rgba(140,160,200,.55)'; ctx.lineWidth=1.5;
+  if(yMin<=0&&yMax>=0){ctx.beginPath();ctx.moveTo(pad,ty(0));ctx.lineTo(W-pad,ty(0));ctx.stroke();}
+  if(xMin<=0&&xMax>=0){ctx.beginPath();ctx.moveTo(tx(0),pad);ctx.lineTo(tx(0),H-pad);ctx.stroke();}
+  // Axis border lines
+  ctx.strokeStyle='rgba(140,160,200,.4)'; ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(pad,H-pad);ctx.lineTo(W-pad,H-pad);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(pad,pad);ctx.lineTo(pad,H-pad);ctx.stroke();
+
+  // Tick labels
+  ctx.fillStyle='rgba(120,140,180,.7)'; ctx.font='11px DM Sans,sans-serif';
+  ctx.textAlign='center';
+  for(let v=xMin;v<=xMax+0.001;v+=xStep){
+    const lv=Number.isInteger(v)?v:+v.toFixed(1);
+    ctx.fillText(lv,tx(v),H-pad+14);
+  }
+  ctx.textAlign='right';
+  for(let v=yMin;v<=yMax+0.001;v+=yStep){
+    const lv=Number.isInteger(v)?v:+v.toFixed(1);
+    ctx.fillText(lv,pad-5,ty(v)+4);
+  }
+
+  // Axis labels
+  ctx.fillStyle='rgba(93,184,254,.75)'; ctx.font='12px DM Sans,sans-serif'; ctx.textAlign='center';
+  ctx.fillText(currDataset.xl||'x',pad+(W-2*pad)/2,H-6);
+  ctx.save();ctx.translate(13,pad+(H-2*pad)/2);ctx.rotate(-Math.PI/2);
+  ctx.fillStyle='rgba(0,201,177,.75)';ctx.fillText(currDataset.yl||'y',0,0);ctx.restore();
+
+  if(clickPts.length===0){return;}
+
+  // Plot points
+  clickPts.forEach(p=>{
+    ctx.beginPath();ctx.arc(tx(p.x),ty(p.y),5.5,0,2*Math.PI);
+    ctx.fillStyle='rgba(0,201,177,.85)'; ctx.fill();
+  });
+
+  if(clickPts.length>=2){
+    const n=clickPts.length;
+    const sx=clickPts.reduce((a,p)=>a+p.x,0), sy=clickPts.reduce((a,p)=>a+p.y,0);
+    const sxy=clickPts.reduce((a,p)=>a+p.x*p.y,0), sx2=clickPts.reduce((a,p)=>a+p.x*p.x,0);
+    const denom=n*sx2-sx*sx;
+    if(Math.abs(denom)<1e-10) return;
+    const a=(n*sxy-sx*sy)/denom, b=(sy-a*sx)/n;
+    const sy2=clickPts.reduce((a,p)=>a+p.y*p.y,0);
+    const r2dx=Math.sqrt(n*sx2-sx*sx), r2dy=Math.sqrt(n*sy2-sy*sy);
+    const r=r2dx&&r2dy?(n*sxy-sx*sy)/(r2dx*r2dy):0;
+
+    // Regression line
+    ctx.strokeStyle='rgba(255,179,71,.8)'; ctx.lineWidth=2.2; ctx.setLineDash([6,4]);
+    ctx.beginPath();ctx.moveTo(tx(xMin),ty(a*xMin+b));ctx.lineTo(tx(xMax),ty(a*xMax+b));ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Equation label on canvas
+    ctx.fillStyle='rgba(255,179,71,.85)'; ctx.font='11px JetBrains Mono,monospace'; ctx.textAlign='left';
+    ctx.fillText('ŷ = '+a.toFixed(3)+'x + '+b.toFixed(2), pad+4, pad+16);
+
+    const dir=r>0.1?'positive':r<-0.1?'negative':'no';
+    const str=Math.abs(r)>=0.8?'very strong':Math.abs(r)>=0.6?'strong':Math.abs(r)>=0.4?'moderate':Math.abs(r)>=0.2?'weak':'no';
+    document.getElementById('clickDesc').innerHTML=`
+      <span style="color:var(--amber);font-family:monospace">${n} points plotted</span> &nbsp;|&nbsp;
+      Correlation: <span style="color:${dir==='positive'?'var(--teal)':dir==='negative'?'var(--coral)':'var(--muted)'}">${str} ${dir}</span>
+      &nbsp;|&nbsp; <span style="font-family:monospace;color:var(--amber)">r ≈ ${r.toFixed(2)}</span>
+      &nbsp;|&nbsp; <span style="color:var(--muted);font-family:monospace">ŷ = ${a.toFixed(3)}x + ${b.toFixed(2)}</span>`;
+  }
+}
+
+// ── CORRELATION ──
+let corrPts=[];
+function seedCorr(r){
+  corrPts=[];
+  for(let i=0;i<60;i++){
+    const x=-3+Math.random()*6;
+    const err=Math.sqrt(1-r*r)*(Math.random()*2-1)*2;
+    const y=r*x+err;
+    corrPts.push({x,y});
+  }
+}
+function updateCorr(){
+  const r=parseFloat(document.getElementById('rSlider').value);
+  document.getElementById('rVal').textContent=r.toFixed(2);
+  const pct=((r+1)/2)*100;
+  document.getElementById('rNeedle').style.left=pct+'%';
+  const dir=r>0.05?'Positive':r<-0.05?'Negative':'None';
+  const str=Math.abs(r)>=0.8?'Very Strong':Math.abs(r)>=0.6?'Strong':Math.abs(r)>=0.4?'Moderate':Math.abs(r)>=0.2?'Weak':'No';
+  const cls=r>0.05?'pos':r<-0.05?'neg':'non';
+  document.getElementById('rBadgeArea').innerHTML=
+    `<span class="cor-badge ${cls}">${str} ${dir} Correlation</span>  r = ${r.toFixed(2)}`;
+  seedCorr(r);
+  const{x,W,H}=clear('corrCanvas');
+  const xMin=-4,xMax=4,yMin=-4,yMax=4;
+  const tx=v=>(v-xMin)/(xMax-xMin)*W;
+  const ty=v=>H-(v-yMin)/(yMax-yMin)*H;
+  grid(x,W,H,tx,ty,xMin,xMax,yMin,yMax);
+  corrPts.forEach(p=>{
+    x.beginPath();x.arc(tx(p.x),ty(p.y),4.5,0,2*Math.PI);
+    x.fillStyle=r>0.05?'rgba(0,201,177,.7)':r<-0.05?'rgba(255,107,107,.7)':'rgba(93,184,254,.7)';
+    x.fill();
+  });
+  if(Math.abs(r)>=0.15){
+    const col=r>0?'rgba(255,179,71,.65)':'rgba(255,107,107,.65)';
+    x.strokeStyle=col;x.lineWidth=2;x.setLineDash([7,4]);
+    x.beginPath();x.moveTo(tx(xMin),ty(r*xMin));x.lineTo(tx(xMax),ty(r*xMax));x.stroke();
+    x.setLineDash([]);
+  }
+}
+
+function classifyR(){
+  const r=parseFloat(document.getElementById('rClassIn').value);
+  if(isNaN(r)||r<-1||r>1){document.getElementById('rClassResult').textContent='Invalid — r must be between −1 and 1';return;}
+  const dir=r>0.05?'Positive':r<-0.05?'Negative':'';
+  const str=Math.abs(r)>=0.8?'Very Strong':Math.abs(r)>=0.6?'Strong':Math.abs(r)>=0.4?'Moderate':Math.abs(r)>=0.2?'Weak':'No Correlation';
+  const cls=r>0.05?'tl':r<-0.05?'co':'non';
+  document.getElementById('rClassResult').innerHTML=
+    `<span class="badge ${cls}">${str}${dir?' '+dir:''}</span>  r = ${r.toFixed(3)}`;
+}
+
+// ── LINE OF BEST FIT ──
+const LOBF_ITEMS=[
+  {h:'Slope (a = 1.26) in Context',b:'<span style="color:var(--sky)">As you increase 1 chapter, your average class score will increase by 1.26 points.</span>'},
+  {h:'Y-Intercept (b = 81.93) in Context',b:'When chapter number is 0, the predicted score is 81.93. <span style="color:var(--coral)">This doesn\'t make sense in context — chapter cannot be zero!</span>'},
+  {h:'Predict Chapter 9 Score',b:'<span style="font-family:monospace;color:var(--amber)">y = 1.26(9) + 81.93 = 11.34 + 81.93 = <strong>93.27</strong></span><br><span style="color:var(--muted)">Substitute x = 9 into the equation</span>'},
+  {h:'Solve for 94% Average',b:'<span style="font-family:monospace;color:var(--amber)">94 = 1.26x + 81.93 → 12.07 = 1.26x → x ≈ 9.58 ≈ Chapter 10</span>'},
+  {h:'Switching Explanatory & Response Variables',b:'<span style="color:var(--teal)">Nothing changes — r stays the same!</span>'},
+  {h:'Curving Tests by 5 Points',b:'<span style="color:var(--teal)">Nothing changes to the correlation — r is not affected by adding a constant to y values.</span>'},
+];
+function pickLobf(i,el){
+  document.querySelectorAll('#lobfPills .pill').forEach(p=>p.classList.remove('on'));
+  if(el)el.classList.add('on');
+  const it=LOBF_ITEMS[i];
+  document.getElementById('lobfDisplay').innerHTML=
+    `<div class="card" style="background:var(--surface);border-color:rgba(255,179,71,.2);margin-top:8px">
+      <div style="font-weight:700;color:var(--amber);margin-bottom:6px;">${it.h}</div>
+      <div style="font-size:.9rem;">${it.b}</div>
+    </div>`;
+}
+function drawLobfCanvas(){
+  const pts=[{x:1,y:84},{x:2,y:83},{x:3,y:86},{x:4,y:88},{x:5,y:87},{x:6,y:90}];
+  const a=1.26,b=81.93;
+  const{x,W,H}=clear('lobfCanvas');
+  const pad=44;
+  const xMin=0,xMax=7,yMin=78,yMax=95;
+  const tx=v=>pad+(v-xMin)/(xMax-xMin)*(W-2*pad);
+  const ty=v=>H-pad-(v-yMin)/(yMax-yMin)*(H-2*pad);
+  // grid lines
+  x.strokeStyle='rgba(30,53,84,.4)';x.lineWidth=1;
+  for(let v=0;v<=7;v++){x.beginPath();x.moveTo(tx(v),pad);x.lineTo(tx(v),H-pad);x.stroke();}
+  for(let v=78;v<=95;v+=2){x.beginPath();x.moveTo(pad,ty(v));x.lineTo(W-pad,ty(v));x.stroke();}
+  // Axis borders
+  x.strokeStyle='rgba(140,160,200,.35)';x.lineWidth=1;
+  x.beginPath();x.moveTo(pad,H-pad);x.lineTo(W-pad,H-pad);x.stroke();
+  x.beginPath();x.moveTo(pad,pad);x.lineTo(pad,H-pad);x.stroke();
+  // Regression line
+  x.strokeStyle='rgba(255,179,71,.7)';x.lineWidth=2;x.setLineDash([6,4]);
+  x.beginPath();x.moveTo(tx(0),ty(b));x.lineTo(tx(7),ty(a*7+b));x.stroke();x.setLineDash([]);
+  // y-axis label on regression endpoint
+
+  // Points
+  pts.forEach(p=>{
+    const pred=a*p.x+b,res=p.y-pred;
+    // residual segment
+    x.strokeStyle=res>0?'rgba(0,201,177,.45)':'rgba(255,107,107,.45)';x.lineWidth=1.5;
+    x.beginPath();x.moveTo(tx(p.x),ty(pred));x.lineTo(tx(p.x),ty(p.y));x.stroke();
+    x.beginPath();x.arc(tx(p.x),ty(p.y),5.5,0,2*Math.PI);
+    x.fillStyle='#ddeeff';x.fill();
+  });
+  // Labels
+  x.fillStyle='rgba(93,184,254,.7)';x.font='12px DM Sans,sans-serif';x.textAlign='center';
+  x.fillText('Chapter Number',pad+(W-2*pad)/2,H-6);
+  x.save();x.translate(13,pad+(H-2*pad)/2);x.rotate(-Math.PI/2);
+  x.fillStyle='rgba(0,201,177,.7)';x.fillText('Avg Class Score',0,0);x.restore();
+  x.fillStyle='rgba(255,179,71,.7)';x.font='12px JetBrains Mono,monospace';x.textAlign='left';
+  x.fillText('y = 1.26x + 81.93  (r = 0.91)',pad+4,pad+16);
+  // x-axis tick values
+  x.fillStyle='rgba(100,140,180,.6)';x.font='11px DM Sans,sans-serif';x.textAlign='center';
+  for(let v=1;v<=6;v++) x.fillText(v,tx(v),H-pad+14);
+  x.textAlign='right';
+  [80,82,84,86,88,90,92,94].forEach(v=>x.fillText(v,pad-5,ty(v)+4));
+}
+function calcPred(){
+  const a=parseFloat(document.getElementById('predA').value)||0;
+  const b=parseFloat(document.getElementById('predB').value)||0;
+  const xv=parseFloat(document.getElementById('predX').value)||0;
+  const y=a*xv+b;
+  document.getElementById('predResult').innerHTML=
+    `<div class="eq-box">y = ${a}(${xv}) + ${b} = <strong>${y.toFixed(2)}</strong></div>`;
+}
+
+// ── CAUSATION ──
+const CAUSES=[
+  {label:'Causation',html:`
+    <div class="dg">
+      <div class="node ex">Smoking (x)</div>
+      <div class="arrow">→</div>
+      <div class="node re">Lung Cancer (y)</div>
+    </div>`,
+   desc:'<strong style="color:var(--sky)">Causation:</strong> One variable DIRECTLY causes the other to change. Smoking causes lung cancer. The arrow goes straight from x to y with no hidden variable in between.'},
+  {label:'Common Response',html:`
+    <div class="dg-col">
+      <div class="node lv">Lurking Variable (z)</div>
+      <div style="display:flex;gap:40px;margin-top:6px">
+        <div class="arrow" style="transform:rotate(220deg);font-size:1.6rem">→</div>
+        <div class="arrow" style="transform:rotate(320deg);font-size:1.6rem">→</div>
+      </div>
+      <div style="display:flex;gap:40px">
+        <div class="node ex">x</div>
+        <div class="node re">y</div>
+      </div>
+      <div class="arrow dashed" style="margin:4px 0">observed association ✦✦✦</div>
+    </div>`,
+   desc:'<strong style="color:var(--sky)">Common Response:</strong> BOTH x and y are responding to a lurking variable (z). Example: Number of firefighters and amount of damage both increase when the fire is more serious. The lurking variable is the seriousness of the fire.'},
+  {label:'Confounding',html:`
+    <div class="dg-col">
+      <div class="node lv">Lurking Variable (z)</div>
+      <div class="arrow">↓</div>
+      <div style="display:flex;align-items:center;gap:6px">
+        <div class="node ex">x (Explanatory)</div>
+        <div class="arrow">→</div>
+        <div class="node re">y (Response)</div>
+      </div>
+    </div>`,
+   desc:'<strong style="color:var(--sky)">Confounding:</strong> BOTH the lurking variable (z) AND the explanatory variable (x) affect the response (y). You cannot tell which one had the effect. Example: Educational level and nationality both affect SAT-Math score — you can\'t distinguish which one mattered.'},
+];
+function pickCause(i,el){
+  document.querySelectorAll('.cause-tab').forEach(t=>t.classList.remove('on'));
+  if(el)el.classList.add('on');
+  document.getElementById('causeDiagram').innerHTML=CAUSES[i].html;
+  document.getElementById('causeDesc').innerHTML=CAUSES[i].desc;
+}
+
+const CAUSE_EXS=[
+  {t:'Smoking & Lung Cancer',type:'Causation',cls:'tl',desc:'Smoking directly causes lung cancer. This is a true cause-and-effect relationship.'},
+  {t:'Firefighters & Fire Damage',type:'Common Response',cls:'am',desc:'Both the number of firefighters sent AND the amount of damage are caused by the seriousness of the fire (lurking variable). More serious fire → more firefighters AND more damage.'},
+  {t:'Polio Cases & Ice Cream Sales (1949)',type:'Common Response',cls:'am',desc:'Both polio cases AND ice cream sales peak in summer. The lurking variable is temperature/season — hot weather drives both. Ice cream does NOT cause polio!'},
+  {t:'Nationality & SAT-Math Score',type:'Confounding',cls:'vi',desc:'Educational level (lurking) AND nationality (explanatory) both affect SAT-Math score. You cannot tell which one is responsible.'},
+  {t:'Exercise & Weight',type:'Confounding',cls:'vi',desc:'Age and fast food consumption (lurking variables) AND exercise (explanatory) all affect weight (response). The true effect of exercise is confounded.'},
+];
+function pickCauseEx(i,el){
+  document.querySelectorAll('#causePills .pill').forEach(p=>p.classList.remove('on'));
+  if(el)el.classList.add('on');
+  const e=CAUSE_EXS[i];
+  const cols={tl:'var(--teal)',am:'var(--amber)',vi:'var(--violet)'};
+  document.getElementById('causeExDisplay').innerHTML=`
+    <div class="card" style="margin-top:8px;background:var(--surface);">
+      <span style="font-weight:700;color:${cols[e.cls]}">${e.type}</span> — ${e.t}<br>
+      <span style="font-size:.85rem;color:var(--muted);margin-top:5px;display:block">${e.desc}</span>
+    </div>`;
+}
+
+let sunshown=false;
+function revealSunscreen(){
+  if(sunshown)return;sunshown=true;
+  document.getElementById('sunscreenAnswer').innerHTML=`
+    <strong style="color:var(--amber)">Lurking Variable: Sun Exposure (heat/being outdoors)</strong><br>
+    <span style="font-size:.85rem;color:var(--muted)">People who spend more time outdoors in the sun are more likely to BOTH wear sunscreen AND develop skin cancer. 
+    The lurking variable (sun exposure) causes both. Sunscreen does not cause cancer — it's a common response relationship.</span>`;
+}
+
+// ── RESIDUALS ──
+const BPdata=[
+  {x:120,y:26},{x:187,y:30},{x:109,y:26},{x:103,y:24},
+  {x:131,y:29},{x:165,y:35},{x:158,y:31},{x:116,y:28},
+];
+function pred(x){return Math.round(0.09*x+16.26);}
+
+function buildResTable(){
+  const tbody=document.getElementById('resTable');
+  let rows='<tr><th>x (Body wt)</th><th>Actual y</th><th>Predicted y</th><th>Residual</th><th>Status</th></tr>';
+  BPdata.forEach(p=>{
+    const pr=pred(p.x),res=p.y-pr;
+    const cls=Math.abs(res)>=3?'hi':res===0?'zero':'ok';
+    const outlier=Math.abs(res)>=3?'⚠️ outlier':'';
+    rows+=`<tr>
+      <td>${p.x}</td><td>${p.y}</td><td>${pr}</td>
+      <td class="${cls}">${res>0?'+':''}${res}</td>
+      <td style="font-size:.78rem;color:${Math.abs(res)>=3?'var(--coral)':'var(--muted)'}">${outlier||'—'}</td>
+    </tr>`;
+  });
+  tbody.innerHTML=rows;
+  drawResCanvas();
+  document.getElementById('resConclusion').innerHTML=`
+    <div style="background:var(--surface);border-radius:9px;padding:13px;font-size:.85rem;color:var(--muted);">
+      <strong style="color:var(--text)">Conclusion:</strong> Yes, this is a good fit!
+      Most residuals are between −1 and 1.
+      Three outliers: (187, 30), (103, 24), (165, 35) — residuals of −3, −2, and +4.
+      <span style="color:var(--teal)">r = 0.795 → Very strong positive correlation (r² ≈ 0.632 → 63.2% explained by the line)</span>
+    </div>`;
+}
+
+function drawResCanvas(){
+  const{x,W,H}=clear('resCanvas');
+  const pad=44;
+  // Proper scale for backpacker data: X=103-187, Y=24-35
+  const xMin=95,xMax=200,yMin=21,yMax=38;
+  const tx=v=>pad+(v-xMin)/(xMax-xMin)*(W-2*pad);
+  const ty=v=>H-pad-(v-yMin)/(yMax-yMin)*(H-2*pad);
+  x.strokeStyle='rgba(30,53,84,.4)';x.lineWidth=1;
+  for(let v=100;v<=195;v+=10){x.beginPath();x.moveTo(tx(v),pad);x.lineTo(tx(v),H-pad);x.stroke();}
+  for(let v=22;v<=37;v+=1){x.beginPath();x.moveTo(pad,ty(v));x.lineTo(W-pad,ty(v));x.stroke();}
+  // Axis tick labels
+  x.fillStyle='rgba(120,140,180,.65)';x.font='10px DM Sans,sans-serif';x.textAlign='center';
+  for(let v=100;v<=190;v+=10) x.fillText(v,tx(v),H-pad+13);
+  x.textAlign='right';
+  for(let v=22;v<=37;v+=2) x.fillText(v,pad-4,ty(v)+4);
+  // Axis border
+  x.strokeStyle='rgba(140,160,200,.35)';x.lineWidth=1;
+  x.beginPath();x.moveTo(pad,H-pad);x.lineTo(W-pad,H-pad);x.stroke();
+  x.beginPath();x.moveTo(pad,pad);x.lineTo(pad,H-pad);x.stroke();
+  // regression line
+  x.strokeStyle='rgba(255,179,71,.6)';x.lineWidth=2;x.setLineDash([6,4]);
+  x.beginPath();x.moveTo(tx(xMin),ty(0.09*xMin+16.26));x.lineTo(tx(xMax),ty(0.09*xMax+16.26));x.stroke();x.setLineDash([]);
+  // Points
+  BPdata.forEach(p=>{
+    const pr=0.09*p.x+16.26,res=p.y-pr;
+    x.strokeStyle=res>0?'rgba(0,201,177,.5)':'rgba(255,107,107,.5)';x.lineWidth=1.5;
+    x.beginPath();x.moveTo(tx(p.x),ty(pr));x.lineTo(tx(p.x),ty(p.y));x.stroke();
+    const isOut=Math.abs(res)>=3;
+    x.beginPath();x.arc(tx(p.x),ty(p.y),isOut?7:5,0,2*Math.PI);
+    x.fillStyle=isOut?'rgba(255,107,107,.9)':'rgba(0,201,177,.85)';x.fill();
+    if(isOut){
+      x.fillStyle='rgba(255,107,107,.8)';x.font='10px JetBrains Mono,monospace';x.textAlign='left';
+      x.fillText(`(${p.x},${p.y})`,tx(p.x)+8,ty(p.y)-4);
+    }
+  });
+  x.fillStyle='rgba(255,179,71,.7)';x.font='11px JetBrains Mono,monospace';x.textAlign='left';
+  x.fillText('y = 0.09x + 16.26',pad+6,pad+16);
+  x.fillStyle='rgba(93,184,254,.6)';x.font='11px DM Sans,sans-serif';x.textAlign='center';
+  x.fillText('Body Weight (lbs)',pad+(W-2*pad)/2,H-6);
+  x.save();x.translate(13,pad+(H-2*pad)/2);x.rotate(-Math.PI/2);
+  x.fillStyle='rgba(0,201,177,.6)';x.fillText('Backpack Weight (lbs)',0,0);x.restore();
+}
+
+function calcR2(){
+  const r=parseFloat(document.getElementById('r2In').value)||0;
+  const r2=(r*r*100).toFixed(1);
+  const lv=(100-r*r*100).toFixed(1);
+  document.getElementById('r2Result').innerHTML=
+    `<span class="badge tl">R² = ${r2}%</span> explained by the line &nbsp;|&nbsp; <span class="badge co">${lv}%</span> due to lurking variables`;
+  document.getElementById('r2Bars').innerHTML=`
+    <div style="margin:4px 0;font-size:.75rem;color:var(--teal);">Explained by line (${r2}%)</div>
+    <div class="r2-bar-wrap"><div class="r2-bar-fill" style="width:${r2}%;background:linear-gradient(90deg,var(--teal),var(--sky))">
+      <span class="r2-bar-lbl" style="color:#fff">${r2}%</span></div></div>
+    <div style="margin:8px 0 4px;font-size:.75rem;color:var(--coral);">Due to lurking variables (${lv}%)</div>
+    <div class="r2-bar-wrap"><div class="r2-bar-fill" style="width:${lv}%;background:linear-gradient(90deg,var(--coral),var(--amber))">
+      <span class="r2-bar-lbl" style="color:#fff">${lv}%</span></div></div>`;
+}
+
+function calcResidual(){
+  const a=parseFloat(document.getElementById('rA').value)||0;
+  const b=parseFloat(document.getElementById('rB').value)||0;
+  const xv=parseFloat(document.getElementById('rX').value)||0;
+  const yA=parseFloat(document.getElementById('rY').value)||0;
+  const yP=a*xv+b;
+  const res=yA-yP;
+  const pos=res>=0;
+  document.getElementById('residCalcResult').innerHTML=`
+    <div class="eq-box" style="font-size:.9rem;">Predicted ŷ = ${a}(${xv}) + ${b} = ${yP.toFixed(2)}</div>
+    <div class="res-box ${pos?'tl':'co'}" style="margin-top:8px">
+      <div class="res-lbl">Residual = Actual − Predicted</div>
+      <div class="res-val">${yA} − ${yP.toFixed(2)} = ${res.toFixed(2)}</div>
+    </div>
+    <div style="font-size:.82rem;color:var(--muted);margin-top:7px">
+      ${pos?'✅ Positive residual — actual value is <strong>above</strong> the line':'❌ Negative residual — actual value is <strong>below</strong> the line'}
+    </div>`;
+}
+
+// ── INIT ──
+window.addEventListener('load',()=>{
+  pickVar(0,document.querySelector('#varPills .pill'));
+  loadDataset(0);
+  updateCorr();classifyR();
+  pickLobf(0,document.querySelector('#lobfPills .pill'));
+  calcPred();
+  pickCause(0,document.querySelector('.cause-tab'));
+  pickCauseEx(0,document.querySelector('#causePills .pill'));
+  buildResTable();calcR2();calcResidual();
+});
+</script>
+</body>
+</html>

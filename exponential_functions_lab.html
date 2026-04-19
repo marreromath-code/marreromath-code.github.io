@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exponential Functions — Interactive Lab | GSE Algebra 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080d1a;
+  --surface: #0f172a;
+  --card: #131d35;
+  --card2: #1a2540;
+  --border: #2e3f6b;
+  --text: #e2e8f0;
+  --muted: #7c8ca8;
+  --growth: #00d4a0;
+  --growth-dim: rgba(0,212,160,0.12);
+  --decay: #f97066;
+  --decay-dim: rgba(249,112,102,0.12);
+  --gold: #ffd60a;
+  --gold-dim: rgba(255,214,10,0.1);
+  --purple: #c084fc;
+  --purple-dim: rgba(192,132,252,0.12);
+  --blue: #60a5fa;
+  --blue-dim: rgba(96,165,250,0.12);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;overflow-x:hidden;}
+
+/* ── NAV ── */
+nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(8,13,26,0.95);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  display:flex;gap:4px;padding:10px 16px;overflow-x:auto;
+}
+nav::-webkit-scrollbar{height:0;}
+nav button{
+  background:transparent;border:1px solid transparent;
+  color:var(--muted);font-family:'Nunito',sans-serif;
+  font-size:12px;font-weight:700;padding:6px 14px;
+  border-radius:20px;cursor:pointer;transition:all .2s;white-space:nowrap;
+}
+nav button:hover{color:var(--text);border-color:var(--border);}
+nav button.active{background:var(--gold-dim);color:var(--gold);border-color:rgba(255,214,10,.4);}
+
+/* ── SECTIONS ── */
+section{display:none;padding:32px 20px 60px;max-width:920px;margin:0 auto;}
+section.active{display:block;animation:fadeUp .35s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── HERO ── */
+.hero{text-align:center;padding:48px 16px 36px;}
+.hero h1{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(2.4rem,9vw,5.2rem);font-weight:800;line-height:1;
+  background:linear-gradient(135deg,var(--gold) 0%,var(--growth) 50%,var(--blue) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:14px;
+}
+.hero-formula{
+  font-family:'JetBrains Mono',monospace;
+  font-size:clamp(1.3rem,4vw,2rem);color:var(--gold);
+  background:var(--gold-dim);border:1px solid rgba(255,214,10,.25);
+  display:inline-block;padding:10px 28px;border-radius:12px;margin:16px 0;
+  letter-spacing:.05em;
+}
+.hero p{color:var(--muted);font-size:1rem;margin:12px auto 36px;max-width:460px;line-height:1.6;}
+.nav-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;max-width:720px;margin:0 auto;}
+.nav-card{
+  background:var(--card);border:1px solid var(--border);border-radius:16px;
+  padding:18px 10px;cursor:pointer;transition:all .22s;text-align:center;
+}
+.nav-card:hover{border-color:var(--gold);transform:translateY(-3px);background:var(--card2);}
+.nav-card .icon{font-size:1.9rem;margin-bottom:7px;}
+.nav-card .lbl{font-size:.8rem;font-weight:700;color:var(--muted);}
+.nav-card:hover .lbl{color:var(--text);}
+
+/* ── TYPOGRAPHY ── */
+.sec-title{font-family:'Syne',sans-serif;font-size:1.9rem;font-weight:800;margin-bottom:6px;}
+.sec-sub{color:var(--muted);font-size:.92rem;margin-bottom:26px;line-height:1.6;}
+
+/* ── CARDS ── */
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:18px;}
+.card-title{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:12px;}
+
+/* ── CANVAS ── */
+canvas.main-canvas{width:100%;display:block;border-radius:12px;border:1px solid var(--border);background:#060b18;}
+
+/* ── SLIDERS ── */
+.slider-row{display:flex;align-items:center;gap:10px;margin:8px 0;}
+.slider-lbl{font-family:'JetBrains Mono',monospace;font-size:.88rem;width:56px;text-align:right;flex-shrink:0;}
+.slider-val{font-family:'JetBrains Mono',monospace;font-size:.88rem;width:46px;flex-shrink:0;}
+input[type=range]{
+  flex:1;-webkit-appearance:none;height:5px;border-radius:3px;
+  background:var(--border);outline:none;cursor:pointer;
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:16px;height:16px;border-radius:50%;
+  background:var(--gold);cursor:pointer;transition:transform .1s;
+}
+input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.4);}
+.param-a{color:#fb923c;} .param-b{color:var(--growth);} .param-h{color:var(--purple);} .param-k{color:var(--blue);}
+
+/* ── EQ DISPLAY ── */
+.eq-box{
+  font-family:'JetBrains Mono',monospace;font-size:1.2rem;
+  color:var(--gold);text-align:center;padding:12px 16px;
+  background:var(--gold-dim);border:1px solid rgba(255,214,10,.22);
+  border-radius:10px;margin:14px 0;
+}
+
+/* ── CHAR GRID ── */
+.char-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:8px;}
+.char-item{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 12px;}
+.char-item .cl{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:3px;}
+.char-item .cv{font-family:'JetBrains Mono',monospace;font-size:.85rem;}
+.char-item.is-growth .cv{color:var(--growth);}
+.char-item.is-decay .cv{color:var(--decay);}
+
+/* ── BUTTONS ── */
+.btn{
+  background:var(--card2);border:1px solid var(--border);color:var(--text);
+  font-family:'Nunito',sans-serif;font-size:.88rem;font-weight:700;
+  padding:7px 16px;border-radius:8px;cursor:pointer;transition:all .2s;
+}
+.btn:hover{border-color:var(--gold);color:var(--gold);}
+.btn.gld{background:var(--gold-dim);border-color:rgba(255,214,10,.4);color:var(--gold);}
+.btn.grn{background:var(--growth-dim);border-color:rgba(0,212,160,.4);color:var(--growth);}
+.btn.red{background:var(--decay-dim);border-color:rgba(249,112,102,.4);color:var(--decay);}
+.btn-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px;}
+
+/* ── PILLS ── */
+.pills{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px;}
+.pill{
+  font-family:'JetBrains Mono',monospace;font-size:.75rem;
+  background:var(--card2);border:1px solid var(--border);color:var(--muted);
+  padding:4px 12px;border-radius:20px;cursor:pointer;transition:all .2s;
+}
+.pill:hover,.pill.on{background:var(--gold-dim);border-color:rgba(255,214,10,.4);color:var(--gold);}
+
+/* ── STEPS ── */
+.step-list{display:flex;flex-direction:column;gap:2px;}
+.step-item{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid rgba(46,63,107,.5);}
+.step-item:last-child{border:none;}
+.step-num{
+  min-width:26px;height:26px;background:var(--gold-dim);
+  border:1px solid rgba(255,214,10,.3);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--gold);flex-shrink:0;margin-top:2px;
+}
+.step-body .st{font-weight:700;font-size:.88rem;margin-bottom:3px;}
+.step-body .sm{font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--muted);}
+.step-body .sa{font-family:'JetBrains Mono',monospace;font-size:1rem;color:var(--gold);font-weight:700;}
+
+/* ── SOLVE STEPS ── */
+.solve-step{
+  padding:10px 14px;border-left:3px solid var(--border);margin:6px 0;
+  animation:stepSlide .3s ease both;
+}
+.solve-step.lit{border-left-color:var(--gold);}
+@keyframes stepSlide{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:translateX(0)}}
+.sh{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:3px;}
+.sm2{font-family:'JetBrains Mono',monospace;font-size:.92rem;}
+.sa2{font-family:'JetBrains Mono',monospace;font-size:1.05rem;color:var(--gold);font-weight:700;}
+
+/* ── COMPARE CARDS ── */
+.gvd{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.gvd-card{border-radius:12px;padding:16px;}
+.gvd-card.g{background:var(--growth-dim);border:1px solid rgba(0,212,160,.25);}
+.gvd-card.d{background:var(--decay-dim);border:1px solid rgba(249,112,102,.25);}
+.gvd-h{font-family:'Syne',sans-serif;font-size:1.25rem;font-weight:800;margin-bottom:9px;}
+.gvd-card.g .gvd-h{color:var(--growth);}
+.gvd-card.d .gvd-h{color:var(--decay);}
+.gvd-f{font-size:.83rem;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.05);}
+.gvd-f:last-child{border:none;}
+
+/* ── CANVAS PAIR ── */
+.cpair{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+
+/* ── TABLE ── */
+.tbl{width:100%;border-collapse:collapse;font-size:.88rem;}
+.tbl th{text-align:left;padding:9px 13px;background:var(--card2);color:var(--muted);font-size:.68rem;text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid var(--border);}
+.tbl td{padding:9px 13px;border-bottom:1px solid rgba(46,63,107,.4);vertical-align:top;}
+.tbl tr:last-child td{border:none;}
+.tbl .fc{font-family:'JetBrains Mono',monospace;color:var(--gold);}
+
+/* ── INPUTS ── */
+.num-in{background:var(--surface);border:1px solid var(--border);color:var(--text);
+  font-family:'Nunito',sans-serif;font-size:.9rem;font-weight:700;
+  padding:8px 11px;border-radius:8px;width:100%;outline:none;transition:border-color .2s;}
+.num-in:focus{border-color:var(--gold);}
+
+/* ── RESULT BOX ── */
+.res-box{
+  background:var(--growth-dim);border:1px solid rgba(0,212,160,.25);
+  border-radius:11px;padding:14px 18px;margin-top:14px;
+}
+.res-box.d{background:var(--decay-dim);border-color:rgba(249,112,102,.25);}
+.res-lbl{font-size:.68rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:5px;}
+.res-val{font-family:'JetBrains Mono',monospace;font-size:1.1rem;color:var(--growth);font-weight:700;}
+.res-box.d .res-val{color:var(--decay);}
+
+/* ── SEQUENCES ── */
+.seq-wrap{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0;}
+.seq-t{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:7px 12px;text-align:center;}
+.seq-t .sn{font-size:.62rem;color:var(--muted);display:block;}
+.seq-t .sv{font-family:'JetBrains Mono',monospace;font-size:.85rem;}
+.seq-t.hi{border-color:var(--purple);background:var(--purple-dim);}
+.seq-t.hi .sv{color:var(--purple);}
+
+/* ── BADGE ── */
+.badge{
+  display:inline-block;font-size:.68rem;font-weight:800;
+  text-transform:uppercase;letter-spacing:1px;padding:2px 9px;border-radius:20px;margin-left:7px;
+}
+.badge.g{background:var(--growth-dim);color:var(--growth);border:1px solid rgba(0,212,160,.35);}
+.badge.d{background:var(--decay-dim);color:var(--decay);border:1px solid rgba(249,112,102,.35);}
+
+/* ── TWO-COL ── */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+
+/* ── POWER TILES ── */
+.power-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;}
+.power-tile{background:var(--surface);border-radius:8px;padding:10px;font-family:'JetBrains Mono',monospace;font-size:.83rem;}
+.power-tile span{color:var(--muted);}
+.power-tile strong{color:var(--gold);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:560px){
+  .two-col,.gvd,.cpair{grid-template-columns:1fr;}
+  .eq-box{font-size:1rem;}
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <button class="active" onclick="go('home')">🏠 Home</button>
+  <button onclick="go('grapher')">📊 Graph Lab</button>
+  <button onclick="go('growdecay')">📈 Growth vs Decay</button>
+  <button onclick="go('transforms')">🔄 Transformations</button>
+  <button onclick="go('solver')">⚡ Solver</button>
+  <button onclick="go('realworld')">🌍 Real World</button>
+  <button onclick="go('sequences')">🔢 Sequences</button>
+  <button onclick="go('reference')">📋 Reference</button>
+</nav>
+
+<!-- ══════════════════════════════ HOME ══════════════════════════════ -->
+<section id="home" class="active">
+  <div class="hero">
+    <h1>EXPONENTIAL<br>FUNCTIONS</h1>
+    <div class="hero-formula">f(x) = a · b<sup>x</sup></div>
+    <p>GSE Algebra 1 — Unit 6 Interactive Lab<br>Explore, visualize, and master exponential thinking 🚀</p>
+  </div>
+  <div class="nav-grid">
+    <div class="nav-card" onclick="go('grapher')"><div class="icon">📊</div><div class="lbl">Graph Lab</div></div>
+    <div class="nav-card" onclick="go('growdecay')"><div class="icon">📈</div><div class="lbl">Growth vs Decay</div></div>
+    <div class="nav-card" onclick="go('transforms')"><div class="icon">🔄</div><div class="lbl">Transformations</div></div>
+    <div class="nav-card" onclick="go('solver')"><div class="icon">⚡</div><div class="lbl">Equation Solver</div></div>
+    <div class="nav-card" onclick="go('realworld')"><div class="icon">🌍</div><div class="lbl">Real World Models</div></div>
+    <div class="nav-card" onclick="go('sequences')"><div class="icon">🔢</div><div class="lbl">Sequences</div></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════ GRAPH LAB ══════════════════════════════ -->
+<section id="grapher">
+  <div class="sec-title">📊 Interactive Graph Lab</div>
+  <div class="sec-sub">Drag the sliders to change each parameter and watch the graph update live. See how <span class="param-a">a</span>, <span class="param-b">b</span>, <span class="param-h">h</span>, and <span class="param-k">k</span> each affect the curve.</div>
+
+  <div class="eq-box" id="mainEqLabel">f(x) = 1 · 2^x</div>
+  <canvas id="mainCanvas" class="main-canvas" width="860" height="440"></canvas>
+
+  <div class="card" style="margin-top:14px;">
+    <div class="card-title">Parameters — f(x) = <span class="param-a">a</span> · <span class="param-b">b</span>^(x − <span class="param-h">h</span>) + <span class="param-k">k</span></div>
+    <div class="slider-row">
+      <div class="slider-lbl param-a">a =</div>
+      <input type="range" id="sA" min="-5" max="5" step="0.1" value="1" oninput="drawMain()">
+      <div class="slider-val" id="vA">1.0</div>
+    </div>
+    <div class="slider-row">
+      <div class="slider-lbl param-b">b =</div>
+      <input type="range" id="sB" min="0.1" max="4.9" step="0.05" value="2" oninput="drawMain()">
+      <div class="slider-val" id="vB">2.00</div>
+    </div>
+    <div class="slider-row">
+      <div class="slider-lbl param-h">h =</div>
+      <input type="range" id="sH" min="-5" max="5" step="0.5" value="0" oninput="drawMain()">
+      <div class="slider-val" id="vH">0.0</div>
+    </div>
+    <div class="slider-row">
+      <div class="slider-lbl param-k">k =</div>
+      <input type="range" id="sK" min="-8" max="8" step="0.5" value="0" oninput="drawMain()">
+      <div class="slider-val" id="vK">0.0</div>
+    </div>
+    <div class="btn-row">
+      <button class="btn gld" onclick="setSliders(1,2,0,0)">Reset</button>
+      <button class="btn grn" onclick="setSliders(1,3,0,0)">Growth: 3ˣ</button>
+      <button class="btn red" onclick="setSliders(1,0.5,0,0)">Decay: (½)ˣ</button>
+      <button class="btn" onclick="setSliders(-2,0.5,0,5)">Reflect + Shift</button>
+      <button class="btn" onclick="setSliders(1,2,3,0)">Shift Right 3</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Function Characteristics</div>
+    <div class="char-grid" id="charGrid"></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════ GROWTH vs DECAY ══════════════════════════════ -->
+<section id="growdecay">
+  <div class="sec-title">📈 Growth vs. Decay</div>
+  <div class="sec-sub">The base <em>b</em> determines everything. When b &gt; 1 the function grows; when 0 &lt; b &lt; 1 it decays.</div>
+
+  <div class="gvd">
+    <div class="gvd-card g">
+      <div class="gvd-h">📈 GROWTH</div>
+      <div class="gvd-f"><strong>Base:</strong> b &gt; 1</div>
+      <div class="gvd-f"><strong>Direction:</strong> Rises left → right</div>
+      <div class="gvd-f"><strong>As x → +∞:</strong> y → +∞</div>
+      <div class="gvd-f"><strong>As x → −∞:</strong> y → asymptote</div>
+      <div class="gvd-f"><strong>Rate formula:</strong> b = 1 + r</div>
+      <div class="gvd-f" style="margin-top:6px"><strong>Example:</strong> f(x) = 3(2)ˣ</div>
+    </div>
+    <div class="gvd-card d">
+      <div class="gvd-h">📉 DECAY</div>
+      <div class="gvd-f"><strong>Base:</strong> 0 &lt; b &lt; 1</div>
+      <div class="gvd-f"><strong>Direction:</strong> Falls left → right</div>
+      <div class="gvd-f"><strong>As x → +∞:</strong> y → asymptote</div>
+      <div class="gvd-f"><strong>As x → −∞:</strong> y → +∞</div>
+      <div class="gvd-f"><strong>Rate formula:</strong> b = 1 − r</div>
+      <div class="gvd-f" style="margin-top:6px"><strong>Example:</strong> f(x) = 3(½)ˣ</div>
+    </div>
+  </div>
+
+  <div class="cpair" style="margin-top:18px;">
+    <div>
+      <div style="font-size:.78rem;font-weight:700;color:var(--growth);text-align:center;margin-bottom:6px;">GROWTH: f(x) = 3(2)ˣ</div>
+      <canvas id="growCanvas" width="380" height="260" style="width:100%;border:1px solid rgba(0,212,160,.25);border-radius:10px;background:#060b18;"></canvas>
+    </div>
+    <div>
+      <div style="font-size:.78rem;font-weight:700;color:var(--decay);text-align:center;margin-bottom:6px;">DECAY: f(x) = 3(½)ˣ</div>
+      <canvas id="decCanvas" width="380" height="260" style="width:100%;border:1px solid rgba(249,112,102,.25);border-radius:10px;background:#060b18;"></canvas>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:18px;">
+    <div class="card-title">Quick Classifier — Type a base to check</div>
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+      <div style="flex:0 0 180px;">
+        <label style="font-size:.78rem;color:var(--muted);display:block;margin-bottom:4px;">Enter base b =</label>
+        <input type="number" class="num-in" id="classB" value="1.5" step="0.1" min="0.01" oninput="classify()">
+      </div>
+      <div id="classResult" style="flex:1;font-size:.95rem;"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Identifying Growth vs Decay — Method</div>
+    <div class="step-list">
+      <div class="step-item">
+        <div class="step-num">1</div>
+        <div class="step-body"><div class="st">Write the equation in standard form: f(x) = a · bˣ</div></div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <div class="step-body"><div class="st">Identify the base <em>b</em> (the number raised to the variable power)</div></div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">3</div>
+        <div class="step-body"><div class="st">If b &gt; 1 → <span style="color:var(--growth)">GROWTH ↑</span> &nbsp;|&nbsp; If 0 &lt; b &lt; 1 → <span style="color:var(--decay)">DECAY ↓</span></div></div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">4</div>
+        <div class="step-body"><div class="st">Find rate: Growth: r = b − 1 &nbsp;|&nbsp; Decay: r = 1 − b &nbsp;(then multiply by 100 for %)</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════ TRANSFORMATIONS ══════════════════════════════ -->
+<section id="transforms">
+  <div class="sec-title">🔄 Transformation Lab</div>
+  <div class="sec-sub">Starting from the parent function y = 2ˣ, explore how each parameter reshapes the graph.</div>
+
+  <div class="card">
+    <div class="card-title">Transformation Reference — f(x) = <span class="param-a">a</span> · b^(x − <span class="param-h">h</span>) + <span class="param-k">k</span></div>
+    <div style="overflow-x:auto;">
+    <table class="tbl">
+      <tr><th>Parameter</th><th>Rule</th><th>Effect on Graph</th><th>Asymptote</th></tr>
+      <tr><td><span class="param-a" style="font-family:monospace">a &lt; 0</span></td><td>Negative a</td><td>Reflects over x-axis</td><td>Stays at y = k</td></tr>
+      <tr><td><span class="param-a" style="font-family:monospace">|a| &gt; 1</span></td><td>Big |a|</td><td>Vertical STRETCH (taller)</td><td>Stays at y = k</td></tr>
+      <tr><td><span class="param-a" style="font-family:monospace">0 &lt; |a| &lt; 1</span></td><td>Small |a|</td><td>Vertical COMPRESS (shorter)</td><td>Stays at y = k</td></tr>
+      <tr><td><span class="param-h" style="font-family:monospace">h &gt; 0</span></td><td>Shift Right</td><td>Moves graph h units RIGHT</td><td>Stays at y = k</td></tr>
+      <tr><td><span class="param-h" style="font-family:monospace">h &lt; 0</span></td><td>Shift Left</td><td>Moves graph |h| units LEFT</td><td>Stays at y = k</td></tr>
+      <tr><td><span class="param-k" style="font-family:monospace">k &gt; 0</span></td><td>Shift Up</td><td>Moves graph k units UP</td><td>Moves to y = k</td></tr>
+      <tr><td><span class="param-k" style="font-family:monospace">k &lt; 0</span></td><td>Shift Down</td><td>Moves graph |k| units DOWN</td><td>Moves to y = k</td></tr>
+    </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Transformation Explorer (blue = parent y = 2ˣ, teal = transformed)</div>
+    <div class="pills" id="tfPills">
+      <span class="pill on" onclick="pickTf(0,this)">Parent y = 2ˣ</span>
+      <span class="pill" onclick="pickTf(1,this)">Reflect: −2ˣ</span>
+      <span class="pill" onclick="pickTf(2,this)">Stretch: 3(2ˣ)</span>
+      <span class="pill" onclick="pickTf(3,this)">Shift Right 3</span>
+      <span class="pill" onclick="pickTf(4,this)">Shift Up 5</span>
+      <span class="pill" onclick="pickTf(5,this)">Combined</span>
+    </div>
+    <canvas id="tfCanvas" width="860" height="360" class="main-canvas"></canvas>
+    <div id="tfDesc" class="card" style="margin-top:10px;background:var(--surface);border-color:rgba(255,214,10,.2);"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Practice — Write the Equation (Parent: y = 3ˣ)</div>
+    <div class="two-col">
+      <div style="background:var(--surface);border-radius:10px;padding:14px;">
+        <div style="font-weight:700;color:var(--gold);margin-bottom:6px;font-family:monospace;">Problem 5</div>
+        <div style="font-size:.82rem;color:var(--muted);margin-bottom:8px;">V. compress by ⅓, shift LEFT 3, shift DOWN 8</div>
+        <div style="font-family:monospace;color:var(--growth);font-size:.95rem;">y = ⅓(3)^(x+3) − 8</div>
+      </div>
+      <div style="background:var(--surface);border-radius:10px;padding:14px;">
+        <div style="font-weight:700;color:var(--gold);margin-bottom:6px;font-family:monospace;">Problem 6</div>
+        <div style="font-size:.82rem;color:var(--muted);margin-bottom:8px;">Reflect over x-axis, V. stretch ×5, shift UP 7</div>
+        <div style="font-family:monospace;color:var(--growth);font-size:.95rem;">f(x) = −5(3)ˣ + 7</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════ SOLVER ══════════════════════════════ -->
+<section id="solver">
+  <div class="sec-title">⚡ Equation Solver</div>
+  <div class="sec-sub">Master the Same-Base Method. Click any example to see every step.</div>
+
+  <div class="card">
+    <div class="card-title">The Key Rule</div>
+    <div class="eq-box">If b<sup>x</sup> = b<sup>y</sup> → then x = y &nbsp;(when b &gt; 0 and b ≠ 1)</div>
+    <div style="font-size:.88rem;color:var(--muted);">Rewrite both sides with the same base, then the exponents must be equal — or the same direction for inequalities.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Power Relationships to Memorize</div>
+    <div class="power-grid">
+      <div class="power-tile"><span>49 = </span><strong>7²</strong></div>
+      <div class="power-tile"><span>64 = </span><strong>4³ = 2⁶</strong></div>
+      <div class="power-tile"><span>1024 = </span><strong>2¹⁰ = 4⁵</strong></div>
+      <div class="power-tile"><span>16 = </span><strong>2⁴</strong></div>
+      <div class="power-tile"><span>36 = </span><strong>6²</strong></div>
+      <div class="power-tile"><span>8 = </span><strong>2³</strong></div>
+      <div class="power-tile"><span>27 = </span><strong>3³</strong></div>
+      <div class="power-tile"><span>125 = </span><strong>5³</strong></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Step-by-Step Examples — Click to See Solution</div>
+    <div class="pills" id="solPills">
+      <span class="pill on" onclick="pickSol(0,this)">7^(x−9) = 49^(2x−3)</span>
+      <span class="pill" onclick="pickSol(1,this)">64^(3x+5) = 1024^x</span>
+      <span class="pill" onclick="pickSol(2,this)">6^(x−3) + 5 = 41</span>
+      <span class="pill" onclick="pickSol(3,this)">8^(3x−1) − 3 &lt; 13</span>
+    </div>
+    <div id="solDisplay"></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════ REAL WORLD ══════════════════════════════ -->
+<section id="realworld">
+  <div class="sec-title">🌍 Real World Models</div>
+  <div class="sec-sub">Exponential functions model real phenomena. Change the inputs and explore how the math applies.</div>
+
+  <div class="btn-row" style="margin-bottom:20px;" id="modelBtns">
+    <button class="btn gld" data-m="pop" onclick="loadModel('pop',this)">🏙️ Population Growth</button>
+    <button class="btn" data-m="bac" onclick="loadModel('bac',this)">🦠 Bacteria Doubling</button>
+    <button class="btn" data-m="car" onclick="loadModel('car',this)">🚗 Car Depreciation</button>
+    <button class="btn" data-m="ci" onclick="loadModel('ci',this)">💰 Compound Interest</button>
+  </div>
+  <div id="modelArea"></div>
+</section>
+
+<!-- ══════════════════════════════ SEQUENCES ══════════════════════════════ -->
+<section id="sequences">
+  <div class="sec-title">🔢 Geometric Sequences</div>
+  <div class="sec-sub">A geometric sequence multiplies by a constant common ratio <em>r</em> at each step.</div>
+
+  <div class="card">
+    <div class="two-col">
+      <div>
+        <div class="card-title">Recursive Formula</div>
+        <div class="eq-box" style="font-size:1rem;">aₙ = r · aₙ₋₁</div>
+        <div style="font-size:.82rem;color:var(--muted);margin-top:6px;">Also state a₁ (the first term)</div>
+      </div>
+      <div>
+        <div class="card-title">Explicit (Closed) Formula</div>
+        <div class="eq-box" style="font-size:1rem;">aₙ = a₁ · r^(n−1)</div>
+        <div style="font-size:.82rem;color:var(--muted);margin-top:6px;">Find any term directly</div>
+      </div>
+    </div>
+    <div style="margin-top:10px;font-size:.85rem;color:var(--muted);">💡 To find r: divide any term by the previous one — r = aₙ ÷ aₙ₋₁</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Sequence Explorer</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px;">
+      <div>
+        <label style="font-size:.75rem;color:var(--muted);display:block;margin-bottom:4px;">First term a₁</label>
+        <input type="number" class="num-in" id="seqA1" value="2" oninput="updateSeq()">
+      </div>
+      <div>
+        <label style="font-size:.75rem;color:var(--muted);display:block;margin-bottom:4px;">Common ratio r</label>
+        <input type="number" class="num-in" id="seqR" value="3" step="0.1" oninput="updateSeq()">
+      </div>
+      <div>
+        <label style="font-size:.75rem;color:var(--muted);display:block;margin-bottom:4px;">Find term n =</label>
+        <input type="number" class="num-in" id="seqN" value="8" min="1" max="20" oninput="updateSeq()">
+      </div>
+    </div>
+    <div class="seq-wrap" id="seqTerms"></div>
+    <div id="seqFormulas" style="margin-top:14px;"></div>
+    <div id="seqNthResult"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Worked Examples</div>
+    <div class="pills" id="seqPills">
+      <span class="pill on" onclick="pickSeqEx(0,this)">152, 76, 38, …</span>
+      <span class="pill" onclick="pickSeqEx(1,this)">a₁ = −2, r = 2</span>
+    </div>
+    <div id="seqExArea"></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════ REFERENCE ══════════════════════════════ -->
+<section id="reference">
+  <div class="sec-title">📋 Quick Reference</div>
+  <div class="sec-sub">All Unit 6 key formulas in one place.</div>
+
+  <div class="card">
+    <table class="tbl">
+      <tr><th>Formula / Concept</th><th>Expression</th><th>What to Remember</th></tr>
+      <tr><td><strong>Standard Form</strong></td><td class="fc">f(x) = a · bˣ</td><td>a = initial value (y-int), b = base</td></tr>
+      <tr><td><strong>Growth Model</strong></td><td class="fc">f(x) = a(1+r)ˣ</td><td>r &gt; 0; base b = 1+r &gt; 1</td></tr>
+      <tr><td><strong>Decay Model</strong></td><td class="fc">f(x) = a(1−r)ˣ</td><td>0 &lt; r &lt; 1; base b = 1−r &lt; 1</td></tr>
+      <tr><td><strong>Compound Interest</strong></td><td class="fc">A = P(1 + r/n)^(nt)</td><td>n = periods/yr, t = years</td></tr>
+      <tr><td><strong>Rate of Change</strong></td><td class="fc">(y₂−y₁) / (x₂−x₁)</td><td>Average rate on interval [x₁, x₂]</td></tr>
+      <tr><td><strong>Y-Intercept</strong></td><td class="fc">f(0) = a · b⁰ = a</td><td>Set x = 0; always equals a</td></tr>
+      <tr><td><strong>Asymptote</strong></td><td class="fc">y = k</td><td>Graph approaches but never crosses</td></tr>
+      <tr><td><strong>Domain</strong></td><td class="fc">(−∞, +∞)</td><td>All real numbers for x</td></tr>
+      <tr><td><strong>Range (a &gt; 0)</strong></td><td class="fc">(k, +∞)</td><td>Above the asymptote</td></tr>
+      <tr><td><strong>Range (a &lt; 0)</strong></td><td class="fc">(−∞, k)</td><td>Below the asymptote</td></tr>
+      <tr><td><strong>Same-Base Solving</strong></td><td class="fc">bˣ = bʸ → x = y</td><td>Rewrite both sides first</td></tr>
+      <tr><td><strong>Recursive Sequence</strong></td><td class="fc">aₙ = r · aₙ₋₁</td><td>State a₁ and ratio r</td></tr>
+      <tr><td><strong>Explicit Sequence</strong></td><td class="fc">aₙ = a₁ · r^(n−1)</td><td>Jump to any term directly</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Compounding Periods</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;">
+      <div style="background:var(--surface);padding:12px;border-radius:8px;text-align:center;">
+        <div style="font-size:.72rem;color:var(--muted);">Annual</div>
+        <div style="font-family:monospace;font-size:1.5rem;color:var(--gold);">n = 1</div>
+      </div>
+      <div style="background:var(--surface);padding:12px;border-radius:8px;text-align:center;">
+        <div style="font-size:.72rem;color:var(--muted);">Semi-Annual</div>
+        <div style="font-family:monospace;font-size:1.5rem;color:var(--gold);">n = 2</div>
+      </div>
+      <div style="background:var(--surface);padding:12px;border-radius:8px;text-align:center;">
+        <div style="font-size:.72rem;color:var(--muted);">Quarterly</div>
+        <div style="font-family:monospace;font-size:1.5rem;color:var(--gold);">n = 4</div>
+      </div>
+      <div style="background:var(--surface);padding:12px;border-radius:8px;text-align:center;">
+        <div style="font-size:.72rem;color:var(--muted);">Monthly</div>
+        <div style="font-family:monospace;font-size:1.5rem;color:var(--gold);">n = 12</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════ JAVASCRIPT ══════════════════════════════ -->
+<script>
+// ── SECTION NAVIGATION ──
+const SECTIONS = ['home','grapher','growdecay','transforms','solver','realworld','sequences','reference'];
+
+function go(id) {
+  SECTIONS.forEach(s => {
+    document.getElementById(s).classList.toggle('active', s === id);
+  });
+  document.querySelectorAll('nav button').forEach((btn, i) => {
+    btn.classList.toggle('active', SECTIONS[i] === id);
+  });
+  const init = { grapher: drawMain, growdecay: initGVD, transforms: () => pickTf(0, document.querySelector('#tfPills .pill')),
+    solver: () => pickSol(0, document.querySelector('#solPills .pill')),
+    realworld: () => loadModel('pop', document.querySelector('#modelBtns button')),
+    sequences: () => { updateSeq(); pickSeqEx(0, document.querySelector('#seqPills .pill')); }
+  };
+  if (init[id]) init[id]();
+}
+
+// ── CANVAS HELPERS ──
+function mkCtx(id) {
+  const c = document.getElementById(id);
+  return { c, ctx: c.getContext('2d'), W: c.width, H: c.height };
+}
+function clearCanvas(id) {
+  const { ctx, W, H } = mkCtx(id);
+  ctx.fillStyle = '#060b18'; ctx.fillRect(0, 0, W, H);
+  return mkCtx(id);
+}
+
+function drawGrid(ctx, W, H, tx, ty, xMin, xMax, yMin, yMax) {
+  ctx.strokeStyle = 'rgba(46,63,107,0.38)'; ctx.lineWidth = 1;
+  for (let x = Math.ceil(xMin); x <= Math.floor(xMax); x++) {
+    ctx.beginPath(); ctx.moveTo(tx(x), 0); ctx.lineTo(tx(x), H); ctx.stroke();
+  }
+  for (let y = Math.ceil(yMin); y <= Math.floor(yMax); y++) {
+    if (y % 2 === 0) { ctx.beginPath(); ctx.moveTo(0, ty(y)); ctx.lineTo(W, ty(y)); ctx.stroke(); }
+  }
+  ctx.strokeStyle = 'rgba(140,160,200,0.55)'; ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(0, ty(0)); ctx.lineTo(W, ty(0)); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(tx(0), 0); ctx.lineTo(tx(0), H); ctx.stroke();
+}
+
+function drawAxisLabels(ctx, tx, ty, xMin, xMax, yMin, yMax, step) {
+  ctx.fillStyle = 'rgba(120,140,180,0.65)';
+  ctx.font = '11px JetBrains Mono, monospace';
+  for (let x = Math.ceil(xMin); x <= Math.floor(xMax); x += step) {
+    if (x !== 0) { ctx.textAlign = 'center'; ctx.fillText(x, tx(x), ty(0) + 13); }
+  }
+  for (let y = Math.ceil(yMin/2)*2; y <= Math.floor(yMax/2)*2; y += step * 2) {
+    if (y !== 0) { ctx.textAlign = 'right'; ctx.fillText(y, tx(0) - 4, ty(y) + 4); }
+  }
+}
+
+function drawCurve(ctx, tx, ty, fn, color, W, yMin, yMax, xMin, xMax, lineWidth) {
+  ctx.strokeStyle = color; ctx.lineWidth = lineWidth || 2.5;
+  ctx.beginPath(); let started = false;
+  for (let px = 0; px <= W; px++) {
+    const x = xMin + (px / W) * (xMax - xMin);
+    const y = fn(x);
+    if (!isFinite(y) || isNaN(y) || y < yMin - 60 || y > yMax + 60) { started = false; continue; }
+    if (!started) { ctx.moveTo(px, ty(y)); started = true; } else ctx.lineTo(px, ty(y));
+  }
+  ctx.stroke();
+}
+
+// ── MAIN GRAPH LAB ──
+function getSliderVals() {
+  return {
+    a: parseFloat(document.getElementById('sA').value),
+    b: parseFloat(document.getElementById('sB').value),
+    h: parseFloat(document.getElementById('sH').value),
+    k: parseFloat(document.getElementById('sK').value)
+  };
+}
+
+function setSliders(a, b, h, k) {
+  document.getElementById('sA').value = a;
+  document.getElementById('sB').value = b;
+  document.getElementById('sH').value = h;
+  document.getElementById('sK').value = k;
+  drawMain();
+}
+
+function drawMain() {
+  const { a, b, h, k } = getSliderVals();
+  document.getElementById('vA').textContent = a.toFixed(1);
+  document.getElementById('vB').textContent = b.toFixed(2);
+  document.getElementById('vH').textContent = h.toFixed(1);
+  document.getElementById('vK').textContent = k.toFixed(1);
+
+  // Build label
+  let lbl = 'f(x) = ';
+  if (a !== 1) lbl += (a < 0 && a === -1 ? '−' : a.toFixed(1)) + ' · ';
+  lbl += b.toFixed(2) + '^';
+  lbl += h !== 0 ? '(x ' + (h > 0 ? '− ' + h.toFixed(1) : '+ ' + Math.abs(h).toFixed(1)) + ')' : 'x';
+  if (k !== 0) lbl += (k > 0 ? ' + ' : ' − ') + Math.abs(k).toFixed(1);
+  document.getElementById('mainEqLabel').textContent = lbl;
+
+  const xMin = -6, xMax = 6, yMin = -12, yMax = 22;
+  const { ctx, W, H } = clearCanvas('mainCanvas');
+  const tx = x => (x - xMin) / (xMax - xMin) * W;
+  const ty = y => H - (y - yMin) / (yMax - yMin) * H;
+
+  drawGrid(ctx, W, H, tx, ty, xMin, xMax, yMin, yMax);
+  drawAxisLabels(ctx, tx, ty, xMin, xMax, yMin, yMax, 2);
+
+  // Asymptote
+  ctx.strokeStyle = 'rgba(255,214,10,0.45)'; ctx.lineWidth = 1.5;
+  ctx.setLineDash([6, 4]);
+  ctx.beginPath(); ctx.moveTo(0, ty(k)); ctx.lineTo(W, ty(k)); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = 'rgba(255,214,10,0.75)'; ctx.font = '11px JetBrains Mono,monospace'; ctx.textAlign = 'right';
+  ctx.fillText('y = ' + k.toFixed(1), W - 6, ty(k) - 5);
+
+  // Curve
+  const color = b > 1 ? '#00d4a0' : '#f97066';
+  drawCurve(ctx, tx, ty, x => a * Math.pow(b, x - h) + k, color, W, yMin, yMax, xMin, xMax);
+
+  // Y-intercept point
+  const yi = a * Math.pow(b, -h) + k;
+  if (yi >= yMin && yi <= yMax) {
+    ctx.fillStyle = '#fff';
+    ctx.beginPath(); ctx.arc(tx(0), ty(yi), 5, 0, 2 * Math.PI); ctx.fill();
+    ctx.fillStyle = 'rgba(255,255,255,.85)'; ctx.font = '11px JetBrains Mono,monospace'; ctx.textAlign = 'left';
+    ctx.fillText('(0, ' + yi.toFixed(1) + ')', tx(0) + 8, ty(yi) - 6);
+  }
+
+  // Characteristics
+  const isGrowth = b > 1;
+  const rate = isGrowth ? b - 1 : 1 - b;
+  const rangeStr = a > 0 ? `(${k.toFixed(1)}, +∞)` : `(−∞, ${k.toFixed(1)})`;
+  const chars = [
+    { l: 'Domain', v: '(−∞, +∞)' },
+    { l: 'Range', v: rangeStr },
+    { l: 'Asymptote', v: `y = ${k.toFixed(1)}` },
+    { l: 'Y-Intercept', v: yi.toFixed(2) },
+    { l: 'Type', v: isGrowth ? 'GROWTH ↑' : 'DECAY ↓', cls: isGrowth ? 'is-growth' : 'is-decay' },
+    { l: 'Rate r', v: (rate * 100).toFixed(1) + '%' },
+    { l: 'Interval', v: isGrowth ? 'Inc on (−∞,+∞)' : 'Dec on (−∞,+∞)' },
+    { l: 'Reflection', v: a < 0 ? 'Yes (over x-axis)' : 'No' },
+  ];
+  document.getElementById('charGrid').innerHTML = chars.map(c =>
+    `<div class="char-item ${c.cls||''}"><div class="cl">${c.l}</div><div class="cv">${c.v}</div></div>`
+  ).join('');
+}
+
+// ── GROWTH vs DECAY ──
+function drawMiniGraph(id, fn, color, xMin, xMax, yMin, yMax) {
+  const { ctx, W, H } = clearCanvas(id);
+  const tx = x => (x - xMin) / (xMax - xMin) * W;
+  const ty = y => H - (y - yMin) / (yMax - yMin) * H;
+  ctx.strokeStyle = 'rgba(46,63,107,0.4)'; ctx.lineWidth = 1;
+  for (let x = xMin; x <= xMax; x++) { ctx.beginPath(); ctx.moveTo(tx(x), 0); ctx.lineTo(tx(x), H); ctx.stroke(); }
+  for (let y = yMin; y <= yMax; y += 4) { ctx.beginPath(); ctx.moveTo(0, ty(y)); ctx.lineTo(W, ty(y)); ctx.stroke(); }
+  ctx.strokeStyle = 'rgba(140,160,200,0.5)'; ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(0, ty(0)); ctx.lineTo(W, ty(0)); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(tx(0), 0); ctx.lineTo(tx(0), H); ctx.stroke();
+  drawCurve(ctx, tx, ty, fn, color, W, yMin, yMax, xMin, xMax, 2.5);
+}
+
+function initGVD() {
+  drawMiniGraph('growCanvas', x => 3 * Math.pow(2, x), '#00d4a0', -4, 4, -2, 18);
+  drawMiniGraph('decCanvas', x => 3 * Math.pow(0.5, x), '#f97066', -4, 4, -2, 18);
+  classify();
+}
+
+function classify() {
+  const b = parseFloat(document.getElementById('classB').value);
+  const el = document.getElementById('classResult');
+  if (isNaN(b) || b <= 0) { el.innerHTML = `<span style="color:var(--decay)">Invalid — b must be positive</span>`; return; }
+  if (b === 1) { el.innerHTML = `<span style="color:var(--muted)">b = 1 is NOT valid (b must ≠ 1)</span>`; return; }
+  if (b > 1) {
+    el.innerHTML = `<span class="badge g">GROWTH</span> b = ${b} &gt; 1 → rate r = ${((b-1)*100).toFixed(1)}%`;
+  } else {
+    el.innerHTML = `<span class="badge d">DECAY</span> b = ${b} &lt; 1 → rate r = ${((1-b)*100).toFixed(1)}%`;
+  }
+}
+
+// ── TRANSFORMATIONS ──
+const TFS = [
+  { a:1,  b:2, h:0, k:0,  lbl:'Parent Function y = 2ˣ',
+    desc:'The base parent. b = 2 &gt; 1 so it grows. Y-intercept at (0, 1). Asymptote stays at y = 0.' },
+  { a:-1, b:2, h:0, k:0,  lbl:'Reflection: y = −2ˣ',
+    desc:'<span class="param-a">a = −1 &lt; 0</span> flips the curve over the x-axis. Graph now decreases. Y-intercept at (0, −1).' },
+  { a:3,  b:2, h:0, k:0,  lbl:'Vertical Stretch: y = 3(2ˣ)',
+    desc:'<span class="param-a">|a| = 3 &gt; 1</span> pulls the graph away from the x-axis — every y-value is multiplied by 3. Y-int: (0, 3).' },
+  { a:1,  b:2, h:3, k:0,  lbl:'Shift Right 3: y = 2^(x−3)',
+    desc:'<span class="param-h">h = 3 &gt; 0</span> shifts every point RIGHT 3 units. Asymptote unchanged. Y-int: (0, 2^−³) ≈ (0, 0.125).' },
+  { a:1,  b:2, h:0, k:5,  lbl:'Shift Up 5: y = 2ˣ + 5',
+    desc:'<span class="param-k">k = 5 &gt; 0</span> shifts graph UP 5. The asymptote also moves to y = 5. Y-int: (0, 6).' },
+  { a:-2, b:2, h:3, k:0,  lbl:'Combined: y = −2(2)^(x−3)',
+    desc:'<span class="param-a">a = −2</span> reflects and stretches vertically; <span class="param-h">h = 3</span> shifts right 3. Asymptote: y = 0.' },
+];
+
+function pickTf(idx, el) {
+  document.querySelectorAll('#tfPills .pill').forEach(p => p.classList.remove('on'));
+  if (el) el.classList.add('on');
+  const tf = TFS[idx];
+  const xMin=-7, xMax=7, yMin=-12, yMax=20;
+  const { ctx, W, H } = clearCanvas('tfCanvas');
+  const tx = x => (x-xMin)/(xMax-xMin)*W;
+  const ty = y => H - (y-yMin)/(yMax-yMin)*H;
+  drawGrid(ctx, W, H, tx, ty, xMin, xMax, yMin, yMax);
+  drawAxisLabels(ctx, tx, ty, xMin, xMax, yMin, yMax, 2);
+  // Parent (faint blue)
+  drawCurve(ctx, tx, ty, x => Math.pow(2, x), 'rgba(96,165,250,0.35)', W, yMin, yMax, xMin, xMax, 1.5);
+  // Asymptote
+  ctx.strokeStyle='rgba(255,214,10,.4)'; ctx.lineWidth=1.5; ctx.setLineDash([5,4]);
+  ctx.beginPath(); ctx.moveTo(0,ty(tf.k)); ctx.lineTo(W,ty(tf.k)); ctx.stroke();
+  ctx.setLineDash([]);
+  // Transformed
+  drawCurve(ctx, tx, ty, x => tf.a*Math.pow(tf.b,x-tf.h)+tf.k, '#00d4a0', W, yMin, yMax, xMin, xMax, 2.5);
+  // Legend
+  ctx.font = '12px JetBrains Mono,monospace';
+  ctx.fillStyle='rgba(96,165,250,.55)'; ctx.textAlign='left'; ctx.fillText('y = 2ˣ (parent)', 8, 16);
+  ctx.fillStyle='#00d4a0'; ctx.fillText('y = transformed', 8, 32);
+  ctx.fillStyle='rgba(255,214,10,.7)'; ctx.fillText('asymptote y=' + tf.k, 8, 48);
+  document.getElementById('tfDesc').innerHTML = `<strong style="color:var(--gold)">${tf.lbl}</strong><br><span style="color:var(--muted);font-size:.9rem;">${tf.desc}</span>`;
+}
+
+// ── EQUATION SOLVER ──
+const SOLS = [
+  { eq:'7^(x−9) = 49^(2x−3)', steps:[
+    {h:'Recognize a common base',   m:'49 = 7²  →  rewrite the right side as a power of 7'},
+    {h:'Rewrite right side',         m:'7^(x−9) = (7²)^(2x−3) = 7^(4x−6)'},
+    {h:'Same base — set exponents equal', m:'x − 9 = 4x − 6'},
+    {h:'Solve for x',                m:'−3 = 3x  →  x = −1', ans:true},
+  ]},
+  { eq:'64^(3x+5) = 1024^x', steps:[
+    {h:'Find a common base',          m:'64 = 2⁶  and  1024 = 2¹⁰'},
+    {h:'Rewrite both sides',          m:'(2⁶)^(3x+5) = (2¹⁰)^x'},
+    {h:'Apply power of a power rule', m:'2^(18x+30) = 2^(10x)'},
+    {h:'Set exponents equal',         m:'18x + 30 = 10x  →  8x = −30'},
+    {h:'Solve',                       m:'x = −30/8 = −15/4', ans:true},
+  ]},
+  { eq:'6^(x−3) + 5 = 41', steps:[
+    {h:'Isolate the exponential term', m:'6^(x−3) = 41 − 5 = 36'},
+    {h:'Recognize: 36 = 6²',           m:'6^(x−3) = 6²'},
+    {h:'Same base — set exponents',    m:'x − 3 = 2'},
+    {h:'Solve',                        m:'x = 5', ans:true},
+  ]},
+  { eq:'8^(3x−1) − 3 < 13', steps:[
+    {h:'Isolate (inequality)',         m:'8^(3x−1) < 16'},
+    {h:'Common base: 8=2³, 16=2⁴',    m:'(2³)^(3x−1) < 2⁴'},
+    {h:'Apply power rule',            m:'2^(9x−3) < 2⁴'},
+    {h:'b > 1 → keep direction',      m:'9x − 3 < 4  →  9x < 7'},
+    {h:'Final answer (interval notation)', m:'x < 7/9  →  (−∞, 7/9)', ans:true},
+  ]},
+];
+
+function pickSol(idx, el) {
+  document.querySelectorAll('#solPills .pill').forEach(p => p.classList.remove('on'));
+  if (el) el.classList.add('on');
+  const s = SOLS[idx];
+  let html = `<div class="eq-box">${s.eq}</div>`;
+  s.steps.forEach((st, i) => {
+    html += `<div class="solve-step lit" style="animation-delay:${i*0.07}s">
+      <div class="sh">Step ${i+1}: ${st.h}</div>
+      <div class="${st.ans?'sa2':'sm2'}">${st.m}</div>
+    </div>`;
+  });
+  document.getElementById('solDisplay').innerHTML = html;
+}
+
+// ── REAL WORLD MODELS ──
+const MODELS = {
+  pop: {
+    title:'🏙️ Population Growth',
+    desc:'A city with an initial population grows at a constant annual percentage rate.',
+    fields:[{id:'pA',lbl:'Initial Population',val:35000},{id:'pR',lbl:'Annual Growth Rate (%)',val:24},{id:'pX',lbl:'Number of Years (x)',val:12}],
+    calc() {
+      const a=+document.getElementById('pA').value, r=+document.getElementById('pR').value/100, x=+document.getElementById('pX').value;
+      const b=(1+r); const res=a*Math.pow(b,x);
+      return { eq:`P(x) = ${a.toLocaleString()}(${b.toFixed(4)})^x`, val:`P(${x}) ≈ ${Math.round(res).toLocaleString()} people`, growth:true };
+    }
+  },
+  bac: {
+    title:'🦠 Bacteria Doubling',
+    desc:'Bacteria that doubles every set number of minutes.',
+    fields:[{id:'bA',lbl:'Initial Count',val:1},{id:'bD',lbl:'Doubling Period (minutes)',val:5},{id:'bT',lbl:'Total Time (minutes)',val:120}],
+    calc() {
+      const a=+document.getElementById('bA').value, d=+document.getElementById('bD').value, t=+document.getElementById('bT').value;
+      const res=a*Math.pow(2,t/d);
+      return { eq:`B(t) = ${a}(2)^(t/${d})`, val:`B(${t}) = 2^${t/d} = ${res.toLocaleString()} bacteria`, growth:true };
+    }
+  },
+  car: {
+    title:'🚗 Car Depreciation',
+    desc:'A car loses a fixed percentage of its value every set number of years.',
+    fields:[{id:'cA',lbl:'Initial Value ($)',val:25000},{id:'cR',lbl:'Depreciation Rate (%)',val:25},{id:'cP',lbl:'Period (years per cycle)',val:2},{id:'cX',lbl:'Evaluate at Year',val:10}],
+    calc() {
+      const a=+document.getElementById('cA').value, r=+document.getElementById('cR').value/100,
+            p=+document.getElementById('cP').value, x=+document.getElementById('cX').value;
+      const b=(1-r); const res=a*Math.pow(b,x/p);
+      return { eq:`f(x) = ${a.toLocaleString()}(${b.toFixed(4)})^(x/${p})`,
+               val:`f(${x}) = $${res.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}`, growth:false };
+    }
+  },
+  ci: {
+    title:'💰 Compound Interest',
+    desc:'Money grows via A = P(1 + r/n)^(nt). Chyna\'s example: $300 at 5%, quarterly, 4 years.',
+    fields:[{id:'iP',lbl:'Principal ($)',val:300},{id:'iR',lbl:'Annual Rate (%)',val:5},{id:'iN',lbl:'Periods per Year (n)',val:4},{id:'iT',lbl:'Time (years)',val:4}],
+    calc() {
+      const P=+document.getElementById('iP').value, r=+document.getElementById('iR').value/100,
+            n=+document.getElementById('iN').value, t=+document.getElementById('iT').value;
+      const A=P*Math.pow(1+r/n,n*t);
+      const nLbl={1:'Annual',2:'Semi-Annual',4:'Quarterly',12:'Monthly'}[n]||`n=${n}`;
+      return { eq:`A = ${P}(1 + ${r}/${n})^(${n}×${t}) = ${P}(${(1+r/n).toFixed(4)})^${n*t}`,
+               val:`A ≈ $${A.toFixed(2)} (${nLbl})`, growth:true };
+    }
+  }
+};
+
+let _activeModel = 'pop';
+
+function loadModel(key, btn) {
+  _activeModel = key;
+  document.querySelectorAll('#modelBtns button').forEach(b => {
+    b.classList.remove('gld','grn','red');
+    b.classList.add('btn');
+  });
+  if (btn) { btn.classList.add(key==='car'?'red':'gld'); }
+  const m = MODELS[key];
+  const fieldsHtml = m.fields.map(f =>
+    `<div><label style="font-size:.75rem;color:var(--muted);display:block;margin-bottom:3px">${f.lbl}</label>
+     <input type="number" class="num-in" id="${f.id}" value="${f.val}" oninput="calcModel()"></div>`
+  ).join('');
+  document.getElementById('modelArea').innerHTML = `
+    <div class="card">
+      <div class="card-title">${m.title}</div>
+      <div style="color:var(--muted);font-size:.88rem;margin-bottom:14px">${m.desc}</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:14px">${fieldsHtml}</div>
+      <button class="btn gld" onclick="calcModel()">Calculate ▶</button>
+      <div id="mResult"></div>
+    </div>`;
+  calcModel();
+}
+
+function calcModel() {
+  try {
+    const r = MODELS[_activeModel].calc();
+    document.getElementById('mResult').innerHTML = `
+      <div class="eq-box" style="margin-top:14px;font-size:.9rem">${r.eq}</div>
+      <div class="res-box${r.growth?'':' d'}">
+        <div class="res-lbl">Result</div>
+        <div class="res-val">${r.val}</div>
+      </div>`;
+  } catch(e) {}
+}
+
+// ── SEQUENCES ──
+function updateSeq() {
+  const a1 = parseFloat(document.getElementById('seqA1').value)||1;
+  const r  = parseFloat(document.getElementById('seqR').value)||2;
+  const n  = parseInt(document.getElementById('seqN').value)||8;
+  const terms = [];
+  let v = a1;
+  for (let i=1; i<=Math.min(n+2, 12); i++) { terms.push({i,v}); v*=r; }
+  document.getElementById('seqTerms').innerHTML = terms.map(t =>
+    `<div class="seq-t ${t.i===n?'hi':''}">
+      <span class="sn">a${t.i}</span>
+      <span class="sv">${Math.abs(t.v)>9999?t.v.toExponential(2):(Number.isInteger(t.v)?t.v:+t.v.toFixed(3))}</span>
+    </div>`
+  ).join('');
+  const a1s = Number.isInteger(a1)?a1:a1.toFixed(2);
+  const rs  = Number.isInteger(r)?r:r.toFixed(2);
+  document.getElementById('seqFormulas').innerHTML = `
+    <div class="two-col">
+      <div style="background:var(--surface);border-radius:10px;padding:12px">
+        <div style="font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px">Recursive</div>
+        <div style="font-family:monospace;color:var(--gold)">a₁ = ${a1s}; &nbsp; aₙ = ${rs} · aₙ₋₁</div>
+      </div>
+      <div style="background:var(--surface);border-radius:10px;padding:12px">
+        <div style="font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px">Explicit</div>
+        <div style="font-family:monospace;color:var(--gold)">aₙ = ${a1s} · (${rs})^(n−1)</div>
+      </div>
+    </div>`;
+  const nth = a1 * Math.pow(r, n-1);
+  document.getElementById('seqNthResult').innerHTML = `
+    <div class="res-box" style="margin-top:12px">
+      <div class="res-lbl">a${n} = ${a1s} · (${rs})^(${n}−1)</div>
+      <div class="res-val">${Math.abs(nth)>9999?nth.toExponential(3):(Number.isInteger(nth)?nth.toLocaleString():nth.toFixed(4))}</div>
+    </div>`;
+}
+
+const SEQ_EX = [
+  `<div style="margin-top:12px">
+    <div style="font-family:monospace;font-size:1rem;color:var(--gold);margin-bottom:12px">152, 76, 38, …</div>
+    <div class="step-list">
+      <div class="step-item"><div class="step-num">1</div><div class="step-body"><div class="st">Find the common ratio</div><div class="sm">r = 76 ÷ 152 = 1/2 = 0.5</div></div></div>
+      <div class="step-item"><div class="step-num">2</div><div class="step-body"><div class="st">Recursive formula</div><div class="sm">a₁ = 152; &nbsp; aₙ = ½ · aₙ₋₁</div></div></div>
+      <div class="step-item"><div class="step-num">3</div><div class="step-body"><div class="st">Explicit formula</div><div class="sm">aₙ = 152(½)^(n−1)</div></div></div>
+      <div class="step-item"><div class="step-num">4</div><div class="step-body"><div class="st">5th term: &nbsp;<span style="color:var(--gold)">a₅ = 152(½)⁴ = 9.5</span></div></div></div>
+      <div class="step-item"><div class="step-num">5</div><div class="step-body"><div class="st">8th term: &nbsp;<span style="color:var(--gold)">a₈ = 152(½)⁷ = 1.1875</span></div></div></div>
+    </div></div>`,
+  `<div style="margin-top:12px">
+    <div style="font-family:monospace;font-size:1rem;color:var(--gold);margin-bottom:12px">a₁ = −2, aₙ = 2aₙ₋₁ &nbsp;(r = 2)</div>
+    <div class="step-list">
+      <div class="step-item"><div class="step-num">1</div><div class="step-body"><div class="st">First 5 terms</div><div class="sm">−2, −4, −8, −16, −32</div></div></div>
+      <div class="step-item"><div class="step-num">2</div><div class="step-body"><div class="st">Explicit formula</div><div class="sm">aₙ = −2(2)^(n−1)</div></div></div>
+      <div class="step-item"><div class="step-num">3</div><div class="step-body"><div class="st">8th term: &nbsp;<span style="color:var(--gold)">a₈ = −2(2)⁷ = −256</span></div></div></div>
+      <div class="step-item"><div class="step-num">4</div><div class="step-body"><div class="st">10th term: &nbsp;<span style="color:var(--gold)">a₁₀ = −2(2)⁹ = −1024</span></div></div></div>
+    </div></div>`
+];
+
+function pickSeqEx(idx, el) {
+  document.querySelectorAll('#seqPills .pill').forEach(p=>p.classList.remove('on'));
+  if (el) el.classList.add('on');
+  document.getElementById('seqExArea').innerHTML = SEQ_EX[idx];
+}
+
+// ── INIT ON LOAD ──
+window.addEventListener('load', () => {
+  drawMain();
+  classify();
+  initGVD();
+  pickTf(0, document.querySelector('#tfPills .pill'));
+  pickSol(0, document.querySelector('#solPills .pill'));
+  loadModel('pop', document.querySelector('#modelBtns button'));
+  updateSeq();
+  pickSeqEx(0, document.querySelector('#seqPills .pill'));
+});
+</script>
+</body>
+</html>

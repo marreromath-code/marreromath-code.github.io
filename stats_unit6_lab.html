@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 6: Investigating Data — Interactive Lab</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e0a1a;--sf:#160f28;--cd:#1e1535;--c2:#271c42;--bd:#3a2d5e;--tx:#ede8ff;--mt:#8b7db5;--vi:#c084fc;--vd:rgba(192,132,252,.12);--ro:#fb7185;--rd:rgba(251,113,133,.11);--em:#34d399;--ed:rgba(52,211,153,.11);--am:#fbbf24;--ad:rgba(251,191,36,.1);--sk:#38bdf8;}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;min-height:100vh;overflow-x:hidden;}
+nav{position:sticky;top:0;z-index:100;background:rgba(14,10,26,.97);backdrop-filter:blur(14px);border-bottom:1px solid var(--bd);display:flex;gap:3px;padding:9px 14px;overflow-x:auto;}
+nav::-webkit-scrollbar{height:0;}
+nav button{background:transparent;border:1px solid transparent;color:var(--mt);font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:600;padding:6px 11px;border-radius:6px;cursor:pointer;transition:all .2s;white-space:nowrap;}
+nav button:hover{color:var(--tx);border-color:var(--bd);}
+nav button.active{background:var(--vd);color:var(--vi);border-color:rgba(192,132,252,.35);}
+section{display:none;padding:26px 18px 60px;max-width:960px;margin:0 auto;}
+section.active{display:block;animation:fi .3s ease;}
+@keyframes fi{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.hero{text-align:center;padding:38px 16px 28px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.9rem,7.5vw,4rem);line-height:1.05;background:linear-gradient(130deg,var(--vi) 0%,var(--ro) 50%,var(--am) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:9px;}
+.hero p{color:var(--mt);font-size:.88rem;margin:0 auto 26px;max-width:390px;line-height:1.65;}
+.ng{display:grid;grid-template-columns:repeat(auto-fit,minmax(105px,1fr));gap:8px;max-width:780px;margin:0 auto;}
+.nc{background:var(--cd);border:1px solid var(--bd);border-radius:11px;padding:13px 8px;cursor:pointer;transition:all .22s;text-align:center;}
+.nc:hover{border-color:var(--vi);transform:translateY(-3px);background:var(--c2);}
+.nc .ic{font-size:1.55rem;margin-bottom:4px;}
+.nc .lb{font-size:.7rem;font-weight:600;color:var(--mt);}
+.nc:hover .lb{color:var(--tx);}
+.st{font-family:'Playfair Display',serif;font-size:1.65rem;margin-bottom:4px;}
+.ss{color:var(--mt);font-size:.87rem;margin-bottom:19px;line-height:1.65;}
+.card{background:var(--cd);border:1px solid var(--bd);border-radius:12px;padding:18px;margin-bottom:13px;}
+.ct{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--mt);margin-bottom:10px;}
+canvas.pl{width:100%;display:block;border-radius:9px;border:1px solid var(--bd);background:#080515;}
+.sr{display:flex;align-items:center;gap:9px;margin:6px 0;}
+.sl{font-family:'JetBrains Mono',monospace;font-size:.81rem;width:46px;text-align:right;flex-shrink:0;}
+.sv{font-family:'JetBrains Mono',monospace;font-size:.81rem;width:44px;flex-shrink:0;}
+input[type=range]{flex:1;-webkit-appearance:none;height:4px;border-radius:2px;background:var(--bd);outline:none;cursor:pointer;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--vi);cursor:pointer;transition:transform .1s;}
+input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.45);}
+.eq{font-family:'JetBrains Mono',monospace;font-size:.93rem;color:var(--am);text-align:center;padding:9px 13px;background:var(--ad);border:1px solid rgba(251,191,36,.22);border-radius:9px;margin:9px 0;}
+.btn{background:var(--c2);border:1px solid var(--bd);color:var(--tx);font-family:'Outfit',sans-serif;font-size:.81rem;font-weight:600;padding:6px 12px;border-radius:7px;cursor:pointer;transition:all .2s;margin:3px;}
+.btn:hover{border-color:var(--vi);color:var(--vi);}
+.bv{background:var(--vd);border-color:rgba(192,132,252,.35);color:var(--vi);}
+.be{background:var(--ed);border-color:rgba(52,211,153,.35);color:var(--em);}
+.br{background:var(--rd);border-color:rgba(251,113,133,.35);color:var(--ro);}
+.ba{background:var(--ad);border-color:rgba(251,191,36,.35);color:var(--am);}
+.pl2{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;}
+.pi{font-family:'JetBrains Mono',monospace;font-size:.69rem;background:var(--c2);border:1px solid var(--bd);color:var(--mt);padding:4px 10px;border-radius:20px;cursor:pointer;transition:all .2s;}
+.pi:hover,.pi.on{background:var(--vd);border-color:rgba(192,132,252,.35);color:var(--vi);}
+.tb{width:100%;border-collapse:collapse;font-size:.83rem;}
+.tb th{text-align:left;padding:8px 11px;background:var(--c2);color:var(--mt);font-size:.6rem;text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid var(--bd);}
+.tb td{padding:8px 11px;border-bottom:1px solid rgba(58,45,94,.45);vertical-align:top;}
+.tb tr:last-child td{border:none;}
+.tb .fc{font-family:'JetBrains Mono',monospace;color:var(--am);}
+.tc{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.th{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.si{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid rgba(58,45,94,.4);}
+.si:last-child{border:none;}
+.sn{min-width:23px;height:23px;background:var(--vd);border:1px solid rgba(192,132,252,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--vi);flex-shrink:0;margin-top:1px;}
+.sb .st2{font-weight:600;font-size:.84rem;margin-bottom:2px;}
+.ni{background:var(--sf);border:1px solid var(--bd);color:var(--tx);font-family:'Outfit',sans-serif;font-size:.85rem;font-weight:600;padding:7px 10px;border-radius:7px;width:100%;outline:none;transition:border-color .2s;}
+.ni:focus{border-color:var(--vi);}
+.ti{background:var(--sf);border:1px solid var(--bd);color:var(--tx);font-family:'JetBrains Mono',monospace;font-size:.79rem;padding:8px 10px;border-radius:7px;width:100%;outline:none;transition:border-color .2s;}
+.ti:focus{border-color:var(--vi);}
+.rb{border-radius:9px;padding:11px 14px;margin-top:9px;}
+.rv{background:var(--vd);border:1px solid rgba(192,132,252,.25);}
+.re{background:var(--ed);border:1px solid rgba(52,211,153,.25);}
+.rr{background:var(--rd);border:1px solid rgba(251,113,133,.25);}
+.ra{background:var(--ad);border:1px solid rgba(251,191,36,.25);}
+.rl{font-size:.6rem;text-transform:uppercase;letter-spacing:1.2px;color:var(--mt);margin-bottom:3px;}
+.rw{font-family:'JetBrains Mono',monospace;font-size:.96rem;font-weight:700;}
+.rv .rw{color:var(--vi);}.re .rw{color:var(--em);}.rr .rw{color:var(--ro);}.ra .rw{color:var(--am);}
+.sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:7px;}
+.sc{background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:10px 10px;text-align:center;}
+.sc .scl{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--mt);margin-bottom:3px;}
+.sc .scv{font-family:'JetBrains Mono',monospace;font-size:.98rem;font-weight:700;color:var(--vi);}
+.sc.hl{border-color:rgba(251,113,133,.4);background:var(--rd);}
+.sc.hl .scv{color:var(--ro);}
+.shg{display:grid;grid-template-columns:repeat(auto-fit,minmax(115px,1fr));gap:7px;}
+.shc{background:var(--sf);border:1px solid var(--bd);border-radius:9px;padding:9px;text-align:center;cursor:pointer;transition:all .2s;}
+.shc:hover,.shc.on{border-color:var(--vi);background:var(--vd);}
+.shc .shn{font-size:.7rem;font-weight:700;color:var(--mt);margin-top:4px;}
+.shc.on .shn{color:var(--vi);}
+.bg{display:inline-block;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:2px 8px;border-radius:20px;margin-left:5px;}
+.bgv{background:var(--vd);color:var(--vi);border:1px solid rgba(192,132,252,.35);}
+.bge{background:var(--ed);color:var(--em);border:1px solid rgba(52,211,153,.35);}
+.bgr{background:var(--rd);color:var(--ro);border:1px solid rgba(251,113,133,.35);}
+.bga{background:var(--ad);color:var(--am);border:1px solid rgba(251,191,36,.35);}
+.rt{background:var(--c2);border:1px solid var(--bd);color:var(--mt);font-size:.79rem;font-weight:600;padding:6px 13px;border-radius:8px;cursor:pointer;transition:all .2s;display:inline-block;margin:3px;}
+.rt.on{background:var(--ed);color:var(--em);border-color:rgba(52,211,153,.35);}
+@media(max-width:560px){.tc,.th{grid-template-columns:1fr;}.eq{font-size:.83rem;}}
+</style>
+</head>
+<body>
+<nav id="nav">
+  <button class="active" onclick="go('home')">🏠 Home</button>
+  <button onclick="go('ss')">📊 Summary Stats</button>
+  <button onclick="go('mad')">σ MAD &amp; SD</button>
+  <button onclick="go('out')">⚠️ Outliers</button>
+  <button onclick="go('dis')">📦 Data Displays</button>
+  <button onclick="go('cmp')">⚖️ Comparing</button>
+  <button onclick="go('cor')">🔗 Correlation</button>
+  <button onclick="go('reg')">📈 Regression</button>
+  <button onclick="go('ref')">📋 Reference</button>
+</nav>
+<section id="home" class="active">
+  <div class="hero"><h1>Unit 6:<br>Investigating Data</h1>
+    <p>Algebra: Concepts &amp; Connections — Interactive Lab<br>Explore every topic hands-on 🔬</p></div>
+  <div class="ng">
+    <div class="nc" onclick="go('ss')"><div class="ic">📊</div><div class="lb">Summary Stats</div></div>
+    <div class="nc" onclick="go('mad')"><div class="ic">σ</div><div class="lb">MAD &amp; Std Dev</div></div>
+    <div class="nc" onclick="go('out')"><div class="ic">⚠️</div><div class="lb">Outliers</div></div>
+    <div class="nc" onclick="go('dis')"><div class="ic">📦</div><div class="lb">Data Displays</div></div>
+    <div class="nc" onclick="go('cmp')"><div class="ic">⚖️</div><div class="lb">Comparing Data</div></div>
+    <div class="nc" onclick="go('cor')"><div class="ic">🔗</div><div class="lb">Correlation</div></div>
+    <div class="nc" onclick="go('reg')"><div class="ic">📈</div><div class="lb">Regression</div></div>
+    <div class="nc" onclick="go('ref')"><div class="ic">📋</div><div class="lb">Reference</div></div>
+  </div>
+</section>
+
+<section id="ss">
+  <div class="st">📊 Summary Statistics</div>
+  <div class="ss">Always sort data <strong>least → greatest first</strong>. Enter any numbers below and see all stats instantly.</div>
+  <div class="card"><div class="ct">Enter Your Data Set</div>
+    <input type="text" class="ti" id="ssIn" value="9,3,2,7,12,5,6,6,8" oninput="calcSS()" style="margin-bottom:9px;">
+    <div>
+      <button class="btn bv" onclick="ldSS('9,3,2,7,12,5,6,6,8')">Example A</button>
+      <button class="btn ba" onclick="ldSS('13,12,14,11,12,14,16,10')">Example B</button>
+      <button class="btn be" onclick="ldSS('7,9,10,12,15,15,18,20,40')">With Outlier</button>
+      <button class="btn br" onclick="ldSS('20,64,70,70,75,80,82,90,100')">Data Set A</button>
+      <button class="btn" onclick="ldSS('60,64,70,70,75,80,82,90,100')">Data Set B</button>
+    </div>
+    <div id="ssOrd" style="font-family:monospace;font-size:.79rem;color:var(--em);margin-top:8px;"></div>
+    <div class="sg" id="ssCards" style="margin-top:11px;"></div>
+  </div>
+  <div class="card"><div class="ct">What Each Statistic Measures</div>
+    <div style="overflow-x:auto;"><table class="tb">
+      <tr><th>Statistic</th><th>Measures</th><th>Notes</th></tr>
+      <tr><td><strong>Minimum</strong></td><td>Spread</td><td>Smallest value in sorted list</td></tr>
+      <tr><td><strong>Maximum</strong></td><td>Spread</td><td>Largest value in sorted list</td></tr>
+      <tr><td><strong>Median</strong></td><td>True Center ★</td><td>Middle value. NOT pulled by outliers. Best when outliers exist.</td></tr>
+      <tr><td><strong>Q1</strong></td><td>Spread</td><td>Median of lower half (exclude overall median)</td></tr>
+      <tr><td><strong>Q3</strong></td><td>Spread</td><td>Median of upper half (exclude overall median)</td></tr>
+      <tr><td><strong>Mean</strong></td><td>Center</td><td>Sum ÷ Count. Pulled/skewed by outliers!</td></tr>
+      <tr><td><strong>Mode</strong></td><td>Center</td><td>Most frequent value. May be multiple or none.</td></tr>
+      <tr><td><strong>Range</strong></td><td>Full Spread</td><td>Max − Min. Affected by outliers.</td></tr>
+      <tr><td><strong>IQR</strong></td><td>Middle 50%</td><td>Q3 − Q1. NOT affected by outliers.</td></tr>
+    </table></div>
+  </div>
+</section>
+
+<section id="mad">
+  <div class="st">σ MAD &amp; Standard Deviation</div>
+  <div class="ss">Both measure how spread out data is from the mean. Lower = more <strong>consistent</strong>. SD is more powerful because it squares differences.</div>
+  <div class="tc">
+    <div class="card" style="border-color:rgba(52,211,153,.25);">
+      <div class="ct" style="color:var(--em);">MAD — 3 Steps</div>
+      <div class="si"><div class="sn">1</div><div class="sb"><div class="st2">Find the <strong>mean</strong> of the data</div></div></div>
+      <div class="si"><div class="sn">2</div><div class="sb"><div class="st2">Find <strong>|x − mean|</strong> for each value (absolute difference)</div></div></div>
+      <div class="si"><div class="sn">3</div><div class="sb"><div class="st2">Find the <strong>mean of those differences</strong></div></div></div>
+    </div>
+    <div class="card" style="border-color:rgba(192,132,252,.25);">
+      <div class="ct" style="color:var(--vi);">Standard Deviation σ — 5 Steps</div>
+      <div class="si"><div class="sn">1</div><div class="sb"><div class="st2">Find the <strong>mean</strong></div></div></div>
+      <div class="si"><div class="sn">2</div><div class="sb"><div class="st2">Find <strong>(x − mean)</strong> for each value</div></div></div>
+      <div class="si"><div class="sn">3</div><div class="sb"><div class="st2"><strong>Square</strong> each difference: (x − mean)²</div></div></div>
+      <div class="si"><div class="sn">4</div><div class="sb"><div class="st2">Find the <strong>mean of the squares</strong></div></div></div>
+      <div class="si"><div class="sn">5</div><div class="sb"><div class="st2"><strong>√</strong> the result (square-root)</div></div></div>
+    </div>
+  </div>
+  <div class="card"><div class="ct">Live Step-by-Step Calculator</div>
+    <input type="text" class="ti" id="sdIn" value="5,9,10,4,11" oninput="calcSD()" style="margin-bottom:9px;">
+    <div style="margin-bottom:11px;">
+      <button class="btn be" onclick="ldSD('5,9,10,4,11')">Ex A: 5,9,10,4,11</button>
+      <button class="btn bv" onclick="ldSD('3,12,10,14,8')">Ex B: 3,12,10,14,8</button>
+    </div>
+    <div id="sdTbl" style="overflow-x:auto;"></div>
+    <div class="tc" style="margin-top:10px;" id="sdRes"></div>
+  </div>
+</section>
+
+<section id="out">
+  <div class="st">⚠️ Outliers</div>
+  <div class="ss">An extreme value much less or greater than the rest. Use the <strong>IQR Fence Method</strong> to test any value mathematically.</div>
+  <div class="card">
+    <div class="tc">
+      <div style="background:var(--rd);border:1px solid rgba(251,113,133,.25);border-radius:9px;padding:11px;">
+        <div style="font-size:.6rem;color:var(--mt);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;">Lower Fence (LF)</div>
+        <div class="eq" style="margin:0;font-size:.85rem;">Q1 − 1.5(IQR)</div>
+        <div style="font-size:.76rem;color:var(--mt);margin-top:4px;">Values BELOW this = outlier</div>
+      </div>
+      <div style="background:var(--rd);border:1px solid rgba(251,113,133,.25);border-radius:9px;padding:11px;">
+        <div style="font-size:.6rem;color:var(--mt);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;">Upper Fence (UF)</div>
+        <div class="eq" style="margin:0;font-size:.85rem;">Q3 + 1.5(IQR)</div>
+        <div style="font-size:.76rem;color:var(--mt);margin-top:4px;">Values ABOVE this = outlier</div>
+      </div>
+    </div>
+    <div style="margin-top:8px;background:var(--sf);border-radius:8px;padding:9px;font-size:.79rem;color:var(--mt);">Normal Interval: <strong style="color:var(--tx)">Q1 − 1.5(IQR) &lt; x &lt; Q3 + 1.5(IQR)</strong></div>
+  </div>
+  <div class="card"><div class="ct">Outlier Detector</div>
+    <input type="text" class="ti" id="outIn" value="7,9,10,12,15,15,18,20,40" oninput="calcOut()" style="margin-bottom:9px;">
+    <div style="margin-bottom:10px;">
+      <button class="btn bv" onclick="ldOut('7,9,10,12,15,15,18,20,40')">Example 1</button>
+      <button class="btn ba" onclick="ldOut('22,62,71,83,85,87,94')">Test Scores (is 22 an outlier?)</button>
+    </div>
+    <canvas id="outC" class="pl" width="860" height="190"></canvas>
+    <div id="outD" style="margin-top:10px;"></div>
+  </div>
+</section>
+
+<section id="dis">
+  <div class="st">📦 Data Displays</div>
+  <div class="ss">Three graph types for <strong>1-variable (univariate) quantitative data</strong>. All three update from the same input.</div>
+  <div class="card"><div class="ct">Enter Data — All Three Graphs Update Live</div>
+    <input type="text" class="ti" id="disIn" value="2,3,4,4,5,5,5,5,6,7,7,8,10" oninput="drawDis()" style="margin-bottom:8px;">
+    <div style="margin-bottom:10px;">
+      <button class="btn bv" onclick="ldDis('2,3,4,4,5,5,5,5,6,7,7,8,10')">Example 1</button>
+      <button class="btn ba" onclick="ldDis('2,3,4,4,6,7,2,8,9,10,11,4,4,6,7,4,6,7,7,8')">Example 2</button>
+      <button class="btn be" onclick="ldDis('88,103,68,80,34,91,88,76')">Test Scores</button>
+      <button class="btn" onclick="ldDis('14,15,17,18,20,22,23')">Box Plot Example</button>
+    </div>
+    <div class="th">
+      <div><div style="font-size:.67rem;font-weight:700;color:var(--em);text-transform:uppercase;letter-spacing:1px;text-align:center;margin-bottom:5px;">Dot Plot</div>
+        <canvas id="dotC" width="280" height="150" style="width:100%;border-radius:8px;border:1px solid rgba(52,211,153,.2);background:#080515;"></canvas></div>
+      <div><div style="font-size:.67rem;font-weight:700;color:var(--vi);text-transform:uppercase;letter-spacing:1px;text-align:center;margin-bottom:5px;">Box Plot</div>
+        <canvas id="boxC" width="280" height="150" style="width:100%;border-radius:8px;border:1px solid rgba(192,132,252,.2);background:#080515;"></canvas></div>
+      <div><div style="font-size:.67rem;font-weight:700;color:var(--am);text-transform:uppercase;letter-spacing:1px;text-align:center;margin-bottom:5px;">Histogram</div>
+        <canvas id="hisC" width="280" height="150" style="width:100%;border-radius:8px;border:1px solid rgba(251,191,36,.2);background:#080515;"></canvas></div>
+    </div>
+    <div id="disStats" style="margin-top:10px;"></div>
+  </div>
+  <div class="card"><div class="ct">Advantages &amp; Disadvantages</div>
+    <div class="th">
+      <div style="background:var(--sf);border-radius:9px;padding:11px;">
+        <div style="font-weight:700;color:var(--vi);margin-bottom:5px;">📦 Box Plot</div>
+        <div style="font-size:.75rem;color:var(--em);margin-bottom:2px;">✅ Compares multiple sets easily</div>
+        <div style="font-size:.75rem;color:var(--em);margin-bottom:5px;">✅ Handles extreme data well</div>
+        <div style="font-size:.75rem;color:var(--ro);margin-bottom:2px;">❌ Only shows 5-number summary</div>
+        <div style="font-size:.75rem;color:var(--ro);">❌ Exact values not retained</div>
+      </div>
+      <div style="background:var(--sf);border-radius:9px;padding:11px;">
+        <div style="font-weight:700;color:var(--em);margin-bottom:5px;">• Dot Plot</div>
+        <div style="font-size:.75rem;color:var(--em);margin-bottom:2px;">✅ Shows every individual point</div>
+        <div style="font-size:.75rem;color:var(--em);margin-bottom:5px;">✅ Easy to make</div>
+        <div style="font-size:.75rem;color:var(--ro);margin-bottom:2px;">❌ Slow with large data sets</div>
+        <div style="font-size:.75rem;color:var(--ro);">❌ Fractions hard to display</div>
+      </div>
+      <div style="background:var(--sf);border-radius:9px;padding:11px;">
+        <div style="font-weight:700;color:var(--am);margin-bottom:5px;">▦ Histogram</div>
+        <div style="font-size:.75rem;color:var(--em);margin-bottom:2px;">✅ Visually strong</div>
+        <div style="font-size:.75rem;color:var(--em);margin-bottom:5px;">✅ Great for showing shape</div>
+        <div style="font-size:.75rem;color:var(--ro);margin-bottom:2px;">❌ Can't read individual values</div>
+        <div style="font-size:.75rem;color:var(--ro);">❌ Hard to compare sets</div>
+      </div>
+    </div>
+    <div style="margin-top:8px;background:var(--sf);border-radius:8px;padding:8px;font-size:.78rem;color:var(--mt);"><strong style="color:var(--tx)">Histogram Rules:</strong> 5–10 intervals · Same width · No overlap (1–4, 5–8, NOT 1–5, 5–10) · Bars must touch</div>
+  </div>
+</section>
+<section id="cmp">
+  <div class="st">⚖️ Comparing Data</div>
+  <div class="ss">Compare using <strong>center</strong> (mean/median/mode) and <strong>spread</strong> (range/IQR/MAD/SD). Shape is described by symmetry, skewness, and unusual features.</div>
+  <div class="card"><div class="ct">Distribution Shapes — Click Each</div>
+    <div class="shg" id="shGrid"></div>
+    <div id="shDesc" style="margin-top:10px;padding:11px;background:var(--sf);border-radius:8px;font-size:.85rem;color:var(--mt);min-height:38px;"></div>
+  </div>
+  <div class="card"><div class="ct">Compare Two Data Sets</div>
+    <div class="tc" style="margin-bottom:9px;">
+      <div><label style="font-size:.7rem;color:var(--vi);display:block;margin-bottom:3px;">Data Set A</label>
+        <input type="text" class="ti" id="cmpA" value="20,64,70,70,75,80,82,90,100" oninput="calcCmp()"></div>
+      <div><label style="font-size:.7rem;color:var(--em);display:block;margin-bottom:3px;">Data Set B</label>
+        <input type="text" class="ti" id="cmpB" value="60,64,70,70,75,80,82,90,100" oninput="calcCmp()"></div>
+    </div>
+    <div style="margin-bottom:10px;">
+      <button class="btn bv" onclick="ldCmp('20,64,70,70,75,80,82,90,100','60,64,70,70,75,80,82,90,100')">Class Example A vs B</button>
+      <button class="btn ba" onclick="ldCmp('5,9,10,4,11','3,12,10,14,8')">MAD Examples</button>
+    </div>
+    <canvas id="cmpC" class="pl" width="860" height="190"></canvas>
+    <div id="cmpTbl" style="margin-top:12px;overflow-x:auto;"></div>
+  </div>
+  <div class="card"><div class="ct">Three-City Temperature Box Plots — Read &amp; Interpret</div>
+    <canvas id="cityC" class="pl" width="860" height="250"></canvas>
+    <div class="pl2" id="cityPl" style="margin-top:11px;">
+      <span class="pi on" onclick="pickCity(0,this)">Median Seattle?</span>
+      <span class="pi" onclick="pickCity(1,this)">Min Tucson?</span>
+      <span class="pi" onclick="pickCity(2,this)">Q3 Boston?</span>
+      <span class="pi" onclick="pickCity(3,this)">IQR Boston?</span>
+      <span class="pi" onclick="pickCity(4,this)">Range Tucson?</span>
+      <span class="pi" onclick="pickCity(5,this)">% Boston &lt; 64°?</span>
+      <span class="pi" onclick="pickCity(6,this)">Middle 50% Seattle?</span>
+      <span class="pi" onclick="pickCity(7,this)">Least variability?</span>
+      <span class="pi" onclick="pickCity(8,this)">Warmest city?</span>
+    </div>
+    <div id="cityAns" style="margin-top:7px;padding:11px;background:var(--sf);border-radius:8px;font-size:.86rem;"></div>
+  </div>
+</section>
+
+<section id="cor">
+  <div class="st">🔗 Correlation &amp; Causation</div>
+  <div class="ss">r is between −1 and 1. Four traits: <strong>Form, Direction, Strength, Outliers</strong>. Correlation ≠ Causation.</div>
+  <div class="card"><div class="ct">The Four Traits of Correlation</div>
+    <div class="tc">
+      <div style="background:var(--sf);border-radius:9px;padding:11px;"><div style="font-weight:700;color:var(--vi);margin-bottom:4px;">1. Form</div><div style="font-size:.81rem;color:var(--mt);">Type of relationship the data creates: Linear, Quadratic, Exponential, or None</div></div>
+      <div style="background:var(--sf);border-radius:9px;padding:11px;"><div style="font-weight:700;color:var(--em);margin-bottom:4px;">2. Direction</div><div style="font-size:.81rem;color:var(--mt);"><strong style="color:var(--em)">Positive</strong> (rises) or <strong style="color:var(--ro)">Negative</strong> (falls left→right)</div></div>
+      <div style="background:var(--sf);border-radius:9px;padding:11px;"><div style="font-weight:700;color:var(--am);margin-bottom:4px;">3. Strength</div><div style="font-size:.81rem;color:var(--mt);">How closely points follow the pattern: Strong / Moderate / Weak / None</div></div>
+      <div style="background:var(--sf);border-radius:9px;padding:11px;"><div style="font-weight:700;color:var(--ro);margin-bottom:4px;">4. Outliers</div><div style="font-size:.81rem;color:var(--mt);">Points that do NOT fit the pattern of the rest of the data</div></div>
+    </div>
+  </div>
+  <div class="card"><div class="ct">Live r Visualizer — drag slider</div>
+    <div class="sr"><div class="sl" style="color:var(--am);">r =</div>
+      <input type="range" id="rSl" min="-1" max="1" step="0.01" value="0.8" oninput="drawR()">
+      <div class="sv" id="rSlV" style="color:var(--am);">0.80</div></div>
+    <div id="rBdg" style="margin:7px 0;font-size:.89rem;"></div>
+    <canvas id="rC" class="pl" width="860" height="270"></canvas>
+  </div>
+  <div class="card"><div class="ct">r Classifier &amp; Ordering</div>
+    <div style="display:flex;gap:11px;align-items:center;flex-wrap:wrap;margin-bottom:11px;">
+      <div style="flex:0 0 155px;"><label style="font-size:.7rem;color:var(--mt);display:block;margin-bottom:3px;">Enter r =</label>
+        <input type="number" class="ni" id="rCl" value="0.87" min="-1" max="1" step="0.01" oninput="clsR()"></div>
+      <div id="rClR" style="flex:1;font-size:.9rem;"></div>
+    </div>
+    <div style="overflow-x:auto;"><table class="tb">
+      <tr><th>Strength</th><th>|r| Range</th><th>Visual Description</th></tr>
+      <tr><td><strong>Strong</strong></td><td class="fc">|r| ≥ 0.8</td><td>Points very tightly clustered on the line</td></tr>
+      <tr><td><strong>Moderate</strong></td><td class="fc">0.5 ≤ |r| &lt; 0.8</td><td>Clear trend, some scatter</td></tr>
+      <tr><td><strong>Weak</strong></td><td class="fc">0.2 ≤ |r| &lt; 0.5</td><td>Wide scatter, trend barely visible</td></tr>
+      <tr><td><strong>No Correlation</strong></td><td class="fc">|r| &lt; 0.2</td><td>Random cloud, no pattern</td></tr>
+    </table></div>
+    <div style="margin-top:11px;background:var(--sf);border-radius:8px;padding:10px;font-size:.82rem;color:var(--mt);">
+      <strong style="color:var(--tx)">Ordering Exercise:</strong> Weakest → Strongest<br>
+      Ex 1: 0.87, −0.81, 0.43, 0.07, −0.98 → <span style="color:var(--am);font-family:monospace;">0.07, 0.43, −0.81, 0.87, −0.98</span><br>
+      Ex 2: 0.32, −0.65, 0.63, −0.42, 0.04 → <span style="color:var(--am);font-family:monospace;">0.04, 0.32, −0.42, −0.65, 0.63</span>
+    </div>
+  </div>
+  <div class="card"><div class="ct">Correlation vs. Causation Scenarios — Click to Classify</div>
+    <div class="pl2" id="scPl">
+      <span class="pi on" onclick="pickSc(0,this)">Hours work vs. Bank $</span>
+      <span class="pi" onclick="pickSc(1,this)">Safety training vs. Accidents</span>
+      <span class="pi" onclick="pickSc(2,this)">Wheeler students vs. ATL dogs</span>
+      <span class="pi" onclick="pickSc(3,this)">Heaters sold vs. Jan→Jul</span>
+      <span class="pi" onclick="pickSc(4,this)">Calories vs. Walking time</span>
+      <span class="pi" onclick="pickSc(5,this)">College → More voting</span>
+      <span class="pi" onclick="pickSc(6,this)">More trash after 2nd block</span>
+      <span class="pi" onclick="pickSc(7,this)">Hit sister → She cries</span>
+      <span class="pi" onclick="pickSc(8,this)">More TV → Worse grades</span>
+    </div>
+    <div id="scD"></div>
+  </div>
+</section>
+
+<section id="reg">
+  <div class="st">📈 Regression &amp; Predictions</div>
+  <div class="ss">Linear regression finds the best-fit equation. <strong>Interpolation</strong> = predicting inside the data range (reliable). <strong>Extrapolation</strong> = outside the range (less reliable).</div>
+  <div class="card">
+    <div class="tc">
+      <div style="background:var(--vd);border:1px solid rgba(192,132,252,.25);border-radius:9px;padding:11px;"><div style="font-weight:700;color:var(--vi);margin-bottom:3px;">Interpolation</div><div style="font-size:.81rem;color:var(--mt);">Predicting a value <strong style="color:var(--tx)">INSIDE</strong> the data range. More reliable.</div></div>
+      <div style="background:var(--rd);border:1px solid rgba(251,113,133,.25);border-radius:9px;padding:11px;"><div style="font-weight:700;color:var(--ro);margin-bottom:3px;">Extrapolation</div><div style="font-size:.81rem;color:var(--mt);">Predicting a value <strong style="color:var(--tx)">OUTSIDE</strong> the data range. Less reliable!</div></div>
+    </div>
+  </div>
+  <div class="card"><div class="ct">House Price Example — y = 0.11x + 98.25 (r = 0.76)</div>
+    <canvas id="houseC" class="pl" width="860" height="280"></canvas>
+    <div class="pl2" id="housePl" style="margin-top:11px;">
+      <span class="pi on" onclick="pickH(0,this)">Slope in Context</span>
+      <span class="pi" onclick="pickH(1,this)">Y-Intercept</span>
+      <span class="pi" onclick="pickH(2,this)">Predict 1700 sq ft</span>
+      <span class="pi" onclick="pickH(3,this)">Predict 3000 sq ft</span>
+      <span class="pi" onclick="pickH(4,this)">Budget $250,000</span>
+    </div>
+    <div id="houseD"></div>
+  </div>
+  <div class="card"><div class="ct">Prediction Calculator — Any Line of Best Fit</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;margin-bottom:9px;">
+      <div><label style="font-size:.7rem;color:var(--mt);display:block;margin-bottom:3px;">Slope (a)</label><input type="number" class="ni" id="pA" value="0.11" step="0.01" oninput="calcP()"></div>
+      <div><label style="font-size:.7rem;color:var(--mt);display:block;margin-bottom:3px;">Y-intercept (b)</label><input type="number" class="ni" id="pB" value="98.25" step="0.01" oninput="calcP()"></div>
+      <div><label style="font-size:.7rem;color:var(--mt);display:block;margin-bottom:3px;">x value</label><input type="number" class="ni" id="pX" value="1700" step="1" oninput="calcP()"></div>
+    </div>
+    <div id="pRes"></div>
+  </div>
+  <div class="card"><div class="ct">Linear vs. Exponential vs. Quadratic — Choosing the Best Model</div>
+    <div style="margin-bottom:10px;">
+      <span class="rt on" onclick="pickReg(0,this)">📈 National Debt → Exponential</span>
+      <span class="rt" onclick="pickReg(1,this)">🎟️ Ticket Prices → Quadratic</span>
+    </div>
+    <canvas id="regC" class="pl" width="860" height="290"></canvas>
+    <div id="regD" style="margin-top:10px;"></div>
+    <div style="margin-top:10px;background:var(--sf);border-radius:8px;padding:10px;font-size:.81rem;color:var(--mt);">
+      <strong style="color:var(--tx)">Rule:</strong> The model with <strong style="color:var(--am)">|r| closest to 1</strong> is the best fit. Linear: y = ax+b · Exponential: y = a(b)ˣ · Quadratic: y = ax²+bx+c
+    </div>
+  </div>
+</section>
+
+<section id="ref">
+  <div class="st">📋 Quick Reference</div>
+  <div class="ss">All Unit 6 formulas and decision rules in one place.</div>
+  <div class="card"><div class="ct">All Formulas</div>
+    <table class="tb">
+      <tr><th>Statistic</th><th>Formula</th><th>Outlier-Resistant?</th></tr>
+      <tr><td><strong>Mean</strong></td><td class="fc">Σx ÷ n</td><td>❌ Pulled by outliers</td></tr>
+      <tr><td><strong>Median ★</strong></td><td class="fc">Middle value (sorted)</td><td>✅ Best when outliers exist</td></tr>
+      <tr><td><strong>Mode</strong></td><td class="fc">Most frequent</td><td>✅ Not affected</td></tr>
+      <tr><td><strong>Range</strong></td><td class="fc">Max − Min</td><td>❌ Pulled by outliers</td></tr>
+      <tr><td><strong>IQR ★</strong></td><td class="fc">Q3 − Q1</td><td>✅ Best spread measure when outliers exist</td></tr>
+      <tr><td><strong>MAD</strong></td><td class="fc">mean(|x − x̄|)</td><td>Somewhat resistant</td></tr>
+      <tr><td><strong>Std Dev σ</strong></td><td class="fc">√[mean of (x−x̄)²]</td><td>❌ Pulled by outliers</td></tr>
+      <tr><td><strong>Lower Fence</strong></td><td class="fc">Q1 − 1.5(IQR)</td><td>—</td></tr>
+      <tr><td><strong>Upper Fence</strong></td><td class="fc">Q3 + 1.5(IQR)</td><td>—</td></tr>
+    </table>
+  </div>
+  <div class="card"><div class="ct">When Outliers Exist — Which Stat to Use</div>
+    <div class="tc">
+      <div style="background:var(--vd);border:1px solid rgba(192,132,252,.25);border-radius:9px;padding:12px;">
+        <div style="font-weight:700;color:var(--vi);margin-bottom:6px;">For Center → Use Median</div>
+        <div style="font-size:.81rem;color:var(--mt);">Median is the "resistant" center. Mean gets pulled toward the outlier and misrepresents the data.</div>
+      </div>
+      <div style="background:var(--ed);border:1px solid rgba(52,211,153,.25);border-radius:9px;padding:12px;">
+        <div style="font-weight:700;color:var(--em);margin-bottom:6px;">For Spread → Use IQR</div>
+        <div style="font-size:.81rem;color:var(--mt);">IQR measures the middle 50% and ignores extreme values. Range and SD are both affected.</div>
+      </div>
+    </div>
+  </div>
+  <div class="card"><div class="ct">Regression Model Selection Guide</div>
+    <table class="tb">
+      <tr><th>Data Pattern</th><th>Best Model</th><th>Equation Form</th></tr>
+      <tr><td>Straight line trend</td><td class="fc">Linear</td><td>y = ax + b</td></tr>
+      <tr><td>Grows/decays very fast (exponentially)</td><td class="fc">Exponential</td><td>y = a(b)ˣ</td></tr>
+      <tr><td>Rises then falls (or vice versa)</td><td class="fc">Quadratic</td><td>y = ax² + bx + c</td></tr>
+      <tr><td colspan="3"><strong>Decision rule:</strong> Compare |r| values — the model with |r| closest to 1 wins.</td></tr>
+    </table>
+  </div>
+</section>
+<script>
+const SECS=['home','ss','mad','out','dis','cmp','cor','reg','ref'];
+function go(id){
+  SECS.forEach(s=>document.getElementById(s).classList.toggle('active',s===id));
+  document.querySelectorAll('nav button').forEach((b,i)=>b.classList.toggle('active',SECS[i]===id));
+  const I={ss:calcSS,mad:calcSD,out:calcOut,dis:drawDis,
+    cmp:()=>{buildShapes();calcCmp();setTimeout(()=>{drawCity();pickCity(0,document.querySelector('#cityPl .pi'));},80);},
+    cor:()=>{drawR();clsR();pickSc(0,document.querySelector('#scPl .pi'));},
+    reg:()=>{setTimeout(()=>{drawHouse();pickH(0,document.querySelector('#housePl .pi'));calcP();pickReg(0,document.querySelector('.rt'));},80);}};
+  if(I[id])setTimeout(I[id],40);
+}
+function pn(s){return s.split(/[\s,]+/).map(Number).filter(n=>!isNaN(n));}
+function srt(a){return[...a].sort((x,y)=>x-y);}
+function mn(a){return a.reduce((s,x)=>s+x,0)/a.length;}
+function med(a){const s=srt(a),n=s.length;return n%2?s[(n-1)/2]:(s[n/2-1]+s[n/2])/2;}
+function q1(a){const s=srt(a),n=s.length;return med(s.slice(0,Math.floor(n/2)));}
+function q3(a){const s=srt(a),n=s.length;return med(s.slice(Math.ceil(n/2)));}
+function iqr(a){return q3(a)-q1(a);}
+function mode(a){const c={};let mx=0;a.forEach(x=>{c[x]=(c[x]||0)+1;if(c[x]>mx)mx=c[x];});const m=Object.entries(c).filter(([,v])=>v===mx).map(([k])=>+k);return mx>1?m.sort((x,y)=>x-y):['None'];}
+function sd(a){const m=mn(a);return Math.sqrt(mn(a.map(x=>(x-m)**2)));}
+function mad(a){const m=mn(a);return mn(a.map(x=>Math.abs(x-m)));}
+function fmt(n){return typeof n==='number'?(Number.isInteger(n)?n:+n.toFixed(3)):n;}
+function cx(id){const c=document.getElementById(id);return{c,x:c.getContext('2d'),W:c.width,H:c.height};}
+function clr(id){const{c,x,W,H}=cx(id);x.fillStyle='#080515';x.fillRect(0,0,W,H);return cx(id);}
+
+// SUMMARY STATS
+function ldSS(v){document.getElementById('ssIn').value=v;calcSS();}
+function calcSS(){
+  const a=pn(document.getElementById('ssIn').value);
+  if(a.length<2){document.getElementById('ssCards').innerHTML='<span style="color:var(--mt);font-size:.82rem">Enter at least 2 numbers</span>';return;}
+  const s=srt(a);
+  document.getElementById('ssOrd').innerHTML='Sorted: '+s.join(', ');
+  const st=[{l:'Minimum',v:fmt(s[0])},{l:'Maximum',v:fmt(s[s.length-1])},{l:'Median',v:fmt(med(a))},{l:'Q1',v:fmt(q1(a))},{l:'Q3',v:fmt(q3(a))},{l:'Mean',v:fmt(mn(a))},{l:'Mode',v:mode(a).join(', ')},{l:'Range',v:fmt(s[s.length-1]-s[0])},{l:'IQR',v:fmt(iqr(a))}];
+  document.getElementById('ssCards').innerHTML=st.map(s=>`<div class="sc"><div class="scl">${s.l}</div><div class="scv">${s.v}</div></div>`).join('');
+}
+
+// MAD & SD
+function ldSD(v){document.getElementById('sdIn').value=v;calcSD();}
+function calcSD(){
+  const a=pn(document.getElementById('sdIn').value);
+  if(a.length<2)return;
+  const m=mn(a),s=srt(a);
+  let rows='<tr><th>Data</th><th>|x − mean|</th><th>(x−mean)²</th></tr>';
+  s.forEach(x=>{rows+=`<tr><td class="fc">${x}</td><td>${fmt(Math.abs(x-m))}</td><td>${fmt((x-m)**2)}</td></tr>`;});
+  rows+=`<tr style="background:var(--c2)"><td><strong>Mean=${fmt(m)}</strong></td><td><strong>MAD=${fmt(mad(a))}</strong></td><td><strong>Avg Sq=${fmt(mn(s.map(x=>(x-m)**2)))}</strong></td></tr>`;
+  document.getElementById('sdTbl').innerHTML=`<table class="tb">${rows}</table>`;
+  document.getElementById('sdRes').innerHTML=`<div class="rb re"><div class="rl">MAD</div><div class="rw">${fmt(mad(a))}</div></div><div class="rb rv"><div class="rl">σ Standard Deviation</div><div class="rw">${fmt(sd(a))}</div></div>`;
+}
+
+// OUTLIERS
+function ldOut(v){document.getElementById('outIn').value=v;calcOut();}
+function calcOut(){
+  const a=pn(document.getElementById('outIn').value);
+  if(a.length<4)return;
+  const Q1=q1(a),Q3=q3(a),IQR=iqr(a),LF=Q1-1.5*IQR,UF=Q3+1.5*IQR;
+  const s=srt(a),outs=s.filter(x=>x<LF||x>UF),clean=a.filter(x=>x>=LF&&x<=UF);
+  const{x,W,H}=clr('outC');
+  const xMn=s[0]-(s[s.length-1]-s[0])*.12,xMx=s[s.length-1]+(s[s.length-1]-s[0])*.18;
+  const tx=v=>42+(v-xMn)/(xMx-xMn)*(W-56);
+  x.strokeStyle='rgba(100,80,150,.5)';x.lineWidth=1.5;x.beginPath();x.moveTo(42,H/2);x.lineTo(W-16,H/2);x.stroke();
+  if(LF>=xMn){x.strokeStyle='rgba(251,113,133,.6)';x.lineWidth=1.5;x.setLineDash([5,4]);x.beginPath();x.moveTo(tx(LF),14);x.lineTo(tx(LF),H-14);x.stroke();x.setLineDash([]);x.fillStyle='rgba(251,113,133,.7)';x.font='10px JetBrains Mono,monospace';x.textAlign='center';x.fillText('LF='+fmt(LF),tx(LF),11);}
+  if(UF<=xMx){x.strokeStyle='rgba(251,113,133,.6)';x.lineWidth=1.5;x.setLineDash([5,4]);x.beginPath();x.moveTo(tx(UF),14);x.lineTo(tx(UF),H-14);x.stroke();x.setLineDash([]);x.fillStyle='rgba(251,113,133,.7)';x.font='10px JetBrains Mono,monospace';x.textAlign='center';x.fillText('UF='+fmt(UF),tx(UF),11);}
+  s.forEach(v=>{const isO=v<LF||v>UF;x.beginPath();x.arc(tx(v),H/2,isO?9:6,0,2*Math.PI);x.fillStyle=isO?'rgba(251,113,133,.9)':'rgba(52,211,153,.8)';x.fill();x.fillStyle='rgba(255,255,255,.85)';x.font=(isO?'bold ':'')+' 9px JetBrains Mono,monospace';x.textAlign='center';x.fillText(v,tx(v),H/2+3.5);});
+  document.getElementById('outD').innerHTML=`
+    <div class="sg" style="margin:9px 0;">
+      <div class="sc"><div class="scl">Q1</div><div class="scv">${fmt(Q1)}</div></div>
+      <div class="sc"><div class="scl">Q3</div><div class="scv">${fmt(Q3)}</div></div>
+      <div class="sc"><div class="scl">IQR</div><div class="scv">${fmt(IQR)}</div></div>
+      <div class="sc"><div class="scl">Lower Fence</div><div class="scv" style="color:var(--ro)">${fmt(LF)}</div></div>
+      <div class="sc"><div class="scl">Upper Fence</div><div class="scv" style="color:var(--ro)">${fmt(UF)}</div></div>
+    </div>
+    <div class="${outs.length?'rb rr':'rb re'}"><div class="rl">${outs.length?'⚠️ Outliers Found':'✅ No Outliers'}</div><div class="rw">${outs.length?outs.join(', '):'All values within fences'}</div></div>
+    ${clean.length&&outs.length?`<div class="tc" style="margin-top:8px;"><div class="rb rv"><div class="rl">Mean WITH outlier</div><div class="rw">${fmt(mn(a))}</div><div style="font-size:.73rem;color:var(--mt);margin-top:2px;">SD: ${fmt(sd(a))}</div></div><div class="rb re"><div class="rl">Mean WITHOUT outlier</div><div class="rw">${fmt(mn(clean))}</div><div style="font-size:.73rem;color:var(--mt);margin-top:2px;">SD: ${fmt(sd(clean))}</div></div></div><div style="margin-top:7px;background:var(--sf);border-radius:8px;padding:9px;font-size:.79rem;color:var(--mt);">💡 Removing the outlier <strong style="color:var(--ro)">lowers the mean</strong> and <strong style="color:var(--ro)">reduces the SD</strong> — giving a more accurate picture of the typical value.</div>`:''}`;
+}
+
+// DATA DISPLAYS
+function ldDis(v){document.getElementById('disIn').value=v;drawDis();}
+function drawDis(){
+  const a=pn(document.getElementById('disIn').value);
+  if(a.length<3)return;
+  const s=srt(a),mn2=s[0],mx=s[s.length-1],md=med(a),Q1v=q1(a),Q3v=q3(a),IQRv=iqr(a);
+  const LFv=Q1v-1.5*IQRv,UFv=Q3v+1.5*IQRv;
+  const outs=s.filter(v=>v<LFv||v>UFv);
+  const wL=s.find(v=>v>=LFv)||mn2,wH=[...s].reverse().find(v=>v<=UFv)||mx;
+  // Dot
+  {const{x,W,H}=clr('dotC');const pad=18,xMin=mn2-1,xMax=mx+1,tx=v=>pad+(v-xMin)/(xMax-xMin)*(W-2*pad);
+  x.strokeStyle='rgba(52,211,153,.35)';x.lineWidth=1;x.beginPath();x.moveTo(pad,H-16);x.lineTo(W-pad,H-16);x.stroke();
+  const cnt={};s.forEach(v=>{cnt[v]=(cnt[v]||0)+1;});
+  Object.entries(cnt).forEach(([vk,c])=>{for(let i=0;i<c;i++){x.beginPath();x.arc(tx(+vk),H-16-(i*12)-5.5,4.5,0,2*Math.PI);x.fillStyle='rgba(52,211,153,.8)';x.fill();}
+  x.fillStyle='rgba(80,150,110,.6)';x.font='7px JetBrains Mono,monospace';x.textAlign='center';x.fillText(vk,tx(+vk),H-5);});}
+  // Box
+  {const{x,W,H}=clr('boxC');const pad=22,yMid=H/2,xMin=mn2-(mx-mn2)*.12,xMax=mx+(mx-mn2)*.12,tx=v=>pad+(v-xMin)/(xMax-xMin)*(W-2*pad);
+  x.strokeStyle='rgba(192,132,252,.7)';x.lineWidth=1.8;
+  x.beginPath();x.moveTo(tx(wL),yMid);x.lineTo(tx(Q1v),yMid);x.stroke();
+  x.beginPath();x.moveTo(tx(Q3v),yMid);x.lineTo(tx(wH),yMid);x.stroke();
+  [[wL],[wH]].forEach(([v])=>{x.beginPath();x.moveTo(tx(v),yMid-13);x.lineTo(tx(v),yMid+13);x.stroke();});
+  x.fillStyle='rgba(192,132,252,.15)';x.strokeStyle='rgba(192,132,252,.7)';
+  x.fillRect(tx(Q1v),yMid-16,tx(Q3v)-tx(Q1v),32);x.strokeRect(tx(Q1v),yMid-16,tx(Q3v)-tx(Q1v),32);
+  x.strokeStyle='rgba(251,191,36,.9)';x.lineWidth=2.5;x.beginPath();x.moveTo(tx(md),yMid-16);x.lineTo(tx(md),yMid+16);x.stroke();
+  outs.forEach(v=>{x.beginPath();x.arc(tx(v),yMid,5,0,2*Math.PI);x.fillStyle='rgba(251,113,133,.9)';x.fill();});
+  x.fillStyle='rgba(150,120,200,.6)';x.font='8px JetBrains Mono,monospace';x.textAlign='center';
+  [[wL,'Min'],[Q1v,'Q1'],[md,'Med'],[Q3v,'Q3'],[wH,'Max']].forEach(([v,l])=>{x.fillText(l,tx(v),yMid+26);x.fillText(fmt(v),tx(v),yMid+35);});}
+  // Histogram
+  {const{x,W,H}=clr('hisC');const bins=Math.min(7,Math.max(3,mx-mn2||3)),bw=(mx-mn2)/bins||1;
+  const cnts=Array(bins).fill(0);s.forEach(v=>{let b=Math.min(bins-1,Math.floor((v-mn2)/bw));cnts[b]++;});
+  const mxC=Math.max(...cnts),pad2=20,bpx=(W-2*pad2)/bins;
+  cnts.forEach((c,i)=>{const h=(c/mxC)*(H-pad2-6),bx=pad2+i*bpx;x.fillStyle='rgba(251,191,36,.72)';x.fillRect(bx,H-pad2-h,bpx,h);x.strokeStyle='rgba(251,191,36,.3)';x.strokeRect(bx,H-pad2-h,bpx,h);x.fillStyle='rgba(180,150,60,.6)';x.font='7px JetBrains Mono,monospace';x.textAlign='center';x.fillText(fmt(mn2+i*bw)+'–'+fmt(mn2+(i+1)*bw),bx+bpx/2,H-4);});}
+  document.getElementById('disStats').innerHTML=`<div class="sg"><div class="sc"><div class="scl">Min</div><div class="scv">${mn2}</div></div><div class="sc"><div class="scl">Q1</div><div class="scv">${fmt(Q1v)}</div></div><div class="sc"><div class="scl">Median</div><div class="scv">${fmt(md)}</div></div><div class="sc"><div class="scl">Q3</div><div class="scv">${fmt(Q3v)}</div></div><div class="sc"><div class="scl">Max</div><div class="scv">${mx}</div></div><div class="sc"><div class="scl">IQR</div><div class="scv">${fmt(IQRv)}</div></div>${outs.length?`<div class="sc hl"><div class="scl">Outliers</div><div class="scv">${outs.join(',')}</div></div>`:''}</div>`;
+}
+
+// SHAPES
+const SHAPES=[
+  {n:'Symmetric (Bell)',bars:[1,3,5,8,10,8,5,3,1],d:'Mean ≈ Median ≈ Mode. Both sides mirror each other. Data concentrated in the middle.'},
+  {n:'Uniform',bars:[7,7,7,7,7,7,7,7,7],d:'All intervals have roughly equal frequency. No clear center peak.'},
+  {n:'Skewed Left',bars:[1,1,2,4,6,8,10,8,4],d:'Tail stretches LEFT. Mean &lt; Median. More data on the right side (high scores).'},
+  {n:'Skewed Right',bars:[4,8,10,8,6,4,2,1,1],d:'Tail stretches RIGHT. Mean &gt; Median. More data on the left side (low scores).'},
+  {n:'Bimodal',bars:[3,5,8,3,2,3,8,5,3],d:'Two peaks. May indicate two distinct groups within the data.'},
+  {n:'Gap / Outlier',bars:[1,6,8,7,6,1,0,0,5],d:'A gap (no values in a range) or an isolated bar far from the rest — often an outlier!'},
+];
+function buildShapes(){
+  const g=document.getElementById('shGrid');if(g.children.length)return;
+  SHAPES.forEach((sh,i)=>{
+    const d=document.createElement('div');d.className='shc'+(i===0?' on':'');
+    const cid='shc'+i;
+    d.innerHTML=`<canvas id="${cid}" width="110" height="55"></canvas><div class="shn">${sh.n}</div>`;
+    d.onclick=()=>{document.querySelectorAll('.shc').forEach(c=>c.classList.remove('on'));d.classList.add('on');document.getElementById('shDesc').innerHTML=`<strong style="color:var(--vi)">${sh.n}:</strong> ${sh.d}`;};
+    g.appendChild(d);
+    setTimeout(()=>{const{x,W,H}=clr(cid);const bars=sh.bars,bw=W/bars.length,mxb=Math.max(...bars);bars.forEach((b,j)=>{const h=(b/mxb)*(H-4);x.fillStyle='rgba(192,132,252,.72)';x.fillRect(j*bw,H-h,bw-1,h);});},80);
+  });
+  document.getElementById('shDesc').innerHTML=`<strong style="color:var(--vi)">Symmetric (Bell):</strong> ${SHAPES[0].d}`;
+}
+
+// COMPARE
+function ldCmp(a,b){document.getElementById('cmpA').value=a;document.getElementById('cmpB').value=b;calcCmp();}
+function calcCmp(){
+  const A=pn(document.getElementById('cmpA').value),B=pn(document.getElementById('cmpB').value);
+  if(A.length<3||B.length<3)return;
+  const{x,W,H}=clr('cmpC');
+  [[A,'rgba(192,132,252,.75)',H*.32,'Set A'],[B,'rgba(52,211,153,.75)',H*.68,'Set B']].forEach(([arr,col,yMid,lbl])=>{
+    const s=srt(arr),Q1v=q1(arr),Q3v=q3(arr),mdv=med(arr),IQRv=iqr(arr);
+    const LFv=Q1v-1.5*IQRv,UFv=Q3v+1.5*IQRv;
+    const wL=s.find(v=>v>=LFv)||s[0],wH=[...s].reverse().find(v=>v<=UFv)||s[s.length-1];
+    const xAll=[...A,...B],xMn=Math.min(...xAll)-3,xMx=Math.max(...xAll)+3;
+    const tx=v=>52+(v-xMn)/(xMx-xMn)*(W-68);
+    x.strokeStyle=col;x.lineWidth=1.5;
+    x.beginPath();x.moveTo(tx(wL),yMid);x.lineTo(tx(Q1v),yMid);x.stroke();
+    x.beginPath();x.moveTo(tx(Q3v),yMid);x.lineTo(tx(wH),yMid);x.stroke();
+    [[wL],[wH]].forEach(([v])=>{x.beginPath();x.moveTo(tx(v),yMid-12);x.lineTo(tx(v),yMid+12);x.stroke();});
+    x.fillStyle=col.replace('.75','.18');x.strokeStyle=col;x.fillRect(tx(Q1v),yMid-15,tx(Q3v)-tx(Q1v),30);x.strokeRect(tx(Q1v),yMid-15,tx(Q3v)-tx(Q1v),30);
+    x.strokeStyle='rgba(251,191,36,.9)';x.lineWidth=2;x.beginPath();x.moveTo(tx(mdv),yMid-15);x.lineTo(tx(mdv),yMid+15);x.stroke();
+    x.fillStyle=col;x.font='11px Outfit,sans-serif';x.textAlign='right';x.fillText(lbl,48,yMid+5);
+  });
+  const stats=['Mean','Median','Mode','Range','IQR','MAD','Std Dev'];
+  const va=[mn(A),med(A),mode(A).join("/"),Math.max(...A)-Math.min(...A),iqr(A),mad(A),sd(A)];
+  const vb=[mn(B),med(B),mode(B).join("/"),Math.max(...B)-Math.min(...B),iqr(B),mad(B),sd(B)];
+  let rows='<tr><th>Statistic</th><th style="color:rgba(192,132,252,.9)">Set A</th><th style="color:rgba(52,211,153,.9)">Set B</th><th>Comparison</th></tr>';
+  stats.forEach((s,i)=>{const d2=typeof va[i]==='number'&&typeof vb[i]==='number';const ins=d2?(Math.abs(va[i]-vb[i])<0.01?'Equal':va[i]>vb[i]?'A higher':'B higher'):'—';rows+=`<tr><td>${s}</td><td class="fc" style="color:var(--vi)">${typeof va[i]==='number'?fmt(va[i]):va[i]}</td><td class="fc" style="color:var(--em)">${typeof vb[i]==='number'?fmt(vb[i]):vb[i]}</td><td style="font-size:.78rem;color:var(--mt)">${ins}</td></tr>`;});
+  document.getElementById('cmpTbl').innerHTML=`<table class="tb">${rows}</table>`;
+}
+
+// CITY BOX PLOTS
+const CITIES=[{n:'Tucson',col:'rgba(251,191,36,.8)',mn:53,q1:67,med:77,q3:83,mx:89},{n:'Seattle',col:'rgba(192,132,252,.8)',mn:40,q1:44,med:51,q3:60,mx:65},{n:'Boston',col:'rgba(52,211,153,.8)',mn:22,q1:34,med:52,q3:64,mx:70}];
+function drawCity(){
+  const{x,W,H}=clr('cityC');const pad=70,xMn=18,xMx=96,tx=v=>pad+(v-xMn)/(xMx-xMn)*(W-pad-16);
+  x.strokeStyle='rgba(58,45,94,.4)';x.lineWidth=1;
+  for(let v=20;v<=90;v+=5){x.beginPath();x.moveTo(tx(v),6);x.lineTo(tx(v),H-22);x.stroke();if(v%10===0){x.fillStyle='rgba(100,80,150,.5)';x.font='10px JetBrains Mono,monospace';x.textAlign='center';x.fillText(v+'°',tx(v),H-9);}}
+  CITIES.forEach((c,i)=>{const yMid=30+i*68;
+  x.strokeStyle=c.col;x.lineWidth=2;
+  x.beginPath();x.moveTo(tx(c.mn),yMid);x.lineTo(tx(c.q1),yMid);x.stroke();
+  x.beginPath();x.moveTo(tx(c.q3),yMid);x.lineTo(tx(c.mx),yMid);x.stroke();
+  [[c.mn],[c.mx]].forEach(([v])=>{x.beginPath();x.moveTo(tx(v),yMid-14);x.lineTo(tx(v),yMid+14);x.stroke();});
+  x.fillStyle=c.col.replace('.8','.22');x.fillRect(tx(c.q1),yMid-18,tx(c.q3)-tx(c.q1),36);x.strokeRect(tx(c.q1),yMid-18,tx(c.q3)-tx(c.q1),36);
+  x.strokeStyle='rgba(251,191,36,.9)';x.lineWidth=2.5;x.beginPath();x.moveTo(tx(c.med),yMid-18);x.lineTo(tx(c.med),yMid+18);x.stroke();
+  x.fillStyle=c.col;x.font='12px Outfit,sans-serif';x.textAlign='right';x.fillText(c.n,pad-8,yMid+5);});
+}
+const CITY_ANS=['<strong style="color:var(--vi)">Median in Seattle = 51°</strong>','<strong style="color:var(--am)">Minimum in Tucson = 53°</strong>','<strong style="color:var(--em)">Q3 of Boston = 64°</strong>','IQR Boston = Q3−Q1 = <strong style="color:var(--em)">64°−34° = 30°</strong>','Range Tucson = Max−Min = <strong style="color:var(--am)">89°−53° = 36°</strong>','75% of Boston temps are below Q3 (64°) → <strong style="color:var(--em)">75%</strong> of months below 64°','Middle 50% of Seattle = Q1 to Q3 = <strong style="color:var(--vi)">44° to 60°</strong>','<strong style="color:var(--vi)">Seattle</strong> — smallest range AND smallest IQR = least variability','<strong style="color:var(--am)">Tucson</strong> — highest min, Q1, median, Q3, and max temperatures all year'];
+function pickCity(i,el){document.querySelectorAll('#cityPl .pi').forEach(p=>p.classList.remove('on'));if(el)el.classList.add('on');document.getElementById('cityAns').innerHTML=CITY_ANS[i];}
+
+// CORRELATION
+let rpts=[];
+function seedR(r){rpts=[];for(let i=0;i<55;i++){const xv=-3+Math.random()*6,err=Math.sqrt(Math.max(0,1-r*r))*(Math.random()*2-1)*2.3;rpts.push({x:xv,y:r*xv+err});}}
+function drawR(){
+  const r=parseFloat(document.getElementById('rSl').value);
+  document.getElementById('rSlV').textContent=r.toFixed(2);
+  const dir=r>0.05?'Positive':r<-0.05?'Negative':'';
+  const str=Math.abs(r)>=0.8?'Strong':Math.abs(r)>=0.5?'Moderate':Math.abs(r)>=0.2?'Weak':'No Correlation';
+  const cls=r>0.05?'bge':r<-0.05?'bgr':'bgv';
+  document.getElementById('rBdg').innerHTML=`<span class="bg ${cls}">${str}${dir?' '+dir:''}</span>  r = ${r.toFixed(2)}`;
+  seedR(r);
+  const{x,W,H}=clr('rC');const xMn=-4,xMx=4,yMn=-4,yMx=4;
+  const tx=v=>(v-xMn)/(xMx-xMn)*W,ty=v=>H-(v-yMn)/(yMx-yMn)*H;
+  x.strokeStyle='rgba(58,45,94,.4)';x.lineWidth=1;
+  for(let v=-3;v<=3;v++){x.beginPath();x.moveTo(tx(v),0);x.lineTo(tx(v),H);x.stroke();x.beginPath();x.moveTo(0,ty(v));x.lineTo(W,ty(v));x.stroke();}
+  x.strokeStyle='rgba(100,80,150,.5)';x.lineWidth=1.5;
+  x.beginPath();x.moveTo(0,ty(0));x.lineTo(W,ty(0));x.stroke();
+  x.beginPath();x.moveTo(tx(0),0);x.lineTo(tx(0),H);x.stroke();
+  rpts.forEach(p=>{x.beginPath();x.arc(tx(p.x),ty(p.y),4.5,0,2*Math.PI);x.fillStyle=r>0.05?'rgba(52,211,153,.75)':r<-0.05?'rgba(251,113,133,.75)':'rgba(192,132,252,.7)';x.fill();});
+  if(Math.abs(r)>=0.15){x.strokeStyle='rgba(251,191,36,.6)';x.lineWidth=2;x.setLineDash([6,4]);x.beginPath();x.moveTo(tx(xMn),ty(r*xMn));x.lineTo(tx(xMx),ty(r*xMx));x.stroke();x.setLineDash([]);}
+}
+function clsR(){
+  const r=parseFloat(document.getElementById('rCl').value);
+  if(isNaN(r)||Math.abs(r)>1){document.getElementById('rClR').textContent='Enter a value between −1 and 1';return;}
+  const dir=r>0.05?'Positive':r<-0.05?'Negative':'';
+  const str=Math.abs(r)>=0.8?'Strong':Math.abs(r)>=0.5?'Moderate':Math.abs(r)>=0.2?'Weak':'No Correlation';
+  const cls=r>0.05?'bge':r<-0.05?'bgr':'bgv';
+  document.getElementById('rClR').innerHTML=`<span class="bg ${cls}">${str}${dir?' '+dir:''}</span>  r = ${r.toFixed(3)}`;
+}
+const SCENS=[
+  {s:'Hours worked vs. bank account $',c:'Positive',cls:'bge',why:'More hours → more income → more savings. Direct positive relationship.'},
+  {s:'Safety training hrs vs. job accidents',c:'Negative',cls:'bgr',why:'More training → fewer accidents. As one increases, the other decreases.'},
+  {s:'Students at Wheeler vs. dogs in Atlanta',c:'No Correlation',cls:'bgv',why:'No logical connection between these two unrelated population counts.'},
+  {s:'Heaters sold vs. months Jan → Jul',c:'Negative',cls:'bgr',why:'January is coldest (peak heater sales); July is hottest (low sales). Decreasing trend.'},
+  {s:'Calories burned vs. time spent walking',c:'Positive',cls:'bge',why:'More walking = more calories burned. Classic direct positive relationship.'},
+  {s:'College students → more likely to vote',c:'Correlation ONLY',cls:'bga',why:'College attendance doesn\'t directly cause voting. Other factors (civic awareness, income) likely explain this.'},
+  {s:'More trash after 2nd block',c:'Correlation ONLY',cls:'bga',why:'The number of students or the longer time between cleanings (lurking variable) likely explains the extra trash — not 2nd block itself.'},
+  {s:'Hit sister → she cries',c:'Causation',cls:'bge',why:'The first event DIRECTLY causes the second. True cause-and-effect with no lurking variable.'},
+  {s:'More TV → worse grades',c:'Correlation ONLY',cls:'bga',why:'TV doesn\'t directly lower grades. Poor time management and study habits (lurking variables) cause both.'},
+];
+function pickSc(i,el){document.querySelectorAll('#scPl .pi').forEach(p=>p.classList.remove('on'));if(el)el.classList.add('on');const e=SCENS[i];document.getElementById('scD').innerHTML=`<div class="card" style="margin-top:7px;background:var(--sf);"><span style="font-weight:600">${e.s}</span><span class="bg ${e.cls}">${e.c}</span><div style="font-size:.83rem;color:var(--mt);margin-top:5px;">${e.why}</div></div>`;}
+
+// REGRESSION
+const HD={x:[1400,1600,1700,1875,1100,1550,2350,2450,1425,1700],y:[245,312,279,308,199,219,405,324,319,255]};
+function drawHouse(){
+  const{x,W,H}=clr('houseC');const xMn=900,xMx=2600,yMn=160,yMx=440;
+  const tx=v=>(v-xMn)/(xMx-xMn)*W,ty=v=>H-(v-yMn)/(yMx-yMn)*H;
+  x.strokeStyle='rgba(58,45,94,.4)';x.lineWidth=1;
+  [1000,1200,1400,1600,1800,2000,2200,2400].forEach(v=>{x.beginPath();x.moveTo(tx(v),0);x.lineTo(tx(v),H);x.stroke();x.fillStyle='rgba(100,80,150,.5)';x.font='9px JetBrains Mono,monospace';x.textAlign='center';x.fillText(v,tx(v),H-4);});
+  [200,250,300,350,400].forEach(v=>{x.beginPath();x.moveTo(0,ty(v));x.lineTo(W,ty(v));x.stroke();x.fillStyle='rgba(100,80,150,.5)';x.font='9px JetBrains Mono,monospace';x.textAlign='right';x.fillText(v,28,ty(v)+3);});
+  x.strokeStyle='rgba(251,191,36,.65)';x.lineWidth=2;x.setLineDash([6,4]);x.beginPath();x.moveTo(tx(xMn),ty(0.11*xMn+98.25));x.lineTo(tx(xMx),ty(0.11*xMx+98.25));x.stroke();x.setLineDash([]);
+  HD.x.forEach((xv,i)=>{x.beginPath();x.arc(tx(xv),ty(HD.y[i]),5.5,0,2*Math.PI);x.fillStyle='rgba(192,132,252,.85)';x.fill();});
+  x.fillStyle='rgba(251,191,36,.7)';x.font='11px JetBrains Mono,monospace';x.textAlign='left';x.fillText('y = 0.11x + 98.25  (r = 0.76)',8,16);
+  x.fillStyle='rgba(93,184,254,.6)';x.font='11px Outfit,sans-serif';x.textAlign='center';x.fillText('Square Feet (x)',W/2,H-4);
+  x.save();x.translate(13,H/2);x.rotate(-Math.PI/2);x.fillStyle='rgba(52,211,153,.6)';x.fillText('Price $1000s (y)',0,0);x.restore();
+}
+const HITEMS=[
+  {h:'Slope a = 0.11 in Context',b:'<span style="color:var(--sk)">For every 1 additional sq ft, the predicted house price increases by $0.11 thousand ($110).</span>'},
+  {h:'Y-Intercept b = 98.25 in Context',b:'When sq ft = 0, predicted price = $98,250. <span style="color:var(--ro)">This doesn\'t make sense — a house can\'t have 0 sq ft! This is outside the data range (extrapolation).</span>'},
+  {h:'Predict 1700 sq ft — Interpolation',b:'<span style="font-family:monospace;color:var(--am)">y = 0.11(1700) + 98.25 = 187 + 98.25 = <strong>$285.25 thousand</strong></span><br><span style="color:var(--em)">Interpolation — 1700 is INSIDE the data range (1100–2450). More reliable.</span>'},
+  {h:'Predict 3000 sq ft — Extrapolation',b:'<span style="font-family:monospace;color:var(--am)">y = 0.11(3000) + 98.25 = 330 + 98.25 = <strong>$428.25 thousand</strong></span><br><span style="color:var(--ro)">Extrapolation — 3000 is OUTSIDE the data range. Less reliable!</span>'},
+  {h:'Budget $250,000 — Solve for x',b:'<span style="font-family:monospace;color:var(--am)">250 = 0.11x + 98.25 → 151.75 = 0.11x → x ≈ <strong>1,379.5 sq ft</strong></span>'},
+];
+function pickH(i,el){document.querySelectorAll('#housePl .pi').forEach(p=>p.classList.remove('on'));if(el)el.classList.add('on');const it=HITEMS[i];document.getElementById('houseD').innerHTML=`<div class="card" style="margin-top:8px;background:var(--sf);border-color:rgba(251,191,36,.2);"><div style="font-weight:700;color:var(--am);margin-bottom:5px;">${it.h}</div><div style="font-size:.88rem;">${it.b}</div></div>`;}
+function calcP(){const a=parseFloat(document.getElementById('pA').value)||0,b=parseFloat(document.getElementById('pB').value)||0,xv=parseFloat(document.getElementById('pX').value)||0;document.getElementById('pRes').innerHTML=`<div class="eq">y = ${a}(${xv}) + ${b} = <strong>${fmt(a*xv+b)}</strong></div>`;}
+
+const REGDATA=[
+  {t:'National Debt (years since 1950)',pts:[{x:0,y:257},{x:5,y:274},{x:12,y:298},{x:20,y:371},{x:24,y:475},{x:32,y:1142},{x:40,y:3233},{x:43,y:4411},{x:45,y:4974},{x:52,y:6228}],best:'Exponential',rLin:0.838,rBest:0.976,desc:'Data curves sharply upward — exponential pattern. Exponential r = 0.976 is much closer to 1 than linear r = 0.838. The exponential model equation y = a(b)ˣ fits best. <strong style="color:var(--em)">Exponential wins.</strong>'},
+  {t:'Ticket Price vs. Profit ($1000s)',pts:[{x:38,y:15},{x:147,y:24},{x:86,y:28},{x:52,y:19},{x:95,y:29},{x:88,y:27},{x:140,y:25},{x:55,y:21.5},{x:76,y:25.5},{x:125,y:24.5}],best:'Quadratic',rLin:0.55,rBest:0.97,desc:'Data rises then falls — a parabola shape. Quadratic |r| = 0.97 vs linear r = 0.55. The optimal ticket price for maximum profit is at the vertex of the quadratic curve. <strong style="color:var(--ro)">Quadratic wins.</strong>'},
+];
+function pickReg(i,el){
+  document.querySelectorAll('.rt').forEach(t=>t.classList.remove('on'));
+  if(el)el.classList.add('on');
+  const d=REGDATA[i];
+  const{x,W,H}=clr('regC');
+  const xs=d.pts.map(p=>p.x),ys=d.pts.map(p=>p.y);
+  const xMn=Math.min(...xs)-3,xMx=Math.max(...xs)+3,yMn=0,yMx=Math.max(...ys)*1.28;
+  const tx=v=>40+(v-xMn)/(xMx-xMn)*(W-55),ty=v=>H-30-(v-yMn)/(yMx-yMn)*(H-45);
+  x.strokeStyle='rgba(58,45,94,.4)';x.lineWidth=1;
+  [0,.25,.5,.75,1].forEach(p=>{const v=yMn+(yMx-yMn)*p;x.beginPath();x.moveTo(40,ty(v));x.lineTo(W-15,ty(v));x.stroke();x.fillStyle='rgba(100,80,150,.5)';x.font='9px JetBrains Mono,monospace';x.textAlign='right';x.fillText(Math.round(v),36,ty(v)+3);});
+  d.pts.forEach(p=>{x.beginPath();x.arc(tx(p.x),ty(p.y),5.5,0,2*Math.PI);x.fillStyle='rgba(192,132,252,.85)';x.fill();});
+  const n=d.pts.length,sx=xs.reduce((a,b)=>a+b,0),sy=ys.reduce((a,b)=>a+b,0),sxy=d.pts.reduce((a,p)=>a+p.x*p.y,0),sx2=xs.reduce((a,b)=>a+b*b,0);
+  const la=(n*sxy-sx*sy)/(n*sx2-sx*sx),lb=(sy-la*sx)/n;
+  x.strokeStyle='rgba(56,189,248,.5)';x.lineWidth=1.8;x.setLineDash([5,4]);x.beginPath();x.moveTo(tx(xMn),ty(la*xMn+lb));x.lineTo(tx(xMx),ty(la*xMx+lb));x.stroke();x.setLineDash([]);
+  x.fillStyle='rgba(56,189,248,.65)';x.font='11px JetBrains Mono,monospace';x.textAlign='left';x.fillText('Linear  r='+d.rLin,44,18);
+  if(i===0){
+    x.strokeStyle='rgba(52,211,153,.8)';x.lineWidth=2.5;
+    const ea=250,eb=1.095;x.beginPath();let st=false;for(let px=0;px<W;px++){const xv=xMn+(px/W)*(xMx-xMn);const yv=ea*Math.pow(eb,xv);if(yv>yMx*1.1){st=false;continue;}if(!st){x.moveTo(px,ty(yv));st=true;}else x.lineTo(px,ty(yv));}x.stroke();
+    x.fillStyle='rgba(52,211,153,.8)';x.fillText('Exponential  r='+d.rBest,44,33);
+    x.fillStyle='rgba(52,211,153,.9)';x.textAlign='right';x.fillText('← Exponential fits better!',W-10,H-35);
+  } else {
+    x.strokeStyle='rgba(251,113,133,.8)';x.lineWidth=2.5;
+    const qa=-0.0026,qb=0.48,qc=7.7;x.beginPath();let st=false;for(let px=0;px<W;px++){const xv=xMn+(px/W)*(xMx-xMn);const yv=qa*xv*xv+qb*xv+qc;if(yv>yMx*1.1||yv<-5){st=false;continue;}if(!st){x.moveTo(px,ty(yv));st=true;}else x.lineTo(px,ty(yv));}x.stroke();
+    x.fillStyle='rgba(251,113,133,.8)';x.fillText('Quadratic  |r|='+d.rBest,44,33);
+    x.fillStyle='rgba(251,113,133,.9)';x.textAlign='right';x.fillText('← Quadratic fits better!',W-10,H-35);
+  }
+  document.getElementById('regD').innerHTML=`<div class="card" style="background:var(--sf);border-color:rgba(251,191,36,.2);margin-top:0;"><strong style="color:var(--am)">${d.t}</strong><span class="bg bga">Best: ${d.best}</span><div style="font-size:.83rem;color:var(--mt);margin-top:6px;">${d.desc}</div></div>`;
+}
+
+window.addEventListener('load',()=>{
+  calcSS();calcSD();calcOut();drawDis();
+  buildShapes();calcCmp();
+  setTimeout(()=>{drawCity();pickCity(0,document.querySelector('#cityPl .pi'));},100);
+  drawR();clsR();pickSc(0,document.querySelector('#scPl .pi'));
+  setTimeout(()=>{drawHouse();pickH(0,document.querySelector('#housePl .pi'));calcP();pickReg(0,document.querySelector('.rt'));},100);
+});
+</script></body></html>
