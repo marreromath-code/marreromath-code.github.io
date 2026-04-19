@@ -297,6 +297,7 @@ body::before{
   <div class="nav-links">
     <a class="nav-link" href="index.html">Home</a>
     <a class="nav-link active" href="labs.html">Labs</a>
+    <a class="nav-link" href="newsletters.html">Newsletter</a>
   </div>
 </nav>
 
@@ -419,7 +420,7 @@ body::before{
       </div>
     </a>
 
-    <!-- Section: EOCPrep -->
+    <!-- Section: EOC Prep -->
     <div style="grid-column:1/-1;" data-cat="eoc">
       <div class="sec-div" style="margin:18px 0 6px;">
         <div class="sec-div-line"></div>
@@ -518,7 +519,7 @@ function filterCards(cat, btn){
   });
 
   // Featured banner
-  const fb = document.querySelector('ofeatured-banner');
+  const fb = document.querySelector('.featured-banner');
   if(fb) fb.style.display = (cat==='all'||cat==='statistics') ? '' : 'none';
 
   // Section labels outside grid
