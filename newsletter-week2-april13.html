@@ -1,498 +1,595 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Math Topic Newsletter – Week 2 | April 13</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Open+Sans:wght@400;600;700&display=swap');
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week of April 13, 2026 — Math Topics Newsletter</title>
+<meta name="description" content="Important theorems in calculus, prerequisites refreshers, space & health news, and a featured derivative video.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:#07090f;
+  color:#e2e8f6;
+  font-family:'Inter',sans-serif;
+  min-height:100vh;
+  line-height:1.65;
+}
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 70% 60% at 10% 5%,  rgba(37,99,235,.14) 0%,transparent 55%),
+    radial-gradient(ellipse 60% 50% at 90% 20%,  rgba(124,58,237,.12) 0%,transparent 55%),
+    radial-gradient(ellipse 80% 40% at 50% 100%, rgba(16,185,129,.09) 0%,transparent 60%);
+  pointer-events:none;
+}
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+.topnav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(7,9,15,.88);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(255,255,255,.07);
+  padding:0 32px;
+  display:flex;align-items:center;gap:0;height:58px;
+}
+.nav-brand{
+  font-family:'Playfair Display',serif;
+  font-size:1.15rem;font-weight:700;
+  background:linear-gradient(135deg,#60a5fa,#a78bfa);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  text-decoration:none;margin-right:auto;
+}
+.nav-links{display:flex;gap:2px;flex-wrap:wrap;}
+.nav-link{
+  color:rgba(226,232,246,.45);
+  font-size:.82rem;font-weight:500;
+  padding:7px 14px;border-radius:7px;
+  text-decoration:none;transition:all .18s;
+}
+.nav-link:hover{color:#e2e8f6;background:rgba(255,255,255,.06);}
+.nav-link.active{color:#60a5fa;background:rgba(37,99,235,.12);}
 
-    body {
-      background: #f0f4f8;
-      font-family: 'Open Sans', sans-serif;
-      color: #2d2d2d;
-    }
+.wrap{
+  position:relative;z-index:1;
+  max-width:880px;margin:0 auto;
+  padding:48px 22px 80px;
+}
 
-    .wrapper {
-      max-width: 860px;
-      margin: 30px auto;
-      background: #ffffff;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 6px 32px rgba(0,0,0,0.12);
-    }
+.breadcrumb{font-size:.78rem;color:rgba(226,232,246,.4);margin-bottom:16px;}
+.breadcrumb a{color:#60a5fa;text-decoration:none;}
+.breadcrumb a:hover{text-decoration:underline;}
 
-    .header {
-      background: linear-gradient(135deg, #1a237e 0%, #283593 50%, #1565c0 100%);
-      padding: 48px 40px 36px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .header::before {
-      content: "∫ ∂ Σ π √ ∞ ∮ ∇";
-      position: absolute;
-      top: 8px;
-      left: 0; right: 0;
-      font-size: 18px;
-      color: rgba(255,255,255,0.12);
-      letter-spacing: 18px;
-      font-weight: bold;
-    }
-    .header-badge {
-      display: inline-block;
-      background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.3);
-      color: #90caf9;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      padding: 5px 16px;
-      border-radius: 20px;
-      margin-bottom: 14px;
-    }
-    .header h1 {
-      font-family: 'Merriweather', serif;
-      color: #ffffff;
-      font-size: 32px;
-      line-height: 1.25;
-      margin-bottom: 8px;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.3);
-    }
-    .header h1 span { color: #ffd54f; }
-    .header .subtitle { color: #bbdefb; font-size: 14px; letter-spacing: 1px; }
-    .header .date-bar { margin-top: 18px; display: flex; justify-content: center; gap: 30px; }
-    .header .date-bar span { color: rgba(255,255,255,0.75); font-size: 12px; font-weight: 600; }
-    .header .date-bar span strong { color: #ffd54f; font-size: 13px; }
+.issue-eyebrow{
+  display:inline-block;
+  background:rgba(124,58,237,.16);
+  border:1px solid rgba(124,58,237,.38);
+  color:#c4b5fd;
+  font-size:.7rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:2px;
+  padding:5px 14px;border-radius:20px;
+  margin-bottom:18px;
+}
+.issue-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2.2rem,5vw,3.6rem);
+  font-weight:800;line-height:1.05;
+  background:linear-gradient(135deg,#a78bfa 0%,#60a5fa 50%,#34d399 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  letter-spacing:-.02em;margin-bottom:12px;
+}
+.issue-sub{
+  font-size:1.06rem;color:rgba(226,232,246,.58);
+  max-width:640px;line-height:1.7;
+}
+.issue-meta{
+  display:flex;gap:22px;flex-wrap:wrap;margin-top:22px;
+  padding-top:22px;border-top:1px solid rgba(255,255,255,.08);
+  font-size:.78rem;color:rgba(226,232,246,.4);
+}
+.issue-meta b{color:rgba(226,232,246,.65);font-weight:600;}
 
-    .intro-strip {
-      background: #e8f0fe;
-      border-left: 5px solid #1a237e;
-      padding: 16px 40px;
-      font-size: 14px;
-      color: #37474f;
-      font-style: italic;
-    }
+.toc{
+  margin:40px 0;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;
+  padding:20px 26px;
+}
+.toc-title{
+  font-size:.68rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:2px;
+  color:rgba(226,232,246,.45);margin-bottom:12px;
+}
+.toc-list{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:6px 18px;
+  list-style:none;
+}
+.toc-list a{
+  display:block;color:rgba(226,232,246,.75);
+  text-decoration:none;font-size:.88rem;
+  padding:4px 0;transition:color .15s;
+}
+.toc-list a:hover{color:#a78bfa;}
+.toc-list a span{color:rgba(226,232,246,.35);margin-right:8px;}
 
-    .content { padding: 0 40px 40px; }
-    .section { margin-top: 40px; }
-    .section-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 20px;
-      padding-bottom: 10px;
-      border-bottom: 2px solid #e3e8f0;
-    }
-    .section-icon {
-      width: 38px; height: 38px;
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 18px; flex-shrink: 0;
-    }
-    .icon-blue { background: #e3f2fd; }
-    .icon-green { background: #e8f5e9; }
-    .icon-purple { background: #f3e5f5; }
-    .icon-orange { background: #fff3e0; }
-    .icon-red { background: #fce4ec; }
-    .icon-teal { background: #e0f2f1; }
-    .section-header h2 { font-family: 'Merriweather', serif; font-size: 20px; color: #1a237e; }
-    .section-header .section-tag { margin-left: auto; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #90a4ae; }
+.sec{margin:56px 0;}
+.sec-label{
+  font-size:.68rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:2.5px;
+  color:#a78bfa;margin-bottom:10px;
+  display:flex;align-items:center;gap:8px;
+}
+.sec-label::before{content:'';width:22px;height:2px;background:#a78bfa;border-radius:1px;}
+.sec-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.6rem,3.5vw,2.2rem);
+  font-weight:700;line-height:1.15;
+  color:#e2e8f6;margin-bottom:18px;letter-spacing:-.01em;
+}
+.sec p{font-size:1.02rem;color:rgba(226,232,246,.78);margin-bottom:16px;}
 
-    .def-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .def-card { background: #f8f9fd; border: 1px solid #dde3f0; border-radius: 10px; padding: 18px; border-top: 3px solid #3949ab; }
-    .def-card .term { font-weight: 700; color: #1a237e; font-size: 15px; margin-bottom: 6px; }
-    .def-card .notation { font-family: 'Courier New', monospace; background: #e8eaf6; color: #283593; font-size: 13px; padding: 4px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
-    .def-card p { font-size: 13.5px; color: #455a64; line-height: 1.65; }
+/* Theorem card: serious math look */
+.theorem{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:16px;
+  padding:26px 28px;
+  margin:18px 0;
+  position:relative;
+}
+.theorem::before{
+  content:'';position:absolute;top:0;left:0;bottom:0;
+  width:3px;border-radius:16px 0 0 16px;
+}
+.theorem.t-fund::before{background:linear-gradient(180deg,#60a5fa,#34d399);}
+.theorem.t-mvt::before{background:linear-gradient(180deg,#a78bfa,#60a5fa);}
+.theorem.t-rolle::before{background:linear-gradient(180deg,#fb7185,#fbbf24);}
+.theorem h3{
+  font-family:'Playfair Display',serif;
+  font-size:1.25rem;color:#e2e8f6;margin-bottom:10px;
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+}
+.theorem h3 .pill{
+  font-family:'Inter',sans-serif;font-size:.62rem;font-weight:700;
+  padding:3px 10px;border-radius:20px;letter-spacing:1px;text-transform:uppercase;
+}
+.t-fund h3 .pill{background:rgba(96,165,250,.15);color:#93c5fd;border:1px solid rgba(96,165,250,.3);}
+.t-mvt h3 .pill{background:rgba(167,139,250,.15);color:#c4b5fd;border:1px solid rgba(167,139,250,.3);}
+.t-rolle h3 .pill{background:rgba(251,113,133,.15);color:#fda4af;border:1px solid rgba(251,113,133,.3);}
 
-    .vocab-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
-    .vocab-table thead tr { background: #1a237e; color: white; }
-    .vocab-table thead th { padding: 11px 16px; text-align: left; font-weight: 600; font-size: 12px; }
-    .vocab-table tbody tr:nth-child(even) { background: #f5f7fb; }
-    .vocab-table tbody tr:nth-child(odd) { background: #ffffff; }
-    .vocab-table tbody tr:hover { background: #e8eaf6; }
-    .vocab-table tbody td { padding: 10px 16px; border-bottom: 1px solid #e0e4ef; line-height: 1.5; }
-    .vocab-table tbody td:first-child { font-weight: 700; color: #1a237e; white-space: nowrap; }
-    .vocab-table tbody td .sym { font-family: 'Courier New', monospace; background: #e8eaf6; color: #283593; padding: 2px 6px; border-radius: 4px; font-size: 12px; }
+.formula{
+  display:block;
+  background:rgba(15,18,28,.8);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:10px;
+  padding:14px 18px;
+  margin:12px 0;
+  font-family:'JetBrains Mono',monospace;
+  font-size:1rem;color:#e8eaf6;
+  overflow-x:auto;
+}
+.why{
+  font-size:.9rem;color:rgba(226,232,246,.72);
+  margin-top:10px;
+  padding-left:12px;
+  border-left:2px solid rgba(96,165,250,.35);
+}
+.why b{color:#93c5fd;}
 
-    .theorem-card { background: linear-gradient(135deg, #f3e5f5 0%, #fce4ec 100%); border: 1px solid #ce93d8; border-left: 5px solid #7b1fa2; border-radius: 10px; padding: 20px 22px; margin-bottom: 16px; }
-    .theorem-card .thm-title { font-family: 'Merriweather', serif; font-size: 15px; font-weight: 700; color: #4a148c; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
-    .theorem-card .thm-title .badge { font-family: 'Open Sans', sans-serif; font-size: 10px; background: #7b1fa2; color: white; padding: 2px 8px; border-radius: 10px; font-weight: 700; }
-    .theorem-card .thm-statement { font-size: 13.5px; color: #4a148c; line-height: 1.7; font-style: italic; background: rgba(255,255,255,0.5); border-radius: 6px; padding: 10px 14px; margin-bottom: 10px; }
-    .theorem-card .thm-note { font-size: 13px; color: #6a1b9a; line-height: 1.6; }
-    .theorem-card .thm-note strong { color: #4a148c; }
+/* Prereq grid */
+.prereq-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:16px;margin-top:14px;
+}
+.prereq-card{
+  background:rgba(255,255,255,.035);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;
+  padding:20px 22px;
+}
+.prereq-card h4{
+  font-family:'Playfair Display',serif;
+  font-size:1.05rem;color:#e2e8f6;margin-bottom:10px;
+  display:flex;align-items:center;gap:8px;
+}
+.prereq-card ul{list-style:none;padding:0;margin:0;}
+.prereq-card li{
+  font-size:.88rem;color:rgba(226,232,246,.68);
+  padding:4px 0;padding-left:18px;position:relative;
+}
+.prereq-card li::before{
+  content:'✓';position:absolute;left:0;color:#34d399;font-weight:700;
+}
 
-    .prereq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .prereq-card { background: #fff8e1; border: 1px solid #ffe082; border-top: 3px solid #f9a825; border-radius: 10px; padding: 18px; }
-    .prereq-card .prereq-title { font-weight: 700; color: #e65100; font-size: 14px; margin-bottom: 10px; }
-    .prereq-card ul { list-style: none; padding: 0; }
-    .prereq-card ul li { font-size: 13px; color: #4e342e; padding: 5px 0; border-bottom: 1px dashed #ffe082; line-height: 1.5; }
-    .prereq-card ul li:last-child { border-bottom: none; }
-    .prereq-card ul li::before { content: "✓ "; color: #f9a825; font-weight: bold; }
+/* News cards */
+.card{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:16px;
+  padding:24px 26px;
+  margin:16px 0;
+}
+.card h3{
+  font-family:'Playfair Display',serif;
+  font-size:1.18rem;color:#e2e8f6;margin-bottom:8px;
+}
+.card p{margin:0;font-size:.96rem;color:rgba(226,232,246,.72);}
 
-    .callout { background: #e0f7fa; border-left: 5px solid #00838f; border-radius: 8px; padding: 14px 18px; font-size: 13.5px; color: #004d40; margin-top: 16px; line-height: 1.65; }
-    .callout strong { color: #00695c; }
+.two-col{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;}
 
-    .news-feature { background: linear-gradient(135deg, #0d1b2a 0%, #1b3a5c 100%); border-radius: 12px; padding: 26px; margin-bottom: 20px; color: white; position: relative; overflow: hidden; }
-    .news-feature::after { content: "🚀"; position: absolute; right: 24px; top: 20px; font-size: 56px; opacity: 0.15; }
-    .news-feature .news-tag { display: inline-block; background: #ef5350; color: white; font-size: 10px; font-weight: 700; letter-spacing: 2px; padding: 4px 10px; border-radius: 4px; margin-bottom: 10px; text-transform: uppercase; }
-    .news-feature h3 { font-family: 'Merriweather', serif; font-size: 20px; color: #ffffff; margin-bottom: 10px; line-height: 1.4; }
-    .news-feature p { font-size: 13.5px; color: #b0c4de; line-height: 1.7; margin-bottom: 14px; }
-    .news-feature .crew-list { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
-    .news-feature .crew-list span { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #ffd54f; font-size: 12px; padding: 4px 12px; border-radius: 20px; font-weight: 600; }
-    .news-links { display: flex; flex-wrap: wrap; gap: 10px; }
-    .news-links a { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.25); color: #90caf9; font-size: 12px; font-weight: 600; padding: 7px 14px; border-radius: 20px; text-decoration: none; }
-    .news-links a .icon { font-size: 14px; }
+/* Video */
+.video{
+  position:relative;width:100%;
+  aspect-ratio:16/9;
+  border-radius:16px;overflow:hidden;
+  border:1px solid rgba(255,255,255,.08);
+  margin:18px 0;
+  box-shadow:0 14px 40px rgba(0,0,0,.3);
+}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
 
-    .sci-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .sci-card { background: #f8f9fd; border: 1px solid #e0e5f0; border-radius: 10px; overflow: hidden; }
-    .sci-card-header { padding: 10px 16px; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: white; }
-    .bg-space { background: #1565c0; } .bg-bio { background: #2e7d32; } .bg-physics { background: #6a1b9a; }
-    .bg-health { background: #b71c1c; } .bg-tech { background: #e65100; } .bg-astro { background: #004d40; }
-    .sci-card-body { padding: 16px; }
-    .sci-card-body h4 { font-size: 14px; font-weight: 700; color: #1a237e; margin-bottom: 7px; line-height: 1.4; }
-    .sci-card-body p { font-size: 13px; color: #546e7a; line-height: 1.6; }
-    .sci-card-body a { display: inline-block; margin-top: 10px; font-size: 12px; color: #1565c0; font-weight: 600; text-decoration: none; }
+.callout{
+  border-left:3px solid #a78bfa;
+  padding:10px 18px;
+  margin:18px 0;
+  background:rgba(167,139,250,.06);
+  border-radius:0 12px 12px 0;
+  font-size:.98rem;color:rgba(226,232,246,.78);
+}
+.callout b{color:#c4b5fd;}
 
-    .math-quote { background: linear-gradient(135deg, #1a237e, #283593); border-radius: 10px; padding: 24px 30px; margin: 30px 0 0; text-align: center; color: white; }
-    .math-quote blockquote { font-family: 'Merriweather', serif; font-size: 17px; font-style: italic; color: #e8eaf6; line-height: 1.7; margin-bottom: 10px; }
-    .math-quote cite { font-size: 13px; color: #90caf9; font-style: normal; font-weight: 600; }
+/* Terminology table */
+.term-table{
+  width:100%;border-collapse:collapse;margin:14px 0;
+  font-size:.92rem;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;overflow:hidden;
+}
+.term-table th,.term-table td{
+  padding:14px 18px;
+  text-align:left;
+  vertical-align:top;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.term-table th{
+  background:rgba(37,99,235,.1);
+  color:#93c5fd;
+  font-weight:700;font-size:.72rem;
+  text-transform:uppercase;letter-spacing:1.5px;
+}
+.term-table tr:last-child td{border-bottom:none;}
+.term-table td:first-child{
+  font-weight:600;color:#e2e8f6;white-space:nowrap;
+}
+.term-table td:last-child{color:rgba(226,232,246,.7);line-height:1.55;}
 
-    .footer { background: #1a237e; color: #90a4ae; text-align: center; padding: 28px 40px; font-size: 12px; line-height: 1.8; }
-    .footer strong { color: #ffd54f; }
-    .footer .footer-divider { width: 60px; height: 2px; background: #ffd54f; margin: 12px auto; border-radius: 2px; }
+/* Nav to next/prev */
+.nav-issues{
+  margin-top:60px;padding-top:28px;
+  border-top:1px solid rgba(255,255,255,.08);
+  display:flex;gap:12px;flex-wrap:wrap;
+}
+.nav-issues a{
+  flex:1;min-width:220px;
+  padding:18px 22px;border-radius:14px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  text-decoration:none;color:#e2e8f6;
+  transition:all .2s;
+}
+.nav-issues a:hover{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.18);}
+.nav-issues .ni-dir{font-size:.7rem;color:rgba(226,232,246,.45);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px;}
+.nav-issues .ni-title{font-family:'Playfair Display',serif;font-weight:700;color:#a78bfa;}
+.nav-issues .ni-disabled{opacity:.35;pointer-events:none;}
 
-    @media (max-width: 620px) {
-      .def-grid, .prereq-grid, .sci-grid { grid-template-columns: 1fr; }
-      .header h1 { font-size: 24px; }
-      .content { padding: 0 20px 30px; }
-    }
-  </style>
+.footer{
+  text-align:center;
+  padding:36px 20px 30px;
+  color:rgba(232,234,246,.32);font-size:.8rem;
+}
+.footer a{color:#60a5fa;text-decoration:none;}
+
+@media(max-width:600px){
+  .topnav{padding:0 16px;}
+  .wrap{padding:30px 14px 60px;}
+  .term-table th,.term-table td{padding:10px 12px;font-size:.85rem;}
+}
+</style>
 </head>
 <body>
-<div class="wrapper">
-  <div class="header">
-    <div class="header-badge">Weekly Academic Newsletter</div>
-    <h1>Math Topic Newsletter<br/><span>Week 2 · April 13</span></h1>
-    <p class="subtitle">Calculus · Science News · Classroom Resources</p>
-    <div class="date-bar">
-      <span>📅 <strong>April 13, 2026</strong></span>
-      <span>📐 <strong>Calculus Focus</strong></span>
-      <span>🔭 <strong>Science &amp; Space</strong></span>
-    </div>
+
+<nav class="topnav">
+  <a class="nav-brand" href="index.html">MarreroMath</a>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">Home</a>
+    <a class="nav-link" href="labs.html">Labs</a>
+    <a class="nav-link active" href="newsletters.html">Newsletter</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <nav class="breadcrumb">
+    <a href="newsletters.html">← Newsletter Archive</a>
+  </nav>
+
+  <div class="issue-eyebrow">Math Topics · Week of April 13, 2026</div>
+  <h1 class="issue-title">Important Theorems in Calculus + Prerequisites</h1>
+  <p class="issue-sub">
+    This week: Part I of a theorems series (Fundamental Theorem, Mean Value
+    Theorem, Rolle's Theorem), a two-part calculus prerequisites refresher,
+    space &amp; health headlines, and a featured video on the real definition
+    of the derivative.
+  </p>
+
+  <div class="issue-meta">
+    <span>📅 <b>Published</b> April 13, 2026</span>
+    <span>✍️ <b>Author</b> Dr. Carlos Marrero</span>
+    <span>⏱️ <b>Read</b> ~9 min</span>
   </div>
 
-  <div class="intro-strip">
-    Welcome back! This week we dive deep into the foundations of Calculus — building your vocabulary, exploring essential theorems, and reviewing the key prerequisites every student should master. Plus, we bring you the latest science news, including NASA's historic Artemis II mission! 🚀
+  <div class="toc">
+    <div class="toc-title">In this issue</div>
+    <ol class="toc-list" style="list-style:none;">
+      <li><a href="#glossary"><span>01</span>Calculus Key Terms</a></li>
+      <li><a href="#theorems"><span>02</span>Important Theorems (Part I)</a></li>
+      <li><a href="#prereq-1"><span>03</span>Prerequisites — Part I</a></li>
+      <li><a href="#prereq-2"><span>04</span>Prerequisites — Part II</a></li>
+      <li><a href="#space"><span>05</span>Space &amp; Physics News</a></li>
+      <li><a href="#health"><span>06</span>Health, Tech &amp; Energy</a></li>
+      <li><a href="#video"><span>07</span>Featured Video: Derivatives</a></li>
+    </ol>
   </div>
 
-  <div class="content">
-    <div class="section">
-      <div class="section-header">
-        <div class="section-icon icon-blue">📖</div>
-        <h2>Key Calculus Definitions</h2>
-        <span class="section-tag">Foundations</span>
-      </div>
-      <div class="def-grid">
-        <div class="def-card">
-          <div class="term">The Limit</div>
-          <div class="notation">lim<sub>x→c</sub> f(x) = L</div>
-          <p>We say the <strong>limit</strong> of f(x) as x approaches c equals L if f(x) can be made arbitrarily close to L by taking x sufficiently close to c (but not equal to c). It is the cornerstone concept of all Calculus.</p>
-        </div>
-        <div class="def-card">
-          <div class="term">The Derivative</div>
-          <div class="notation">f'(x) = lim<sub>h→0</sub> [f(x+h)−f(x)] / h</div>
-          <p>The <strong>derivative</strong> measures the instantaneous rate of change of a function. Geometrically, it represents the slope of the tangent line to the graph of f at the point x.</p>
-        </div>
-        <div class="def-card">
-          <div class="term">Continuity</div>
-          <div class="notation">lim<sub>x→c</sub> f(x) = f(c)</div>
-          <p>A function f is <strong>continuous</strong> at x = c if: (1) f(c) is defined, (2) the limit as x→c exists, and (3) the limit equals f(c). The graph has no holes, jumps, or breaks at c.</p>
-        </div>
-        <div class="def-card">
-          <div class="term">The Definite Integral</div>
-          <div class="notation">∫<sub>a</sub><sup>b</sup> f(x) dx</div>
-          <p>The <strong>definite integral</strong> of f from a to b is the limit of Riemann sums — the net signed area between the graph of f and the x-axis over [a, b].</p>
-        </div>
-        <div class="def-card">
-          <div class="term">Differentiability</div>
-          <div class="notation">f'(c) exists</div>
-          <p>A function is <strong>differentiable</strong> at x = c if its derivative exists there. Differentiability implies continuity, but continuity alone does not guarantee differentiability (e.g., |x| at x = 0).</p>
-        </div>
-        <div class="def-card">
-          <div class="term">Antiderivative (Indefinite Integral)</div>
-          <div class="notation">∫ f(x) dx = F(x) + C</div>
-          <p>F is an <strong>antiderivative</strong> of f if F'(x) = f(x). The indefinite integral represents the family of all antiderivatives, differing only by a constant C.</p>
-        </div>
-      </div>
-      <div class="callout">
-        <strong>💡 Remember:</strong> Limits, derivatives, and integrals are deeply connected. The Fundamental Theorem of Calculus links derivatives and integrals in one of the most beautiful relationships in all of mathematics.
+  <!-- 01 -->
+  <section class="sec" id="glossary">
+    <div class="sec-label">01 · Glossary</div>
+    <h2 class="sec-title">Key Calculus Terms at a Glance</h2>
+    <p>
+      A quick reference table before we dive into the theorems — keep this handy
+      and students can pin down the vocabulary quickly.
+    </p>
+
+    <table class="term-table">
+      <thead>
+        <tr><th>Term</th><th>Quick Definition</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Continuity</td><td>A function with no holes, jumps, or vertical asymptotes at a point.</td></tr>
+        <tr><td>Critical Point</td><td>A point where the derivative is zero or undefined — candidate for extrema.</td></tr>
+        <tr><td>Inflection Point</td><td>A point where the concavity of the function changes sign.</td></tr>
+        <tr><td>Asymptote</td><td>A line that the graph of a function approaches but never reaches.</td></tr>
+        <tr><td>Chain Rule</td><td>Rule for differentiating composite functions: f(g(x))' = f'(g(x)) · g'(x).</td></tr>
+        <tr><td>Riemann Sum</td><td>An approximation of the area under a curve using rectangles.</td></tr>
+        <tr><td>L'Hôpital's Rule</td><td>A technique for evaluating indeterminate forms (0/0 or ∞/∞).</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 02 -->
+  <section class="sec" id="theorems">
+    <div class="sec-label">02 · Theorems · Part I</div>
+    <h2 class="sec-title">Important Theorems in Calculus</h2>
+    <p>
+      Part I of our series on the theorems that hold calculus together.
+      Each theorem has a compact statement and a short <em>why it matters</em> note
+      — teach these as stories, not formulas to memorize.
+    </p>
+
+    <div class="theorem t-fund">
+      <h3>The Fundamental Theorem of Calculus <span class="pill">FTC</span></h3>
+      <p>
+        If <em>f</em> is continuous on <em>[a, b]</em>, and <em>F</em> is any antiderivative of
+        <em>f</em>, then:
+      </p>
+      <code class="formula">∫ₐᵇ f(x) dx  =  F(b) − F(a)</code>
+      <div class="why">
+        <b>Why it matters:</b> This is the bridge between the two halves of calculus.
+        It tells us that definite integrals (areas) and antiderivatives (accumulation
+        functions) are two sides of the same idea. Solving integrals becomes a
+        matter of running differentiation in reverse.
       </div>
     </div>
 
-    <div class="section">
-      <div class="section-header">
-        <div class="section-icon icon-green">📝</div>
-        <h2>Essential Calculus Vocabulary</h2>
-        <span class="section-tag">Terminology</span>
-      </div>
-      <table class="vocab-table">
-        <thead><tr><th>Term</th><th>Symbol / Notation</th><th>Plain-Language Meaning</th></tr></thead>
-        <tbody>
-          <tr><td>Limit</td><td><span class="sym">lim<sub>x→c</sub></span></td><td>The value a function approaches as the input gets closer to a specific point.</td></tr>
-          <tr><td>Derivative</td><td><span class="sym">f'(x), dy/dx, Df</span></td><td>Instantaneous rate of change; slope of the tangent line at a point.</td></tr>
-          <tr><td>Integral</td><td><span class="sym">∫ f(x)dx</span></td><td>Accumulation of quantities; area under a curve.</td></tr>
-          <tr><td>Continuity</td><td><span class="sym">f cont. at c</span></td><td>A function with no holes, jumps, or vertical asymptotes at a point.</td></tr>
-          <tr><td>Critical Point</td><td><span class="sym">f'(c) = 0 or DNE</span></td><td>A point where the derivative is zero or undefined — possible max/min.</td></tr>
-          <tr><td>Inflection Point</td><td><span class="sym">f''(c) = 0</span></td><td>A point where the concavity of the function changes sign.</td></tr>
-          <tr><td>Asymptote</td><td><span class="sym">y = L, x = a</span></td><td>A line that the graph of a function approaches but never reaches.</td></tr>
-          <tr><td>Chain Rule</td><td><span class="sym">d/dx[f(g(x))]</span></td><td>Rule for differentiating composite functions: f'(g(x))·g'(x).</td></tr>
-          <tr><td>Riemann Sum</td><td><span class="sym">Σ f(x*ᵢ)Δx</span></td><td>An approximation of the area under a curve using rectangles.</td></tr>
-          <tr><td>L'Hôpital's Rule</td><td><span class="sym">lim f/g = lim f'/g'</span></td><td>A technique for evaluating indeterminate forms (0/0 or ∞/∞).</td></tr>
-          <tr><td>Concavity</td><td><span class="sym">f'' &gt; 0 or f'' &lt; 0</span></td><td>Whether the curve bends upward (concave up) or downward (concave down).</td></tr>
-          <tr><td>Convergence / Divergence</td><td><span class="sym">Σaₙ → L or ∞</span></td><td>Whether an infinite series or improper integral approaches a finite value.</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="section">
-      <div class="section-header">
-        <div class="section-icon icon-purple">⚡</div>
-        <h2>Important Theorems in Calculus</h2>
-        <span class="section-tag">Core Results</span>
-      </div>
-      <div class="theorem-card">
-        <div class="thm-title">The Fundamental Theorem of Calculus <span class="badge">FTC</span></div>
-        <div class="thm-statement">Part I: If f is continuous on [a, b] and F(x) = ∫ₐˣ f(t) dt, then F'(x) = f(x).<br/>Part II: If F is any antiderivative of f, then ∫ₐᵇ f(x) dx = F(b) − F(a).</div>
-        <div class="thm-note"><strong>Why it matters:</strong> The grand unifying theorem of Calculus — differentiation and integration are inverse operations.</div>
-      </div>
-      <div class="theorem-card">
-        <div class="thm-title">The Mean Value Theorem <span class="badge">MVT</span></div>
-        <div class="thm-statement">If f is continuous on [a, b] and differentiable on (a, b), then ∃ c ∈ (a, b) such that f'(c) = [ f(b) − f(a) ] / (b − a).</div>
-        <div class="thm-note"><strong>Intuition:</strong> At some point, the instantaneous rate of change equals the average rate of change over the interval.</div>
-      </div>
-      <div class="theorem-card">
-        <div class="thm-title">Rolle's Theorem <span class="badge">Special Case of MVT</span></div>
-        <div class="thm-statement">If f is continuous on [a, b], differentiable on (a, b), and f(a) = f(b), then ∃ c ∈ (a, b) such that f'(c) = 0.</div>
-        <div class="thm-note"><strong>Intuition:</strong> If a smooth function starts and ends at the same height, it must have a horizontal tangent somewhere in between.</div>
-      </div>
-      <div class="theorem-card">
-        <div class="thm-title">The Intermediate Value Theorem <span class="badge">IVT</span></div>
-        <div class="thm-statement">If f is continuous on [a, b] and k is any value strictly between f(a) and f(b), then ∃ c ∈ (a, b) such that f(c) = k.</div>
-        <div class="thm-note"><strong>Application:</strong> Guarantees that a root exists in an interval when the function changes sign.</div>
-      </div>
-      <div class="theorem-card">
-        <div class="thm-title">The Extreme Value Theorem <span class="badge">EVT</span></div>
-        <div class="thm-statement">If f is continuous on a closed interval [a, b], then f attains both an absolute maximum and an absolute minimum on [a, b].</div>
-        <div class="thm-note"><strong>Key insight:</strong> Guarantees optimal values exist — the foundation of all optimization problems in Calculus.</div>
-      </div>
-      <div class="theorem-card">
-        <div class="thm-title">L'Hôpital's Rule <span class="badge">Limits</span></div>
-        <div class="thm-statement">If lim f(x)/g(x) gives 0/0 or ∞/∞, then lim f(x)/g(x) = lim f'(x)/g'(x), provided the latter limit exists.</div>
-        <div class="thm-note"><strong>Warning:</strong> Only applies to indeterminate forms. Always verify the form before applying.</div>
+    <div class="theorem t-mvt">
+      <h3>The Mean Value Theorem <span class="pill">MVT</span></h3>
+      <p>
+        If <em>f</em> is continuous on <em>[a, b]</em> and differentiable on <em>(a, b)</em>,
+        then there exists some <em>c</em> in <em>(a, b)</em> such that:
+      </p>
+      <code class="formula">f ′(c)  =  (f(b) − f(a)) / (b − a)</code>
+      <div class="why">
+        <b>Intuition:</b> At some point, the instantaneous rate of change (slope of the
+        tangent line) equals the average rate of change (slope of the secant line
+        between the endpoints). If you drove from A to B at an <em>average</em>
+        of 60 mph, at some moment your speedometer really read 60.
       </div>
     </div>
 
-    <div class="section">
-      <div class="section-header">
-        <div class="section-icon icon-orange">🏗️</div>
-        <h2>Calculus Prerequisites</h2>
-        <span class="section-tag">Before You Begin</span>
-      </div>
-      <div class="callout" style="margin-top:0; margin-bottom:20px;">
-        <strong>📌 Why prerequisites matter:</strong> Students who struggle in Calculus often find the root cause is a gap in prior skills — not the Calculus itself!
-      </div>
-      <div class="prereq-grid">
-        <div class="prereq-card">
-          <div class="prereq-title">📐 Algebra Essentials</div>
-          <ul>
-            <li>Solving linear and quadratic equations</li>
-            <li>Factoring polynomials</li>
-            <li>Rational expressions</li>
-            <li>Laws of exponents and radicals</li>
-            <li>Completing the square</li>
-            <li>Inequalities and interval notation</li>
-            <li>Absolute value equations</li>
-          </ul>
-        </div>
-        <div class="prereq-card">
-          <div class="prereq-title">📈 Functions &amp; Graphs</div>
-          <ul>
-            <li>Domain and range of a function</li>
-            <li>Function notation: f(x), g(t)</li>
-            <li>Transformations: shifts, reflections</li>
-            <li>Composite functions: f(g(x))</li>
-            <li>Inverse functions and their graphs</li>
-            <li>Even and odd functions</li>
-            <li>Piecewise-defined functions</li>
-          </ul>
-        </div>
-        <div class="prereq-card">
-          <div class="prereq-title">📏 Trigonometry</div>
-          <ul>
-            <li>Unit circle: angles in radians and degrees</li>
-            <li>sin, cos, tan at key angles</li>
-            <li>Pythagorean identities</li>
-            <li>Reciprocal identities (csc, sec, cot)</li>
-            <li>Graphs of trig functions</li>
-            <li>Inverse trig functions</li>
-            <li>Sum and double-angle formulas</li>
-          </ul>
-        </div>
-        <div class="prereq-card">
-          <div class="prereq-title">🔢 Pre-Calculus Concepts</div>
-          <ul>
-            <li>Polynomial and rational functions</li>
-            <li>Exponential and logarithmic functions</li>
-            <li>Properties of logarithms</li>
-            <li>The natural base e and ln(x)</li>
-            <li>Limits — intuitive understanding</li>
-            <li>Sequences and series (intro)</li>
-            <li>Parametric equations (basic)</li>
-          </ul>
-        </div>
-        <div class="prereq-card">
-          <div class="prereq-title">📐 Geometry &amp; Analytic Geometry</div>
-          <ul>
-            <li>Slope formula and equations of lines</li>
-            <li>Distance and midpoint formulas</li>
-            <li>Equation of a circle</li>
-            <li>Conic sections</li>
-            <li>Coordinate geometry in the plane</li>
-            <li>Area and perimeter of standard shapes</li>
-          </ul>
-        </div>
-        <div class="prereq-card">
-          <div class="prereq-title">🧮 Number Sense &amp; Logic</div>
-          <ul>
-            <li>Real number properties</li>
-            <li>Epsilon-delta intuition</li>
-            <li>Quantifiers: ∀ and ∃</li>
-            <li>Mathematical notation fluency</li>
-            <li>Basic proof reading</li>
-            <li>Sigma notation: Σ</li>
-          </ul>
-        </div>
+    <div class="theorem t-rolle">
+      <h3>Rolle's Theorem <span class="pill">Special case of MVT</span></h3>
+      <p>
+        If <em>f</em> is continuous on <em>[a, b]</em>, differentiable on <em>(a, b)</em>, and
+        <em>f(a) = f(b)</em>, then there exists some <em>c</em> in <em>(a, b)</em> with:
+      </p>
+      <code class="formula">f ′(c)  =  0</code>
+      <div class="why">
+        <b>Intuition:</b> If a smooth function starts and ends at the same height, it
+        must have a "flat spot" (a horizontal tangent) somewhere in between.
+        Rolle's is the special case of the MVT with equal endpoints — it helped
+        pave the way to the MVT itself.
       </div>
     </div>
 
-    <div class="math-quote">
-      <blockquote>"The calculus is the greatest aid we have to the appreciation of physical truth in the broadest sense of the word."</blockquote>
-      <cite>— W. F. Osgood, Harvard Mathematician</cite>
+    <div class="callout">
+      <b>Coming in Part II:</b> Extreme Value Theorem, Intermediate Value Theorem,
+      and Squeeze Theorem.
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section class="sec" id="prereq-1">
+    <div class="sec-label">03 · Prerequisites · Part I</div>
+    <h2 class="sec-title">What Students Need Before Calculus</h2>
+    <p>
+      Calculus builds directly on Algebra, Geometry, and Pre-Calculus. Students
+      who struggle often have rust on those skills — not the calculus itself.
+      Here's the list I send to students the summer before they take the course.
+    </p>
+
+    <div class="prereq-grid">
+      <div class="prereq-card">
+        <h4>➕ Algebra Essentials</h4>
+        <ul>
+          <li>Solving linear and quadratic equations</li>
+          <li>Factoring polynomials (difference of squares, trinomials)</li>
+          <li>Rational expressions: simplifying, adding, multiplying</li>
+          <li>Laws of exponents and radicals</li>
+          <li>Completing the square</li>
+          <li>Inequalities and interval notation</li>
+          <li>Absolute-value equations and inequalities</li>
+        </ul>
+      </div>
+      <div class="prereq-card">
+        <h4>📈 Functions &amp; Graphs</h4>
+        <ul>
+          <li>Definition of a function, domain &amp; range</li>
+          <li>Function notation: f(g(x)), composite and inverse</li>
+          <li>Transformations: shifts, stretches, reflections</li>
+          <li>Linear, quadratic, and piecewise functions</li>
+          <li>Reading and graphing from equations</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section class="sec" id="prereq-2">
+    <div class="sec-label">04 · Prerequisites · Part II</div>
+    <h2 class="sec-title">Trigonometry &amp; Pre-Calculus Concepts</h2>
+
+    <div class="prereq-grid">
+      <div class="prereq-card">
+        <h4>📐 Trigonometry</h4>
+        <ul>
+          <li>Unit-circle angles in radians and degrees</li>
+          <li>Values of sin, cos, tan at key angles (π/6, π/4, π/3, π/2)</li>
+          <li>Pythagorean identity: sin²θ + cos²θ = 1</li>
+          <li>Reciprocal identities: csc, sec, cot</li>
+          <li>Graphs of sin, cos, and their transformations</li>
+          <li>Inverse trig functions (arcsin, arccos, arctan)</li>
+          <li>Sum and double-angle formulas</li>
+        </ul>
+      </div>
+      <div class="prereq-card">
+        <h4>🌀 Pre-Calculus Concepts</h4>
+        <ul>
+          <li>Polynomial and rational functions, end behavior</li>
+          <li>Exponential and logarithmic functions, properties</li>
+          <li>Parametric equations (optional, but helpful)</li>
+          <li>Sequences and series — arithmetic &amp; geometric</li>
+          <li>Limits (intuitive understanding before formal)</li>
+          <li>Piecewise-defined functions</li>
+        </ul>
+      </div>
     </div>
 
-    <div class="section">
-      <div class="section-header">
-        <div class="section-icon icon-teal">🚀</div>
-        <h2>Featured Science News: Artemis II</h2>
-        <span class="section-tag">Space Exploration</span>
-      </div>
-      <div class="news-feature">
-        <span class="news-tag">🔴 Breaking — April 2026</span>
-        <h3>Artemis II: Humanity Returns to the Moon — Historic Mission Complete!</h3>
-        <p>NASA's Artemis II — the <strong style="color:#ffd54f">first crewed mission beyond low Earth orbit in over 50 years</strong> — returned to Earth after a breathtaking 7-hour lunar flyby. The crew broke Apollo 13's 1970 distance record, reaching <strong style="color:#ffd54f">252,756 miles from Earth</strong> — the farthest humans have ever traveled. They witnessed Earthset, Earthrise, and a solar eclipse from the Orion spacecraft.</p>
-        <div class="crew-list">
-          <span>👨‍🚀 Reid Wiseman (Commander)</span>
-          <span>👨‍🚀 Victor Glover (Pilot)</span>
-          <span>👩‍🚀 Christina Koch (Mission Specialist)</span>
-          <span>👨‍🚀 Jeremy Hansen (CSA)</span>
-        </div>
-        <div class="news-links">
-          <a href="https://www.nasa.gov/mission/artemis-ii/" target="_blank"><span class="icon">🌐</span> NASA Official Mission Page</a>
-          <a href="https://www.nasa.gov/artemis-ii-multimedia/" target="_blank"><span class="icon">📸</span> Photos &amp; Videos</a>
-          <a href="https://www.nasa.gov/blogs/missions/2026/04/06/artemis-ii-flight-day-6-crew-wraps-historic-lunar-flyby/" target="_blank"><span class="icon">📋</span> Flight Day 6 Blog</a>
-          <a href="https://svs.gsfc.nasa.gov/14938/" target="_blank"><span class="icon">🎬</span> NASA Visualizations</a>
-          <a href="https://www.youtube.com/@NASA" target="_blank"><span class="icon">▶️</span> NASA YouTube</a>
-          <a href="https://www.pbs.org/newshour/science/watch-live-artemis-ii-crew-splashes-down-on-earth-after-historic-trip-around-the-moon" target="_blank"><span class="icon">📺</span> Splashdown Video</a>
-        </div>
-      </div>
+    <div class="callout">
+      <b>Tip:</b> Before the first exam, have students self-assess against this list.
+      They often discover the gap isn't calculus — it's factoring.
     </div>
+  </section>
 
-    <div class="section">
-      <div class="section-header">
-        <div class="section-icon icon-red">🔬</div>
-        <h2>More Science &amp; Discovery News</h2>
-        <span class="section-tag">April 2026</span>
+  <!-- 05 -->
+  <section class="sec" id="space">
+    <div class="sec-label">05 · Space &amp; Physics</div>
+    <h2 class="sec-title">This Week in Science</h2>
+
+    <div class="two-col">
+      <div class="card">
+        <h3>🔭 James Webb Spots 'Forbidden' Planet</h3>
+        <p>
+          The James Webb Space Telescope has discovered a planet that shouldn't
+          exist around a small, dim star — defying current formation models.
+          Astronomers are reworking theory to explain how such massive bodies
+          form in systems like this.
+        </p>
       </div>
-      <div class="sci-grid">
-        <div class="sci-card">
-          <div class="sci-card-header bg-space">🪐 Space &amp; Astronomy</div>
-          <div class="sci-card-body">
-            <h4>James Webb Spots a "Forbidden" Planet</h4>
-            <p>JWST discovered a planet that shouldn't exist per current formation models — overturning our understanding of how planetary systems develop.</p>
-            <a href="https://www.sciencenews.org/sn-magazine/april-2026" target="_blank">Read more →</a>
-          </div>
-        </div>
-        <div class="sci-card">
-          <div class="sci-card-header bg-physics">⚛️ Physics</div>
-          <div class="sci-card-body">
-            <h4>World's First Working Quantum Battery Built</h4>
-            <p>Scientists built a prototype that stores and releases energy using quantum mechanics — potentially revolutionizing energy storage technology.</p>
-            <a href="https://scitechdaily.com/" target="_blank">Read more →</a>
-          </div>
-        </div>
-        <div class="sci-card">
-          <div class="sci-card-header bg-astro">🌌 Cosmology</div>
-          <div class="sci-card-body">
-            <h4>Universe's Expansion Rate Measured with Record Precision</h4>
-            <p>An international team confirmed the universe expands faster than early-universe models predict — deepening the "Hubble tension" mystery.</p>
-            <a href="https://www.universetoday.com/" target="_blank">Read more →</a>
-          </div>
-        </div>
-        <div class="sci-card">
-          <div class="sci-card-header bg-bio">🧬 Biology &amp; Genetics</div>
-          <div class="sci-card-body">
-            <h4>Genetic Keys to Water-to-Land Evolution Found</h4>
-            <p>Researchers identified the specific mutations that allowed animals to repeatedly adapt from aquatic to terrestrial life across different lineages.</p>
-            <a href="https://www.sciencedaily.com/" target="_blank">Read more →</a>
-          </div>
-        </div>
-        <div class="sci-card">
-          <div class="sci-card-header bg-health">❤️ Health &amp; Medicine</div>
-          <div class="sci-card-body">
-            <h4>Smell Loss May Signal Alzheimer's Years Early</h4>
-            <p>Brain immune cells destroy olfactory nerve fibers before cognitive symptoms appear, making smell loss a potential early Alzheimer's biomarker.</p>
-            <a href="https://www.livescience.com/" target="_blank">Read more →</a>
-          </div>
-        </div>
-        <div class="sci-card">
-          <div class="sci-card-header bg-tech">💡 Technology &amp; Energy</div>
-          <div class="sci-card-body">
-            <h4>New Chip Design Could Cut Data Center Energy Use</h4>
-            <p>UC San Diego engineers rethought how power is converted for GPUs, potentially cutting data center energy consumption as AI demand surges.</p>
-            <a href="https://scitechdaily.com/" target="_blank">Read more →</a>
-          </div>
-        </div>
-        <div class="sci-card">
-          <div class="sci-card-header bg-physics">🐉 Biology — Vision</div>
-          <div class="sci-card-body">
-            <h4>Dragonflies See Beyond Human Color Perception</h4>
-            <p>Dragonflies can detect deep red wavelengths invisible to humans, giving them one of the most extraordinary visual systems ever discovered.</p>
-            <a href="https://www.sciencenews.org/sn-magazine/april-2026" target="_blank">Read more →</a>
-          </div>
-        </div>
-        <div class="sci-card">
-          <div class="sci-card-header bg-space">🚀 Future Missions</div>
-          <div class="sci-card-body">
-            <h4>Starship Could Cut Travel Time to Uranus in Half</h4>
-            <p>A new proposal uses SpaceX Starship with orbital refueling to enable a Uranus orbiter, cutting travel time nearly in half vs. current rockets.</p>
-            <a href="https://www.universetoday.com/" target="_blank">Read more →</a>
-          </div>
-        </div>
+      <div class="card">
+        <h3>⚡ Working Quantum Battery Prototype</h3>
+        <p>
+          Engineers at UC San Diego have developed a tiny quantum battery — a
+          device that stores and releases energy using quantum-mechanical
+          principles rather than chemistry. Potentially revolutionary if scaled.
+        </p>
       </div>
     </div>
+  </section>
+
+  <!-- 06 -->
+  <section class="sec" id="health">
+    <div class="sec-label">06 · Health · Tech · Energy</div>
+    <h2 class="sec-title">Worth a Classroom Mention</h2>
+
+    <div class="two-col">
+      <div class="card">
+        <h3>🧠 Loss of Smell May Signal Alzheimer's Far Earlier</h3>
+        <p>
+          New research suggests early olfactory decline may become a reliable,
+          non-invasive detection marker for Alzheimer's — potentially years
+          before cognitive symptoms appear.
+        </p>
+      </div>
+      <div class="card">
+        <h3>🔋 New Chip Design Could Slash Data-Center Energy Use</h3>
+        <p>
+          Engineers at UC San Diego (busy week for them!) have built an
+          architecture-level rethink that cuts the power required by AI inference
+          silicon at scale — with implications for both climate and cost.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 -->
+  <section class="sec" id="video">
+    <div class="sec-label">07 · Featured Video</div>
+    <h2 class="sec-title">This Is Why You Struggle With Derivatives</h2>
+    <p>
+      A deep walkthrough of the <em>real</em> definition of the derivative —
+      not just the limit definition, but the conceptual leap that trips most
+      students up. If a student "can compute" derivatives but can't explain one,
+      share this video.
+    </p>
+
+    <div class="video">
+      <iframe src="https://www.youtube-nocookie.com/embed/?listType=user_uploads&list=UCiMvj3HiZ9BtdlJJiQeuXlw" title="Derivatives Unlocked - The Limit Definition" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+    </div>
+    <p style="font-size:.85rem;color:rgba(226,232,246,.5);text-align:center;margin-top:-6px;">
+      🎥 Watch the full lesson on the
+      <a href="https://www.youtube.com/channel/UCiMvj3HiZ9BtdlJJiQeuXlw" target="_blank" rel="noopener" style="color:#60a5fa;">Math Topics YouTube channel</a>.
+    </p>
+  </section>
+
+  <!-- Nav -->
+  <div class="nav-issues">
+    <a class="ni-disabled">
+      <div class="ni-dir">Next issue</div>
+      <div class="ni-title">— (newest)</div>
+    </a>
+    <a href="newsletter-week1-april06.html">
+      <div class="ni-dir">Previous issue →</div>
+      <div class="ni-title">Week of April 06, 2026</div>
+    </a>
   </div>
 
-  <div class="footer">
-    <strong>Math Topic Newsletter — Week 2 · April 13, 2026</strong>
-    <div class="footer-divider"></div>
-    <p>Created for mathematics educators and students · All calculus content is curriculum-aligned</p>
-    <p>Science news sourced from NASA.gov, ScienceNews.org, ScienceDaily.com, LiveScience.com, and UniverseToday.com</p>
-    <p style="margin-top:8px; color:#546e7a; font-size:11px;">"Pure mathematics is, in its way, the poetry of logical ideas." — Albert Einstein</p>
-  </div>
 </div>
+
+<footer class="footer">
+  <p>Math Topics Newsletter · Published weekly by Dr. Carlos Marrero · <a href="newsletters.html">All issues</a></p>
+</footer>
+
 </body>
 </html>
