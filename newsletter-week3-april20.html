@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week of April 20, 2026 — Math Topics Newsletter</title>
+<meta name="description" content="Algebra vocabulary essentials, a middle-school-to-high-school transition guide, and this week's science headlines.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:#07090f;
+  color:#e2e8f6;
+  font-family:'Inter',sans-serif;
+  min-height:100vh;
+  line-height:1.65;
+}
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 70% 60% at 10% 5%,  rgba(37,99,235,.14) 0%,transparent 55%),
+    radial-gradient(ellipse 60% 50% at 90% 20%,  rgba(124,58,237,.12) 0%,transparent 55%),
+    radial-gradient(ellipse 80% 40% at 50% 100%, rgba(16,185,129,.09) 0%,transparent 60%);
+  pointer-events:none;
+}
+
+.topnav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(7,9,15,.88);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(255,255,255,.07);
+  padding:0 32px;
+  display:flex;align-items:center;gap:0;height:58px;
+}
+.nav-brand{
+  font-family:'Playfair Display',serif;
+  font-size:1.15rem;font-weight:700;
+  background:linear-gradient(135deg,#60a5fa,#a78bfa);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  text-decoration:none;margin-right:auto;
+}
+.nav-links{display:flex;gap:2px;flex-wrap:wrap;}
+.nav-link{
+  color:rgba(226,232,246,.45);
+  font-size:.82rem;font-weight:500;
+  padding:7px 14px;border-radius:7px;
+  text-decoration:none;transition:all .18s;
+}
+.nav-link:hover{color:#e2e8f6;background:rgba(255,255,255,.06);}
+.nav-link.active{color:#60a5fa;background:rgba(37,99,235,.12);}
+
+.wrap{
+  position:relative;z-index:1;
+  max-width:880px;margin:0 auto;
+  padding:48px 22px 80px;
+}
+
+.breadcrumb{font-size:.78rem;color:rgba(226,232,246,.4);margin-bottom:16px;}
+.breadcrumb a{color:#60a5fa;text-decoration:none;}
+.breadcrumb a:hover{text-decoration:underline;}
+
+.issue-eyebrow{
+  display:inline-block;
+  background:rgba(16,185,129,.16);
+  border:1px solid rgba(16,185,129,.38);
+  color:#6ee7b7;
+  font-size:.7rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:2px;
+  padding:5px 14px;border-radius:20px;
+  margin-bottom:18px;
+}
+.issue-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2.2rem,5vw,3.6rem);
+  font-weight:800;line-height:1.05;
+  background:linear-gradient(135deg,#34d399 0%,#60a5fa 50%,#a78bfa 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  letter-spacing:-.02em;margin-bottom:12px;
+}
+.issue-sub{
+  font-size:1.06rem;color:rgba(226,232,246,.58);
+  max-width:640px;line-height:1.7;
+}
+.issue-meta{
+  display:flex;gap:22px;flex-wrap:wrap;margin-top:22px;
+  padding-top:22px;border-top:1px solid rgba(255,255,255,.08);
+  font-size:.78rem;color:rgba(226,232,246,.4);
+}
+.issue-meta b{color:rgba(226,232,246,.65);font-weight:600;}
+
+.toc{
+  margin:40px 0;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;
+  padding:20px 26px;
+}
+.toc-title{
+  font-size:.68rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:2px;
+  color:rgba(226,232,246,.45);margin-bottom:12px;
+}
+.toc-list{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:6px 18px;
+  list-style:none;
+}
+.toc-list a{
+  display:block;color:rgba(226,232,246,.75);
+  text-decoration:none;font-size:.88rem;
+  padding:4px 0;transition:color .15s;
+}
+.toc-list a:hover{color:#34d399;}
+.toc-list a span{color:rgba(226,232,246,.35);margin-right:8px;}
+
+.sec{margin:56px 0;}
+.sec-label{
+  font-size:.68rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:2.5px;
+  color:#34d399;margin-bottom:10px;
+  display:flex;align-items:center;gap:8px;
+}
+.sec-label::before{content:'';width:22px;height:2px;background:#34d399;border-radius:1px;}
+.sec-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.6rem,3.5vw,2.2rem);
+  font-weight:700;line-height:1.15;
+  color:#e2e8f6;margin-bottom:18px;letter-spacing:-.01em;
+}
+.sec p{font-size:1.02rem;color:rgba(226,232,246,.78);margin-bottom:16px;}
+
+/* Definition card — algebra vocabulary */
+.def{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:16px;
+  padding:24px 26px;
+  margin:16px 0;
+  position:relative;
+}
+.def::before{
+  content:'';position:absolute;top:0;left:0;bottom:0;
+  width:3px;border-radius:16px 0 0 16px;
+  background:linear-gradient(180deg,#34d399,#60a5fa);
+}
+.def h3{
+  font-family:'Playfair Display',serif;
+  font-size:1.2rem;color:#e2e8f6;margin-bottom:10px;
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+}
+.def h3 .pill{
+  font-family:'Inter',sans-serif;font-size:.62rem;font-weight:700;
+  padding:3px 10px;border-radius:20px;letter-spacing:1px;text-transform:uppercase;
+  background:rgba(52,211,153,.15);color:#6ee7b7;border:1px solid rgba(52,211,153,.3);
+}
+.def p{font-size:.98rem;color:rgba(226,232,246,.8);margin-bottom:10px;}
+.formula{
+  display:block;
+  background:rgba(15,18,28,.8);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:10px;
+  padding:12px 16px;
+  margin:10px 0;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.98rem;color:#e8eaf6;
+  overflow-x:auto;
+}
+.example{
+  font-size:.88rem;color:rgba(226,232,246,.72);
+  margin-top:8px;
+  padding-left:12px;
+  border-left:2px solid rgba(52,211,153,.35);
+}
+.example b{color:#6ee7b7;}
+
+/* Prereq grid */
+.prereq-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:16px;margin-top:14px;
+}
+.prereq-card{
+  background:rgba(255,255,255,.035);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;
+  padding:20px 22px;
+}
+.prereq-card h4{
+  font-family:'Playfair Display',serif;
+  font-size:1.05rem;color:#e2e8f6;margin-bottom:10px;
+  display:flex;align-items:center;gap:8px;
+}
+.prereq-card ul{list-style:none;padding:0;margin:0;}
+.prereq-card li{
+  font-size:.88rem;color:rgba(226,232,246,.68);
+  padding:4px 0;padding-left:18px;position:relative;
+}
+.prereq-card li::before{
+  content:'✓';position:absolute;left:0;color:#34d399;font-weight:700;
+}
+
+/* Audience tags for the transition section */
+.audience-tags{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0 20px;}
+.audience-tag{
+  font-size:.72rem;font-weight:600;
+  padding:5px 12px;border-radius:20px;
+  background:rgba(167,139,250,.12);
+  border:1px solid rgba(167,139,250,.3);
+  color:#c4b5fd;
+}
+.audience-tag.teacher{
+  background:rgba(96,165,250,.12);
+  border-color:rgba(96,165,250,.3);
+  color:#93c5fd;
+}
+
+/* News cards */
+.card{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:16px;
+  padding:24px 26px;
+  margin:16px 0;
+}
+.card h3{
+  font-family:'Playfair Display',serif;
+  font-size:1.18rem;color:#e2e8f6;margin-bottom:8px;
+}
+.card p{margin:0;font-size:.96rem;color:rgba(226,232,246,.72);}
+
+.two-col{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;}
+
+.callout{
+  border-left:3px solid #34d399;
+  padding:12px 18px;
+  margin:18px 0;
+  background:rgba(52,211,153,.06);
+  border-radius:0 12px 12px 0;
+  font-size:.98rem;color:rgba(226,232,246,.78);
+}
+.callout b{color:#6ee7b7;}
+
+.callout.teacher{
+  border-left-color:#a78bfa;
+  background:rgba(167,139,250,.06);
+}
+.callout.teacher b{color:#c4b5fd;}
+
+/* Terminology table */
+.term-table{
+  width:100%;border-collapse:collapse;margin:14px 0;
+  font-size:.92rem;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;overflow:hidden;
+}
+.term-table th,.term-table td{
+  padding:14px 18px;
+  text-align:left;
+  vertical-align:top;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.term-table th{
+  background:rgba(16,185,129,.1);
+  color:#6ee7b7;
+  font-weight:700;font-size:.72rem;
+  text-transform:uppercase;letter-spacing:1.5px;
+}
+.term-table tr:last-child td{border-bottom:none;}
+.term-table td:first-child{
+  font-weight:600;color:#e2e8f6;white-space:nowrap;
+}
+.term-table td:last-child{color:rgba(226,232,246,.7);line-height:1.55;}
+
+/* Nav to next/prev */
+.nav-issues{
+  margin-top:60px;padding-top:28px;
+  border-top:1px solid rgba(255,255,255,.08);
+  display:flex;gap:12px;flex-wrap:wrap;
+}
+.nav-issues a{
+  flex:1;min-width:220px;
+  padding:18px 22px;border-radius:14px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  text-decoration:none;color:#e2e8f6;
+  transition:all .2s;
+}
+.nav-issues a:hover{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.18);}
+.nav-issues .ni-dir{font-size:.7rem;color:rgba(226,232,246,.45);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px;}
+.nav-issues .ni-title{font-family:'Playfair Display',serif;font-weight:700;color:#34d399;}
+.nav-issues .ni-disabled{opacity:.35;pointer-events:none;}
+
+.footer{
+  text-align:center;
+  padding:36px 20px 30px;
+  color:rgba(232,234,246,.32);font-size:.8rem;
+}
+.footer a{color:#60a5fa;text-decoration:none;}
+
+@media(max-width:600px){
+  .topnav{padding:0 16px;}
+  .wrap{padding:30px 14px 60px;}
+  .term-table th,.term-table td{padding:10px 12px;font-size:.85rem;}
+}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a class="nav-brand" href="index.html">MarreroMath</a>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">Home</a>
+    <a class="nav-link" href="labs.html">Labs</a>
+    <a class="nav-link active" href="newsletters.html">Newsletter</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <nav class="breadcrumb">
+    <a href="newsletters.html">← Newsletter Archive</a>
+  </nav>
+
+  <div class="issue-eyebrow">Math Topics · Week of April 20, 2026</div>
+  <h1 class="issue-title">Algebra Vocabulary + The Middle-to-High-School Bridge</h1>
+  <p class="issue-sub">
+    This week: a clean glossary and deep-dive definitions of the algebra
+    vocabulary every student should own, a transition guide for middle
+    schoolers (and their teachers) preparing for high school math, and a
+    quick round-up of the science headlines worth bringing into class.
+  </p>
+
+  <div class="issue-meta">
+    <span>📅 <b>Published</b> April 20, 2026</span>
+    <span>✍️ <b>Author</b> Dr. Carlos Marrero</span>
+    <span>⏱️ <b>Read</b> ~10 min</span>
+  </div>
+
+  <div class="toc">
+    <div class="toc-title">In this issue</div>
+    <ol class="toc-list" style="list-style:none;">
+      <li><a href="#glossary"><span>01</span>Algebra Glossary at a Glance</a></li>
+      <li><a href="#vocab"><span>02</span>Key Algebra Vocabulary — In Depth</a></li>
+      <li><a href="#transition"><span>03</span>Middle → High School Bridge</a></li>
+      <li><a href="#prereqs"><span>04</span>Prerequisite Skills Checklist</a></li>
+      <li><a href="#teachers"><span>05</span>Notes for Teachers</a></li>
+      <li><a href="#science"><span>06</span>Science News Briefs</a></li>
+    </ol>
+  </div>
+
+  <!-- 01 -->
+  <section class="sec" id="glossary">
+    <div class="sec-label">01 · Glossary</div>
+    <h2 class="sec-title">Algebra Vocabulary at a Glance</h2>
+    <p>
+      Before the deep-dive definitions below, here is a one-screen reference
+      students can bookmark. If a word shows up in a problem and feels
+      slippery, the table is the fastest place to anchor it.
+    </p>
+
+    <table class="term-table">
+      <thead>
+        <tr><th>Term</th><th>Quick Definition</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Variable</td><td>A letter (like <em>x</em>) that represents an unknown or changing number.</td></tr>
+        <tr><td>Constant</td><td>A fixed value that does not change (e.g., 7, −3, π).</td></tr>
+        <tr><td>Coefficient</td><td>The numerical factor multiplying a variable (the 4 in 4x).</td></tr>
+        <tr><td>Term</td><td>A single number, variable, or product of them — pieces separated by + or −.</td></tr>
+        <tr><td>Expression</td><td>A combination of numbers, variables, and operations with no equals sign.</td></tr>
+        <tr><td>Equation</td><td>A statement that two expressions are equal (has an = sign).</td></tr>
+        <tr><td>Inequality</td><td>A statement comparing two expressions with &lt;, &gt;, ≤, or ≥.</td></tr>
+        <tr><td>Polynomial</td><td>A sum of terms of the form <em>aₙxⁿ</em> with whole-number exponents.</td></tr>
+        <tr><td>Monomial / Binomial / Trinomial</td><td>Polynomials with 1, 2, or 3 terms respectively.</td></tr>
+        <tr><td>Factor</td><td>Something being multiplied; also, to rewrite a sum as a product.</td></tr>
+        <tr><td>Like Terms</td><td>Terms with the same variables raised to the same powers (3x² and −5x²).</td></tr>
+        <tr><td>Solution</td><td>A value that makes an equation or inequality true.</td></tr>
+        <tr><td>Function</td><td>A rule that assigns exactly one output to each input.</td></tr>
+        <tr><td>Slope</td><td>The steepness of a line: rise over run, or (y₂ − y₁)/(x₂ − x₁).</td></tr>
+        <tr><td>Intercept</td><td>Where a graph crosses an axis (x-intercept or y-intercept).</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 02 -->
+  <section class="sec" id="vocab">
+    <div class="sec-label">02 · Vocabulary · Deep Dive</div>
+    <h2 class="sec-title">Key Algebra Definitions, Explained</h2>
+    <p>
+      Students often "know" these words without being able to use them.
+      Each card below pairs a precise definition with a concrete example —
+      these are the ones I drill most often in office hours.
+    </p>
+
+    <div class="def">
+      <h3>Variable <span class="pill">Core</span></h3>
+      <p>
+        A symbol — most often a letter — that stands in for a number we
+        don't yet know or that can take on many values. A variable isn't
+        "unknown forever"; it's a placeholder we're going to pin down
+        or let vary deliberately.
+      </p>
+      <code class="formula">3x + 5 = 20     →     here, x is the variable</code>
+      <div class="example">
+        <b>Example:</b> In the formula for the area of a rectangle, <em>A = ℓw</em>,
+        both <em>ℓ</em> and <em>w</em> are variables — they change from rectangle to rectangle.
+      </div>
+    </div>
+
+    <div class="def">
+      <h3>Coefficient <span class="pill">Core</span></h3>
+      <p>
+        The number that multiplies a variable in a term. If no number is
+        written, the coefficient is understood to be 1. A negative sign in
+        front of a term belongs to the coefficient.
+      </p>
+      <code class="formula">−7x² + x − 4     →     coefficients: −7, 1, and −4 (constant term)</code>
+      <div class="example">
+        <b>Why it matters:</b> When combining like terms, you add the coefficients
+        — not the variables: 3x + 5x = 8x, not 8x².
+      </div>
+    </div>
+
+    <div class="def">
+      <h3>Expression vs. Equation <span class="pill">Don't mix these up</span></h3>
+      <p>
+        An <em>expression</em> is a mathematical phrase — there is nothing to
+        solve, only to <em>simplify</em> or <em>evaluate</em>. An <em>equation</em>
+        sets two expressions equal to each other — now there is something to
+        <em>solve</em>.
+      </p>
+      <code class="formula">Expression:  2x + 3        Equation:  2x + 3 = 11</code>
+      <div class="example">
+        <b>Rule of thumb:</b> If there is an equals sign, it's an equation
+        (or an identity). If not, it's an expression. You can <em>simplify</em>
+        an expression; you <em>solve</em> an equation.
+      </div>
+    </div>
+
+    <div class="def">
+      <h3>Polynomial <span class="pill">Structure</span></h3>
+      <p>
+        A sum of terms where each term is a constant times a variable raised
+        to a whole-number (non-negative integer) power. The highest exponent
+        that appears is the <em>degree</em> of the polynomial.
+      </p>
+      <code class="formula">4x³ − 2x² + x − 7     →     degree 3 (cubic), 4 terms</code>
+      <div class="example">
+        <b>Not a polynomial:</b> <em>3/x</em>, <em>√x</em>, or <em>x^(−1)</em> — negative
+        or fractional exponents on a variable are not allowed.
+      </div>
+    </div>
+
+    <div class="def">
+      <h3>Like Terms <span class="pill">Simplifying</span></h3>
+      <p>
+        Terms with exactly the same variable parts (same variables, same
+        powers). Only like terms can be added or subtracted.
+      </p>
+      <code class="formula">5x²y and −3x²y  →  like terms        5x²y and −3xy²  →  not like</code>
+      <div class="example">
+        <b>Example:</b>  5x²y + 4x − 3x²y = (5 − 3)x²y + 4x = 2x²y + 4x.
+      </div>
+    </div>
+
+    <div class="def">
+      <h3>Factor / Factoring <span class="pill">Two meanings</span></h3>
+      <p>
+        As a noun, a factor is something being multiplied. As a verb, to
+        factor is to <em>rewrite a sum as a product</em> — the reverse of
+        distributing.
+      </p>
+      <code class="formula">x² − 9 = (x − 3)(x + 3)        6x² + 9x = 3x(2x + 3)</code>
+      <div class="example">
+        <b>Why it matters:</b> Factoring turns "hard to solve" into "easy to
+        solve" — a product is zero only when one of its factors is zero.
+      </div>
+    </div>
+
+    <div class="def">
+      <h3>Function <span class="pill">Cornerstone</span></h3>
+      <p>
+        A rule that takes each input and returns exactly <em>one</em> output.
+        No input is allowed two different outputs. We write <em>f(x)</em>
+        for "the output of the function <em>f</em> when the input is <em>x</em>."
+      </p>
+      <code class="formula">f(x) = 2x + 1     →     f(3) = 2(3) + 1 = 7</code>
+      <div class="example">
+        <b>Vertical line test:</b> If any vertical line crosses a graph more
+        than once, the graph is <em>not</em> a function.
+      </div>
+    </div>
+
+    <div class="def">
+      <h3>Slope &amp; Intercept <span class="pill">Lines</span></h3>
+      <p>
+        The <em>slope</em> measures how steep a line is — how much <em>y</em>
+        changes per unit change in <em>x</em>. The <em>y-intercept</em> is the
+        point where the line crosses the y-axis (where x = 0).
+      </p>
+      <code class="formula">Slope:  m = (y₂ − y₁) / (x₂ − x₁)        Line:  y = mx + b</code>
+      <div class="example">
+        <b>Example:</b> The line <em>y = 2x − 3</em> has slope 2 and y-intercept
+        (0, −3). Positive slope ⇒ going up, negative ⇒ going down,
+        zero ⇒ flat, undefined ⇒ vertical.
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section class="sec" id="transition">
+    <div class="sec-label">03 · Transition</div>
+    <h2 class="sec-title">Bridging Middle School Math to High School</h2>
+    <div class="audience-tags">
+      <span class="audience-tag">🎒 For 7th &amp; 8th graders</span>
+      <span class="audience-tag teacher">👩‍🏫 For their teachers</span>
+    </div>
+    <p>
+      The single biggest shift between middle school math and high school
+      algebra is not "harder numbers" — it is a change in what counts as an
+      answer. In middle school, arithmetic rewards <em>finding the number</em>.
+      In high school, algebra rewards <em>explaining the structure</em>:
+      why the same rule applies to every number.
+    </p>
+    <p>
+      The students who transition smoothly are almost never the fastest
+      computers. They are the ones with solid <em>fluency</em> in the skills
+      below and the habit of asking "why does this step work?" after every
+      line.
+    </p>
+
+    <div class="callout">
+      <b>The honest test:</b> Can the student explain what each letter means
+      in a formula and <em>why</em> a step is legal — not just whether it
+      produced the right answer? That is the readiness signal.
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section class="sec" id="prereqs">
+    <div class="sec-label">04 · Prerequisites</div>
+    <h2 class="sec-title">Skills to Solidify Before High School Algebra</h2>
+    <p>
+      Send this list home over the summer. A student who owns these
+      comfortably is set up for a successful first year of high school math.
+    </p>
+
+    <div class="prereq-grid">
+      <div class="prereq-card">
+        <h4>🔢 Number Sense</h4>
+        <ul>
+          <li>Fluent operations with integers (including negatives)</li>
+          <li>Fractions: add, subtract, multiply, divide — no calculator</li>
+          <li>Decimals &amp; percents: convert between forms</li>
+          <li>Order of operations (PEMDAS) with nested grouping</li>
+          <li>Prime factorization, GCF, LCM</li>
+          <li>Absolute value as distance from zero</li>
+        </ul>
+      </div>
+      <div class="prereq-card">
+        <h4>🧩 Pre-Algebra Mechanics</h4>
+        <ul>
+          <li>Distributive property: a(b + c) = ab + ac</li>
+          <li>Combining like terms</li>
+          <li>Solving one- and two-step equations</li>
+          <li>Basic laws of exponents (product, quotient, power rules)</li>
+          <li>Evaluating expressions by substitution</li>
+          <li>Translating words into expressions and equations</li>
+        </ul>
+      </div>
+      <div class="prereq-card">
+        <h4>📐 Geometry &amp; Measurement</h4>
+        <ul>
+          <li>Perimeter, area, and volume of basic shapes</li>
+          <li>The Pythagorean theorem: a² + b² = c²</li>
+          <li>Angle relationships: complementary, supplementary, vertical</li>
+          <li>Similar figures and scale factor</li>
+          <li>Units and unit conversion</li>
+        </ul>
+      </div>
+      <div class="prereq-card">
+        <h4>📊 Graphs &amp; Data</h4>
+        <ul>
+          <li>Coordinate plane: plotting (x, y) points confidently</li>
+          <li>Reading and creating tables of values</li>
+          <li>Graphing a linear equation by slope-intercept</li>
+          <li>Identifying slope from two points or a graph</li>
+          <li>Mean, median, mode, range</li>
+          <li>Proportional vs. non-proportional relationships</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 -->
+  <section class="sec" id="teachers">
+    <div class="sec-label">05 · For Teachers</div>
+    <h2 class="sec-title">Three Habits That Smooth the Transition</h2>
+    <p>
+      A short note for middle school teachers preparing students for the
+      jump. None of these require rewriting the curriculum — only small
+      shifts in how skills are reinforced.
+    </p>
+
+    <div class="two-col">
+      <div class="card">
+        <h3>① Insist on vocabulary precision</h3>
+        <p>
+          Don't let "cancel" or "move it over" substitute for the real
+          operation. When a student says "cancel the 3," press them to say
+          "divide both sides by 3." Algebra teachers will thank you — and
+          so will their students.
+        </p>
+      </div>
+      <div class="card">
+        <h3>② Make justifications routine</h3>
+        <p>
+          After every step, ask: <em>what property did you use?</em>
+          Distributive? Additive inverse? This is the single most useful
+          habit students can carry into Algebra I, and it costs nothing but
+          30 seconds per problem.
+        </p>
+      </div>
+      <div class="card">
+        <h3>③ Treat variables as numbers, not letters</h3>
+        <p>
+          Students who think of <em>x</em> as "a letter" will freeze. Students
+          who think of <em>x</em> as "a number we just don't know yet" will
+          reason. Model the substitution habit every week.
+        </p>
+      </div>
+      <div class="card">
+        <h3>④ Slow down on negatives and fractions</h3>
+        <p>
+          Ninety percent of "Algebra mistakes" in the first semester trace
+          back to a sign error or a fraction error — not new content.
+          Quick mixed-practice warmups pay dividends later.
+        </p>
+      </div>
+    </div>
+
+    <div class="callout teacher">
+      <b>Talk to a high school colleague.</b> A 30-minute conversation with
+      your feeder high school's Algebra I team will tell you exactly which
+      prerequisites their first unit assumes. Align on those, and the
+      handoff gets dramatically easier.
+    </div>
+  </section>
+
+  <!-- 06 -->
+  <section class="sec" id="science">
+    <div class="sec-label">06 · Science News</div>
+    <h2 class="sec-title">Headlines Worth a Classroom Minute</h2>
+    <p>
+      A few short items from this week's science news — all worth a
+      five-minute "what's happening in the world" spot at the start of class.
+    </p>
+
+    <div class="two-col">
+      <div class="card">
+        <h3>🪐 Euclid Telescope Releases First Deep-Sky Catalog</h3>
+        <p>
+          ESA's Euclid mission released its first broad catalog of galaxy
+          shapes and positions this week — a data set designed to help map
+          the distribution of dark matter and dark energy across billions
+          of light-years.
+        </p>
+      </div>
+      <div class="card">
+        <h3>🧬 CRISPR Therapy Clears a Rare Liver Disorder</h3>
+        <p>
+          A clinical trial using a next-generation CRISPR base-editing
+          therapy reported durable remission in patients with a hereditary
+          liver disease, extending the list of conditions where gene
+          editing has moved from "promising" to "treating."
+        </p>
+      </div>
+      <div class="card">
+        <h3>🌊 Record Ocean Heat Persists Into April</h3>
+        <p>
+          Sea-surface temperatures across several ocean basins remain at
+          record levels for this time of year, prompting forecasters to
+          revise their Atlantic hurricane season outlook upward.
+        </p>
+      </div>
+      <div class="card">
+        <h3>🔋 Sodium-Ion Batteries Hit the Grid</h3>
+        <p>
+          The first utility-scale sodium-ion battery installation in North
+          America came online this week. Less energy-dense than lithium,
+          but cheaper, safer, and built from abundant materials — a
+          promising pairing for grid storage.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Nav -->
+  <div class="nav-issues">
+    <a class="ni-disabled">
+      <div class="ni-dir">Next issue</div>
+      <div class="ni-title">— (newest)</div>
+    </a>
+    <a href="newsletter-week2-april13.html">
+      <div class="ni-dir">Previous issue →</div>
+      <div class="ni-title">Week of April 13, 2026</div>
+    </a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>Math Topics Newsletter · Published weekly by Dr. Carlos Marrero · <a href="newsletters.html">All issues</a></p>
+</footer>
+
+</body>
+</html>
