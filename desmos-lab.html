@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Desmos Lab — A Practice Notebook</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<style>
+:root {
+  --paper:       #F6EFE1;
+  --paper-deep:  #EDE2CC;
+  --paper-edge:  #E3D5B6;
+  --ink:         #16213A;
+  --ink-soft:    #3B4663;
+  --ink-faint:   #6D7388;
+  --rule:        #D9CBAE;
+  --desmos:      #2D70B3;
+  --desmos-deep: #1E4F82;
+  --accent:      #C24914;
+  --accent-deep: #8F3408;
+  --success:     #2E7D5B;
+  --highlight:   #F3D06B;
+  --stats:       #5B3A8A;
+  --card:        #FBF6EC;
+  --shadow:      0 1px 0 rgba(22,33,58,0.04), 0 18px 40px -24px rgba(22,33,58,0.25);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--paper);
+  background-image:
+    linear-gradient(rgba(45,112,179,0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(45,112,179,0.045) 1px, transparent 1px);
+  background-size: 28px 28px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap { max-width: 1160px; margin: 0 auto; padding: 0 32px; }
+
+/* ─── HERO ─── */
+.hero { padding: 72px 0 48px; border-bottom: 1px solid var(--rule); position: relative; }
+.hero::before {
+  content: ''; position: absolute; top: 20px; right: 32px;
+  width: 120px; height: 120px;
+  background: radial-gradient(circle, var(--accent) 2px, transparent 3px);
+  background-size: 14px 14px; opacity: 0.4; pointer-events: none;
+}
+.hero-kicker {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 18px;
+  display: flex; align-items: center; gap: 12px;
+}
+.hero-kicker::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
+
+h1.hero-title {
+  font-family: 'Fraunces', serif;
+  font-variation-settings: 'opsz' 144, 'SOFT' 50;
+  font-weight: 600; font-size: clamp(42px, 7vw, 84px);
+  line-height: 1.02; letter-spacing: -0.02em;
+  margin: 0 0 20px; color: var(--ink);
+}
+h1.hero-title em { font-style: italic; color: var(--desmos); font-weight: 500; }
+
+.hero-sub { font-size: 19px; max-width: 680px; color: var(--ink-soft); margin: 0 0 28px; }
+
+.how-it-works {
+  display: flex; gap: 28px;
+  padding: 22px 26px;
+  background: var(--card); border: 1px solid var(--rule); border-radius: 4px;
+  margin: 28px 0; flex-wrap: wrap;
+}
+.how-item { flex: 1; min-width: 180px; }
+.how-item .n {
+  font-family: 'Fraunces', serif; font-style: italic; font-weight: 600;
+  color: var(--accent); font-size: 22px; display: block; margin-bottom: 4px;
+}
+.how-item .t { font-size: 14px; color: var(--ink-soft); line-height: 1.4; }
+
+/* ─── NAV PILLS ─── */
+.labnav {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin-top: 28px; padding-top: 28px;
+  border-top: 1px dashed var(--rule);
+}
+.labnav-section-label {
+  width: 100%;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--ink-faint); margin: 8px 0 2px; padding-left: 2px;
+}
+.labnav-section-label:first-child { margin-top: 0; }
+.labnav a {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px; font-weight: 500;
+  padding: 8px 14px;
+  background: var(--card); border: 1px solid var(--rule);
+  color: var(--ink-soft); text-decoration: none;
+  border-radius: 100px; transition: all 0.15s ease;
+  letter-spacing: 0.02em;
+}
+.labnav a:hover {
+  background: var(--ink); color: var(--paper);
+  border-color: var(--ink); transform: translateY(-1px);
+}
+.labnav a.stats:hover { background: var(--stats); border-color: var(--stats); }
+.labnav-num { color: var(--accent); margin-right: 6px; font-weight: 600; }
+.labnav a.stats .labnav-num { color: var(--stats); }
+.labnav a:hover .labnav-num { color: var(--highlight); }
+
+/* ─── LAB CARD ─── */
+.lab { padding: 80px 0 40px; border-bottom: 1px solid var(--rule); position: relative; }
+.lab:last-of-type { border-bottom: none; }
+
+.lab-header {
+  display: grid; grid-template-columns: auto 1fr; gap: 24px;
+  align-items: baseline; margin-bottom: 28px;
+}
+.lab-number {
+  font-family: 'Fraunces', serif;
+  font-variation-settings: 'opsz' 144;
+  font-weight: 700; font-size: 72px; line-height: 1;
+  color: var(--accent); font-style: italic;
+}
+.lab.stats-lab .lab-number { color: var(--stats); }
+.lab-number::before {
+  content: 'LAB ';
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; font-style: normal;
+  letter-spacing: 0.2em; font-weight: 500;
+  color: var(--ink-faint); display: block; margin-bottom: 4px;
+}
+.lab.stats-lab .lab-number::before { content: 'STAT '; }
+
+.lab-title {
+  font-family: 'Fraunces', serif;
+  font-variation-settings: 'opsz' 72;
+  font-weight: 600; font-size: clamp(28px, 4vw, 40px);
+  line-height: 1.1; margin: 0 0 6px;
+  color: var(--ink); letter-spacing: -0.015em;
+}
+.lab-subtitle {
+  font-size: 15px; color: var(--ink-faint);
+  font-style: italic; font-family: 'Fraunces', serif;
+}
+
+.section-divider { padding: 64px 0 24px; text-align: center; }
+.section-divider .kicker {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--stats); margin-bottom: 14px;
+  display: flex; align-items: center; justify-content: center; gap: 18px;
+}
+.section-divider .kicker::before, .section-divider .kicker::after {
+  content: ''; width: 60px; height: 1px; background: var(--stats); opacity: 0.4;
+}
+.section-divider h2 {
+  font-family: 'Fraunces', serif;
+  font-variation-settings: 'opsz' 144;
+  font-weight: 600; font-style: italic;
+  font-size: clamp(32px, 5vw, 52px);
+  margin: 0; letter-spacing: -0.015em; color: var(--ink);
+}
+
+.lab-body {
+  display: grid; grid-template-columns: 1fr 1.25fr;
+  gap: 28px; align-items: start;
+}
+
+@media (max-width: 900px) {
+  .lab-body { grid-template-columns: 1fr; }
+  .lab-header { grid-template-columns: 1fr; gap: 8px; }
+  .lab-number { font-size: 48px; }
+}
+
+.panel {
+  background: var(--card);
+  border: 1px solid var(--rule); border-radius: 4px;
+  padding: 28px; box-shadow: var(--shadow);
+}
+.panel h4 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--accent); margin: 0 0 12px; font-weight: 600;
+  display: flex; align-items: center; gap: 10px;
+}
+.lab.stats-lab .panel h4 { color: var(--stats); }
+.panel h4::before {
+  content: ''; display: inline-block;
+  width: 6px; height: 6px; background: currentColor; border-radius: 50%;
+}
+.panel h4:not(:first-child) { margin-top: 24px; }
+.panel p { margin: 0 0 14px; color: var(--ink-soft); font-size: 15px; }
+.panel p:last-child { margin-bottom: 0; }
+.panel ul { margin: 0; padding-left: 20px; color: var(--ink-soft); font-size: 15px; }
+.panel ul li { margin-bottom: 6px; }
+
+code, .code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13.5px;
+  background: var(--paper-deep); color: var(--desmos-deep);
+  padding: 2px 7px; border-radius: 3px;
+  font-weight: 500;
+  border: 1px solid var(--paper-edge);
+  white-space: nowrap;
+}
+.lab.stats-lab code { color: var(--stats); }
+
+.challenge {
+  background: linear-gradient(180deg, rgba(243,208,107,0.35), rgba(243,208,107,0.15));
+  border-left: 3px solid var(--accent);
+  padding: 16px 18px; margin: 4px 0 0;
+  border-radius: 0 4px 4px 0;
+  font-size: 15.5px; color: var(--ink);
+}
+.lab.stats-lab .challenge { border-left-color: var(--stats); }
+.challenge strong {
+  font-family: 'Fraunces', serif;
+  font-variation-settings: 'opsz' 9;
+  font-weight: 600; font-style: italic;
+  color: var(--accent-deep);
+}
+.lab.stats-lab .challenge strong { color: var(--stats); }
+
+.margin-note {
+  font-family: 'Fraunces', serif; font-style: italic;
+  font-size: 13px; color: var(--ink-faint);
+  margin-top: 10px; padding-left: 14px;
+  border-left: 2px solid var(--rule);
+}
+
+/* ─── SOLUTION REVEAL ─── */
+details.solution {
+  margin-top: 22px;
+  border-top: 1px dashed var(--rule);
+  padding-top: 20px;
+}
+details.solution summary {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px; font-weight: 600;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--ink); cursor: pointer; list-style: none;
+  display: flex; align-items: center; gap: 10px;
+  user-select: none; padding: 6px 0;
+}
+details.solution summary::-webkit-details-marker { display: none; }
+details.solution summary::before {
+  content: '▸'; color: var(--accent);
+  transition: transform 0.2s ease; font-size: 10px;
+}
+details.solution[open] summary::before { transform: rotate(90deg); }
+details.solution summary::after {
+  content: 'click to reveal';
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400; font-size: 11px;
+  letter-spacing: 0; text-transform: none;
+  color: var(--ink-faint); font-style: italic;
+  margin-left: auto;
+}
+details.solution[open] summary::after { content: 'copy + paste each into Desmos →'; }
+
+.sol-item {
+  display: flex; align-items: center; gap: 8px;
+  margin: 10px 0; padding: 10px 12px;
+  background: var(--paper); border: 1px solid var(--paper-edge);
+  border-radius: 3px;
+}
+.sol-item code {
+  flex: 1; background: transparent; border: none;
+  padding: 0; font-size: 14px;
+  white-space: nowrap; overflow-x: auto;
+}
+.sol-note {
+  font-size: 13px; color: var(--ink-faint);
+  font-style: italic; margin: 14px 0 4px;
+  font-family: 'Fraunces', serif;
+}
+.copy-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 5px 10px;
+  border: 1px solid var(--rule);
+  background: var(--card); color: var(--ink-soft);
+  border-radius: 3px; cursor: pointer;
+  transition: all 0.12s ease; flex-shrink: 0;
+}
+.copy-btn:hover {
+  background: var(--ink); color: var(--paper);
+  border-color: var(--ink);
+}
+.copy-btn.copied {
+  background: var(--success); color: var(--paper);
+  border-color: var(--success);
+}
+
+/* ─── RIGHT PANEL: calculator iframe ─── */
+.calc-frame {
+  background: var(--card);
+  border: 1px solid var(--rule); border-radius: 4px;
+  box-shadow: var(--shadow); overflow: hidden;
+  display: flex; flex-direction: column;
+  min-height: 540px;
+  position: sticky; top: 20px;
+}
+@media (max-width: 900px) {
+  .calc-frame { position: static; min-height: 480px; }
+}
+
+.calc-meta {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 14px;
+  background: var(--paper-deep);
+  border-bottom: 1px solid var(--rule);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; letter-spacing: 0.08em;
+  color: var(--ink-faint);
+}
+.calc-meta .dots { display: flex; gap: 5px; }
+.calc-meta .dots span {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--paper-edge);
+}
+.calc-meta .dots span:nth-child(1) { background: #E06150; }
+.calc-meta .dots span:nth-child(2) { background: #E8B93C; }
+.calc-meta .dots span:nth-child(3) { background: #6CAF6A; }
+.calc-meta .tag { text-transform: uppercase; }
+
+.calc-iframe {
+  flex: 1; width: 100%; min-height: 480px;
+  border: 0; background: #fff; display: block;
+}
+
+.calc-actions {
+  display: flex; gap: 8px;
+  padding: 12px 14px;
+  background: var(--paper-deep);
+  border-top: 1px solid var(--rule);
+  flex-wrap: wrap;
+}
+.btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 9px 16px;
+  border: 1px solid var(--ink);
+  background: transparent; color: var(--ink);
+  border-radius: 3px; cursor: pointer;
+  transition: all 0.12s ease;
+  text-decoration: none;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.btn:hover { background: var(--ink); color: var(--paper); }
+.btn.primary {
+  background: var(--ink); color: var(--paper);
+  border-color: var(--ink);
+}
+.btn.primary:hover {
+  background: var(--accent); border-color: var(--accent);
+}
+.lab.stats-lab .btn.primary:hover {
+  background: var(--stats); border-color: var(--stats);
+}
+
+/* ─── CHEAT SHEET ─── */
+.cheatsheet {
+  background: var(--ink); color: var(--paper);
+  padding: 60px 0; margin-top: 40px;
+  background-image:
+    linear-gradient(rgba(246,239,225,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(246,239,225,0.05) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+.cheatsheet h2 {
+  font-family: 'Fraunces', serif;
+  font-variation-settings: 'opsz' 144;
+  font-weight: 600; font-size: 44px;
+  margin: 0 0 8px; letter-spacing: -0.015em;
+}
+.cheatsheet h2 em { color: var(--highlight); font-style: italic; }
+.cheatsheet .sub {
+  color: rgba(246,239,225,0.6);
+  margin-bottom: 32px; font-size: 15px;
+}
+.cheat-group-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--highlight);
+  margin: 32px 0 12px; padding-left: 2px;
+}
+.cheat-group-label:first-of-type { margin-top: 0; }
+.cheat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1px;
+  background: rgba(246,239,225,0.12);
+  border: 1px solid rgba(246,239,225,0.12);
+}
+.cheat-item { background: var(--ink); padding: 18px 20px; }
+.cheat-item .k {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px; color: var(--highlight);
+  display: block; margin-bottom: 4px; font-weight: 500;
+}
+.cheat-item .v { font-size: 14px; color: rgba(246,239,225,0.75); }
+
+/* ─── FOOTER ─── */
+footer {
+  padding: 60px 0 80px;
+  text-align: center;
+  color: var(--ink-faint); font-size: 14px;
+}
+footer .sig {
+  font-family: 'Fraunces', serif; font-style: italic;
+  font-size: 18px; color: var(--ink); margin-bottom: 8px;
+}
+footer .rule {
+  width: 60px; height: 2px; background: var(--accent);
+  margin: 24px auto;
+}
+
+/* ─── TOAST ─── */
+.toast {
+  position: fixed; bottom: 24px; left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--ink); color: var(--paper);
+  padding: 12px 22px; border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px; font-weight: 500;
+  letter-spacing: 0.05em;
+  opacity: 0; pointer-events: none;
+  transition: all 0.25s ease;
+  z-index: 1000;
+  box-shadow: 0 12px 32px -8px rgba(22,33,58,0.4);
+}
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.toast .check { color: #6CAF6A; margin-right: 8px; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-kicker">a practice notebook · 14 stations · one calculator</div>
+    <h1 class="hero-title">The Desmos Lab<br><em>practice the essentials.</em></h1>
+    <p class="hero-sub">
+      Every station below is a challenge with a live Desmos calculator embedded right
+      on the page. Read the concept, attempt the challenge, and reveal the solution
+      if you need it. Ten algebra / calculus labs, four statistics labs.
+    </p>
+
+    <div class="how-it-works">
+      <div class="how-item">
+        <span class="n">1.</span>
+        <span class="t">Read the concept and challenge on the left.</span>
+      </div>
+      <div class="how-item">
+        <span class="n">2.</span>
+        <span class="t">Try it in the Desmos calculator on the right.</span>
+      </div>
+      <div class="how-item">
+        <span class="n">3.</span>
+        <span class="t">Stuck? Expand "Reveal solution", copy, paste.</span>
+      </div>
+      <div class="how-item">
+        <span class="n">4.</span>
+        <span class="t">Clear the calc with the trash icon and try the next.</span>
+      </div>
+    </div>
+
+    <nav class="labnav" aria-label="Jump to a lab">
+      <div class="labnav-section-label">Core — algebra &amp; calculus</div>
+      <a href="#lab1"><span class="labnav-num">01</span>Plot a function</a>
+      <a href="#lab2"><span class="labnav-num">02</span>Sliders</a>
+      <a href="#lab3"><span class="labnav-num">03</span>Transformations</a>
+      <a href="#lab4"><span class="labnav-num">04</span>Domain restrictions</a>
+      <a href="#lab5"><span class="labnav-num">05</span>Piecewise</a>
+      <a href="#lab6"><span class="labnav-num">06</span>Tables &amp; points</a>
+      <a href="#lab7"><span class="labnav-num">07</span>Regression</a>
+      <a href="#lab8"><span class="labnav-num">08</span>Inequalities</a>
+      <a href="#lab9"><span class="labnav-num">09</span>Calculus</a>
+      <a href="#lab10"><span class="labnav-num">10</span>Polar &amp; parametric</a>
+      <div class="labnav-section-label">Statistics</div>
+      <a href="#lab11" class="stats"><span class="labnav-num">11</span>Lists &amp; summaries</a>
+      <a href="#lab12" class="stats"><span class="labnav-num">12</span>Histograms &amp; boxplots</a>
+      <a href="#lab13" class="stats"><span class="labnav-num">13</span>Scatter &amp; residuals</a>
+      <a href="#lab14" class="stats"><span class="labnav-num">14</span>Normal distribution</a>
+    </nav>
+  </div>
+</section>
+
+<main class="wrap">
+
+<!-- LAB 01 -->
+<section class="lab" id="lab1">
+  <div class="lab-header">
+    <div class="lab-number">01</div>
+    <div>
+      <h2 class="lab-title">Plot your first function</h2>
+      <div class="lab-subtitle">Type an equation, see a curve. The whole premise.</div>
+    </div>
+  </div>
+  <div class="lab-body">
+    <div class="panel">
+      <h4>What to know</h4>
+      <p>Desmos reads an expression as soon as you type it. You rarely have to press Enter. Use <code>^</code> for exponents and <code>*</code> for multiply (or just omit it — <code>2x</code> works).</p>
+      <p>Function names you write out — <code>sin</code>, <code>cos</code>, <code>sqrt</code>, <code>ln</code>, <code>abs</code> — auto-format into proper math notation.</p>
+      <h4>Challenge</h4>
+      <div class="challenge"><strong>Graph two curves together:</strong> plot <code>y = x²</code> and <code>y = sin(x)</code> on the same axes. Notice how Desmos auto-colors each line.</div>
+      <div class="margin-note">Tip — add a third expression: <code>y = x/3</code>. Watch Desmos pick a new color on its own.</div>
+      <details class="solution">
+        <summary>Reveal solution</summary>
+        <div class="sol-item"><code>y = x^2</code><button class="copy-btn">Copy</button></div>
+        <div class="sol-item"><code>y = sin(x)</code><button class="copy-btn">Copy</button></div>
+      </details>
+    </div>
+    <div class="calc-frame">
+      <div class="calc-meta"><span class="tag">desmos · station 01</span><div class="dots"><span></span><span></span><span></span></div></div>
+      <iframe class="calc-iframe" src="https://www.desmos.com/calculator" loading="lazy" title="Desmos — Lab 1"></iframe>
+      <div class="calc-actions"><a class="btn primary" href="https://www.desmos.com/calculator" target="_blank" rel="noopener">Open in new tab ↗</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- LAB 02 -->
+<section class="lab" id="lab2">
+  <div class="lab-header">
+    <div class="lab-number">02</div>
+    <div>
+      <h2 class="lab-title">Bring it to life with sliders</h2>
+      <div class="lab-subtitle">The single feature that makes Desmos feel alive.</div>
+    </div>
+  </div>
+  <div class="lab-body">
+    <div class="panel">
+      <h4>What to know</h4>
+      <p>Type a letter Desmos doesn't recognize (like <code>a</code>) in an equation and it offers an "add slider" button. Click it. Now drag the parameter and watch the graph move.</p>
+      <p>You can also set a slider manually — just type <code>a = 1</code> on its own line.</p>
+      <h4>Challenge</h4>
+      <div class="challenge"><strong>Build a vertex-form parabola</strong> <code>y = a(x − h)² + k</code> with sliders for <em>a</em>, <em>h</em>, and <em>k</em>. Drag them and describe aloud what each one controls.</div>
+      <div class="margin-note">Click the wrench on any slider to set its min, max, and step size.</div>
+      <details class="solution">
+        <summary>Reveal solution</summary>
+        <div class="sol-note">Paste these in order. Desmos will prompt "add slider" for each parameter — click it.</div>
+        <div class="sol-item"><code>a = 1</code><button class="copy-btn">Copy</button></div>
+        <div class="sol-item"><code>h = 0</code><button class="copy-btn">Copy</button></div>
+        <div class="sol-item"><code>k = 0</code><button class="copy-btn">Copy</button></div>
+        <div class="sol-item"><code>y = a(x - h)^2 + k</code><button class="copy-btn">Copy</button></div>
+      </details>
+    </div>
+    <div class="calc-frame">
+      <div class="calc-meta"><span class="tag">desmos · station 02</span><div class="dots"><span></span><span></span><span></span></div></div>
+      <iframe class="calc-iframe" src="https://www.desmos.com/calculator" loading="lazy" title="Desmos — Lab 2"></iframe>
+      <div class="calc-actions"><a class="btn primary" href="https://www.desmos.com/calculator" target="_blank" rel="noopener">Open in new tab ↗</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- LAB 03 -->
+<section class="lab" id="lab3">
+  <div class="lab-header">
+    <div class="lab-number">03</div>
+    <div>
+      <h2 class="lab-title">Shift, stretch, flip</h2>
+      <div class="lab-subtitle">Transformations, the same way you do them on paper.</div>
+    </div>
+  </div>
+  <div class="lab-body">
+    <div class="panel">
+      <h4>What to know</h4>
+      <p>The rules you know still apply:</p>
+      <ul>
+        <li><code>f(x − h)</code> shifts <em>right</em> by h</li>
+        <li><code>f(x) + k</code> shifts <em>up</em> by k</li>
+        <li><code>a · f(x)</code> stretches vertically (flips if a &lt; 0)</li>
+        <li><code>f(bx)</code> compresses horizontally</li>
+      </ul>
+      <h4>Challenge</h4>
+      <div class="challenge"><strong>Build this in three steps.</strong> Graph <code>y = x²</code>. Then change it to <code>y = (x + 3)²</code>. Then <code>y = −2(x + 3)² − 1</code>. Watch each change.</div>
+      <details class="solution">
+        <summary>Reveal solution</summary>
+        <div class="sol-item"><code>y = x^2</code><button class="copy-btn">Copy</button></div>
+        <div class="sol-item"><code>y = (x + 3)^2</code><button class="copy-btn">Copy</button></div>
+        <div class="sol-item"><code>y = -2(x + 3)^2 - 1</code><button class="copy-btn">Copy</button></div>
+      </details>
+    </div>
+    <div class="calc-frame">
+      <div class="calc-meta"><span class="tag">desmos · station 03</span><div class="dots"><span></span><span></span><span></span></div></div>
+      <iframe class="calc-iframe" src="https://www.desmos.com/calculator" loading="lazy" title="Desmos — Lab 3"></iframe>
+      <div class="calc-actions"><a class="btn primary" href="https://www.desmos.com/calculator" target="_blank" rel="noopener">Open in new tab ↗</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- LAB 04 -->
+<section class="lab" id="lab4">
+  <div class="lab-header">
+    <div class="lab-number">04</div>
+    <div>
+      <h2 class="lab-title">Restrict the domain</h2>
+      <div class="lab-subtitle">Curly braces are the secret handshake.</div>
+    </div>
+  </div>
+  <div class="lab-body">
+    <div class="panel">
+      <h4>What to know</h4>
+      <p>Attach <code>{condition}</code> to the end of any expression to restrict where it graphs.</p>
+      <ul>
+        <li><code>y = x² {x &gt; 0}</code> &nbsp; right half only</li>
+        <li><code>y = sin(x) {-π ≤ x ≤ π}</code> &nbsp; one period</li>
+        <li><code>y = √x {0 ≤ x ≤ 9}</code> &nbsp; bounded</li>
+      </ul>
+      <h4>Challenge</h4>
+      <div class="challenge"><strong>Draw a finite arc.</strong> Graph <code>y = √x</code> only for <code>0 ≤ x ≤ 9</code>. Add a vertical line at <code>x = 9</code> from <em>y</em>=0 to <em>y</em>=3.</div>
+      <details class="solution">
+        <summary>Reveal solution</summary>
+        <div class="sol-item"><code>y = sqrt(x) {0 &lt;= x &lt;= 9}</code><button class="copy-btn">Copy</button></div>
+        <div class="sol-item"><code>x = 9 {0 &lt;= y &lt;= 3}</code><button class="copy-btn">Copy</button></div>
+      </details>
+    </div>
+    <div class="calc-frame">
+      <div class="calc-meta"><span class="tag">desmos · station 04</span><div class="dots"><span></span><span></span><span></span></div></div>
+      <iframe class="calc-iframe" src="https://www.desmos.com/calculator" loading="lazy" title="Desmos — Lab 4"></iframe>
+      <div class="calc-actions"><a class="btn primary" href="https://www.desmos.com/calculator" target="_blank" rel="noopener">Open in new tab ↗</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- LAB 05 -->
+<section class="lab" id="lab5">
+  <div class="lab-header">
+    <div class="lab-number">05</div>
+    <div>
+      <h2 class="lab-title">Piecewise functions</h2>
+      <div class="lab-subtitle">Different rule in different regions. One expression.</div>
+    </div>
+  </div>
+  <div class="lab-body">
+    <div class="panel">
+      <h4>What to know</h4>
+      <p>Piecewise syntax is <code>{condition: value, condition: value, ...}</code>. Commas separate cases. Desmos uses the first case that's true.</p>
+      <p>Example: <code>f(x) = {x &lt; 0: x², x ≥ 0: 2x}</code></p>
+      <h4>Challenge</h4>
+      <div class="challenge"><strong>Build a three-piece function:</strong> <code>f(x) = −x</code> if <em>x &lt; −1</em>, &nbsp; <code>x²</code> if <em>−1 ≤ x ≤ 1</em>, &nbsp; <code>2 − x</code> if <em>x &gt; 1</em>. Check: is it continuous?</div>
+      <details class="solution">
+        <summary>Reveal solution</summary>
+        <div class="sol-item"><code>f(x) = {x&lt;-1: -x, -1&lt;=x&lt;=1: x^2, x&gt;1: 2-x}</code><button class="copy-btn">Copy</button></div>
+        <div class="sol-item"><code>y = f(x)</code><button class="copy-btn">Copy</button></div>
+      </details>
+    </div>
+    <div class="calc-frame">
+      <div class="calc-meta"><span class="tag">desmos · station 05</span><div class="dots"><span></span><span></span><span></span></div></div>
+      <iframe class="calc-iframe" src="https://www.desmos.com/calculator" loading="lazy" title="Desmos — Lab 5"></iframe>
+      <div class="calc-actions"><a class="btn primary" href="https://www.desmos.com/calculator" target="_blank" rel="noopener">Open in new tab ↗</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- LAB 06 -->
+<section class="lab" id="lab6">
+  <div class="lab-header">
+    <div class="lab-number">06</div>
+    <div>
+      <h2 class="lab-title">Tables &amp; points</h2>
+      <div class="lab-subtitle">When data is your starting point, not an equation.</div>
+    </div>
+  </div>
+  <div class="lab-body">
+    <div class="panel">
+      <h4>What to know</h4>
+      <p>Two ways to plot points:</p>
+      <ul>
+        <li>Type them directly: <code>(1, 32)</code> on a line</li>
+        <li>Click the <strong>+</strong> in the expression list → choose <strong>table</strong>. Paste or type values into the <em>x₁</em> and <em>y₁</em> columns.</li>
+      </ul>
+      <h4>Challenge</h4>
+      <div class="challenge"><strong>Plot these daily highs:</strong> (1, 32), (2, 45), (3, 58), (4, 67), (5, 72). Use a table — you'll need it in the next lab.</div>
+      <div class="margin-note">Click the colored dot in the table header to change color or switch to connected lines.</div>
+      <details class="solution">
+        <summary>Reveal solution</summary>
+        <div class="sol-note">Click <strong>+</strong> top-left → "table" → fill x₁ and y₁. Or type the five points directly:</div>
+        <div class="sol-item"><code>(1, 32)</code><button class="copy-btn">Copy</button></div>
+        <div class="sol-item"><code>(2, 45)</code><button class="copy-btn">Copy</button></div>
+        <div class="sol-item"><code>(3, 58)</code><button class="copy-btn">Copy</button></div>
+        <div class="sol-item"><code>(4, 67)</code><button class="copy-btn">Copy</button></div>
+        <div class="sol-item"><code>(5, 72)</code><button class="copy-btn">Copy</button></div>
+      </details>
+    </div>
+    <div class="calc-frame">
+      <div class="calc-meta"><span class="tag">desmos · station 06</span><div class="dots"><span></span><span></span><span></span></div></div>
+      <iframe class="calc-iframe" src="https://www.desmos.com/calculator" loading="lazy" title="Desmos — Lab 6"></iframe>
+      <div class="calc-actions"><a class="btn primary" href="https://www.desmos.com/calculator" target="_blank" rel="noopener">Open in new tab ↗</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- LAB 07 -->
+<section class="lab" id="lab7">
+  <div class="lab-header">
+    <div class="lab-number">07</div>
+    <div>
+      <h2 class="lab-title">Regression (line of best fit)</h2>
+      <div class="lab-subtitle">The tilde is the magic. Everything else is ceremony.</div>
+    </div>
+  </div>
+  <div class="lab-body">
+    <div class="panel">
+      <h4>What to know</h4>
+      <p>The <code>~</code> symbol means "fit this model to this data." After entering a table (<em>x₁</em>, <em>y₁</em>), on a new line type:</p>
+      <p><code>y₁ ~ m·x₁ + b</code></p>
+      <p>Desmos solves for <em>m</em> and <em>b</em> and reports R². Works for any model — quadratic, exponential, sinusoidal, you name it.</p>
+      <h4>Challenge</h4>
+      <div class="challenge"><strong>Fit last lab's temperatures.</strong> Re-enter the table, then add <code>y₁ ~ m·x₁ + b</code>. Read off <em>m</em>, <em>b</em>, and R². Then try a quadratic fit and compare.</div>
+      <details class="solution">
+        <summary>Reveal solution</summary>
+        <div class="sol-note">Make a table first (see Lab 6), then paste the regression model.</div>
+        <div class="sol-item"><code>y_1 ~ m*x_1 + b</code><button class="copy-btn">Copy</button></div>
+        <div class="sol-note">For the quadratic fit:</div>
+        <div class="sol-item"><code>y_1 ~ a*x_1^2 + b*x_1 + c</code><button class="copy-btn">Copy</button></div>
+      </details>
+    </div>
+    <div class="calc-frame">
+      <div class="calc-meta"><span class="tag">desmos · station 07</span><div class="dots"><span></span><span></span><span></span></div></div>
+      <iframe class="calc-iframe" src="https://www.desmos.com/calculator" loading="lazy" title="Desmos — Lab 7"></iframe>
+      <div class="calc-actions"><a class="btn primary" href="https://www.desmos.com/calculator" target="_blank" rel="noopener">Open in new tab ↗</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- LAB 08 -->
+<section class="lab" id="lab8">
+  <div class="lab-header">
+    <div class="lab-number">08</div>
+    <div>
+      <h2 class="lab-title">Inequalities &amp; shaded regions</h2>
+      <div class="lab-subtitle">Swap = for &lt;, &gt;, ≤, or ≥ and the plane fills in.</div>
+    </div>
+  </div>
+  <div class="lab-body">
+    <div class="panel">
+      <h4>What to know</h4>
+      <p>Anywhere you'd write <code>=</code>, you can write <code>&lt;</code>, <code>&gt;</code>, <code>≤</code>, or <code>≥</code>. Desmos automatically shades. Type <code>&lt;=</code> and it converts to ≤.</p>
+      <p>Combine two inequalities and the overlap is visible where the shades intersect.</p>
+      <h4>Challenge</h4>
+      <div class="challenge"><strong>Find the feasible region:</strong> graph <code>y &lt; x²</code> and <code>y &gt; −x + 2</code> together. The darker overlap is the solution set.</div>
+      <details class="solution">
+        <summary>Reveal solution</summary>
+        <div class="sol-item"><code>y &lt; x^2</code><button class="copy-btn">Copy</button></div>
+        <div class="sol-item"><code>y &gt; -x + 2</code><button class="copy-btn">Copy</button></div>
+      </details>
+    </div>
+    <div class="calc-frame">
+      <div class="calc-meta"><span class="tag">desmos · station 08</span><div class="dots"><span></span><span></span><span></span></div></div>
+      <iframe class="calc-iframe" src="https://www.desmos.com/calculator" loading="lazy" title="Desmos — Lab 8"></iframe>
+      <div class="calc-actions"><a class="btn primary" href="https://www.desmos.com/calculator" target="_blank" rel="noopener">Open in new tab ↗</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- LAB 09 -->
+<section class="lab" id="lab9">
+  <div class="lab-header">
+    <div class="lab-number">09</div>
+    <div>
+      <h2 class="lab-title">Calculus notation</h2>
+      <div class="lab-subtitle">Derivatives and integrals, typed the way they're written.</div>
+    </div>
+  </div>
+  <div class="lab-body">
+    <div class="panel">
+      <h4>What to know</h4>
+      <ul>
+        <li>Derivative: type <code>d/dx</code> — it formats into proper Leibniz notation</li>
+        <li>Or define <code>f(x) = ...</code> then graph <code>f'(x)</code> with an apostrophe</li>
+        <li>Integral: type <code>int</code> and pick the template from the popup (or use the ∫ key on the keypad)</li>
+      </ul>
+      <h4>Challenge</h4>
+      <div class="challenge"><strong>See a function and its derivative side by side.</strong> Graph <code>f(x) = x³ − 3x</code>, then graph <code>f'(x)</code>. Where <em>f'</em> crosses zero, <em>f</em> has a max or min — verify visually.</div>
+      <details class="solution">
+        <summary>Reveal solution</summary>
+        <div class="sol-item"><code>f(x) = x^3 - 3x</code><button class="copy-btn">Copy</button></div>
+        <div class="sol-item"><code>y = f(x)</code><button class="copy-btn">Copy</button></div>
+        <div class="sol-item"><code>y = f'(x)</code><button class="copy-btn">Copy</button></div>
+      </details>
+    </div>
+    <div class="calc-frame">
+      <div class="calc-meta"><span class="tag">desmos · station 09</span><div class="dots"><span></span><span></span><span></span></div></div>
+      <iframe class="calc-iframe" src="https://www.desmos.com/calculator" loading="lazy" title="Desmos — Lab 9"></iframe>
+      <div class="calc-actions"><a class="btn primary" href="https://www.desmos.com/calculator" target="_blank" rel="noopener">Open in new tab ↗</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- LAB 10 -->
+<section class="lab" id="lab10">
+  <div class="lab-header">
+    <div class="lab-number">10</div>
+    <div>
+      <h2 class="lab-title">Polar &amp; parametric</h2>
+      <div class="lab-subtitle">When a Cartesian equation isn't the right tool.</div>
+    </div>
+  </div>
+  <div class="lab-body">
+    <div class="panel">
+      <h4>What to know</h4>
+      <p><strong>Polar:</strong> use <em>θ</em> instead of <em>x</em>. Example: <code>r = 2cos(3θ)</code>. Type <code>theta</code> and it converts. To see polar gridlines: wrench icon → "Polar Grid".</p>
+      <p><strong>Parametric:</strong> wrap both coordinates in parentheses with a parameter <em>t</em>. Example: <code>(cos(t), sin(2t))</code>.</p>
+      <h4>Challenge</h4>
+      <div class="challenge"><strong>Two curves, two systems.</strong> Graph the rose <code>r = 2·cos(3θ)</code>. Then graph the Lissajous <code>(cos(t), sin(2t))</code>.</div>
+      <details class="solution">
+        <summary>Reveal solution</summary>
+        <div class="sol-item"><code>r = 2cos(3theta)</code><button class="copy-btn">Copy</button></div>
+        <div class="sol-item"><code>(cos(t), sin(2t))</code><button class="copy-btn">Copy</button></div>
+      </details>
+    </div>
+    <div class="calc-frame">
+      <div class="calc-meta"><span class="tag">desmos · station 10</span><div class="dots"><span></span><span></span><span></span></div></div>
+      <iframe class="calc-iframe" src="https://www.desmos.com/calculator" loading="lazy" title="Desmos — Lab 10"></iframe>
+      <div class="calc-actions"><a class="btn primary" href="https://www.desmos.com/calculator" target="_blank" rel="noopener">Open in new tab ↗</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- STATISTICS SECTION -->
+<div class="section-divider">
+  <div class="kicker">Part two</div>
+  <h2>Statistics in Desmos</h2>
+</div>
+
+<!-- LAB 11 -->
+<section class="lab stats-lab" id="lab11">
+  <div class="lab-header">
+    <div class="lab-number">11</div>
+    <div>
+      <h2 class="lab-title">Lists &amp; summary statistics</h2>
+      <div class="lab-subtitle">A list is just numbers in brackets. Then every stat function works on it.</div>
+    </div>
+  </div>
+  <div class="lab-body">
+    <div class="panel">
+      <h4>What to know</h4>
+      <p>Wrap values in square brackets to make a list: <code>L = [72, 85, 91, 68, 77]</code>. Then every built-in stats function accepts that list.</p>
+      <ul>
+        <li><code>mean(L)</code>, <code>median(L)</code>, <code>total(L)</code></li>
+        <li><code>min(L)</code>, <code>max(L)</code></li>
+        <li><code>stdev(L)</code> sample &nbsp;·&nbsp; <code>stdevp(L)</code> population</li>
+        <li><code>quartile(L, 1)</code> for Q1 (or 2, 3)</li>
+        <li><code>length(L)</code> — the sample size</li>
+      </ul>
+      <h4>Challenge</h4>
+      <div class="challenge"><strong>Report a five-number summary.</strong> Given the test-score list below, compute min, Q1, median, Q3, max — plus the mean and sample standard deviation.</div>
+      <details class="solution">
+        <summary>Reveal solution</summary>
+        <div class="sol-item"><code>L = [72, 85, 91, 68, 77, 82, 90, 75, 88, 79]</code><button class="copy-btn">Copy</button></div>
+        <div class="sol-item"><code>M = mean(L)</code><button class="copy-btn">Copy</button></div>
+        <div class="sol-item"><code>S = stdev(L)</code><button class="copy-btn">Copy</button></div>
+        <div class="sol-item"><code>Q_1 = quartile(L, 1)</code><button class="copy-btn">Copy</button></div>
+        <div class="sol-item"><code>Q_2 = median(L)</code><button class="copy-btn">Copy</button></div>
+        <div class="sol-item"><code>Q_3 = quartile(L, 3)</code><button class="copy-btn">Copy</button></div>
+        <div class="sol-note">Desmos shows each value to the right of the expression, like a calculator printout.</div>
+      </details>
+    </div>
+    <div class="calc-frame">
+      <div class="calc-meta"><span class="tag">desmos · station 11</span><div class="dots"><span></span><span></span><span></span></div></div>
+      <iframe class="calc-iframe" src="https://www.desmos.com/calculator" loading="lazy" title="Desmos — Lab 11"></iframe>
+      <div class="calc-actions"><a class="btn primary" href="https://www.desmos.com/calculator" target="_blank" rel="noopener">Open in new tab ↗</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- LAB 12 -->
+<section class="lab stats-lab" id="lab12">
+  <div class="lab-header">
+    <div class="lab-number">12</div>
+    <div>
+      <h2 class="lab-title">Histograms, dotplots, boxplots</h2>
+      <div class="lab-subtitle">Three one-line commands. Each one builds a real chart.</div>
+    </div>
+  </div>
+  <div class="lab-body">
+    <div class="panel">
+      <h4>What to know</h4>
+      <p>Once you have a list, these display commands each draw their own chart:</p>
+      <ul>
+        <li><code>histogram(L)</code> &nbsp; auto-binned histogram</li>
+        <li><code>histogram(L, 5)</code> &nbsp; bin width of 5</li>
+        <li><code>dotplot(L)</code> &nbsp; stacked dots</li>
+        <li><code>boxplot(L)</code> &nbsp; five-number summary visual</li>
+      </ul>
+      <p>Drag the axes to zoom. Click any bar to see its count.</p>
+      <h4>Challenge</h4>
+      <div class="challenge"><strong>Three views, one dataset.</strong> Using the 20 exam scores below, draw a histogram with bin width 10, a dotplot, and a boxplot all at once. Notice how each view emphasizes something different.</div>
+      <details class="solution">
+        <summary>Reveal solution</summary>
+        <div class="sol-item"><code>L = [62, 71, 75, 78, 81, 83, 85, 86, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 100]</code><button class="copy-btn">Copy</button></div>
+        <div class="sol-item"><code>histogram(L, 10)</code><button class="copy-btn">Copy</button></div>
+        <div class="sol-item"><code>dotplot(L)</code><button class="copy-btn">Copy</button></div>
+        <div class="sol-item"><code>boxplot(L)</code><button class="copy-btn">Copy</button></div>
+      </details>
+    </div>
+    <div class="calc-frame">
+      <div class="calc-meta"><span class="tag">desmos · station 12</span><div class="dots"><span></span><span></span><span></span></div></div>
+      <iframe class="calc-iframe" src="https://www.desmos.com/calculator" loading="lazy" title="Desmos — Lab 12"></iframe>
+      <div class="calc-actions"><a class="btn primary" href="https://www.desmos.com/calculator" target="_blank" rel="noopener">Open in new tab ↗</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- LAB 13 -->
+<section class="lab stats-lab" id="lab13">
+  <div class="lab-header">
+    <div class="lab-number">13</div>
+    <div>
+      <h2 class="lab-title">Scatter plots, r, and residuals</h2>
+      <div class="lab-subtitle">How strong is the fit? Let Desmos tell you.</div>
+    </div>
+  </div>
+  <div class="lab-body">
+    <div class="panel">
+      <h4>What to know</h4>
+      <p>After you run a linear regression <code>y₁ ~ m·x₁ + b</code>, Desmos auto-generates:</p>
+      <ul>
+        <li><code>r</code> — the correlation coefficient</li>
+        <li><code>r²</code> — the coefficient of determination</li>
+        <li>the fitted <em>m</em> and <em>b</em> values</li>
+      </ul>
+      <p>To see residuals visually, plot <code>(x₁, y₁ − (m·x₁ + b))</code>. A good fit shows a random cloud around zero; a pattern means you picked the wrong model.</p>
+      <h4>Challenge</h4>
+      <div class="challenge"><strong>Fit, then audit.</strong> Enter the table, run a linear fit, record <em>r</em> and <em>r²</em>. Then plot the residuals. Do they look random?</div>
+      <details class="solution">
+        <summary>Reveal solution</summary>
+        <div class="sol-note">Create a table first and fill it with these two columns:</div>
+        <div class="sol-item"><code>x₁ column: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10</code></div>
+        <div class="sol-item"><code>y₁ column: 2.1, 3.9, 6.2, 8.1, 9.8, 12.1, 13.9, 16.2, 18.0, 20.1</code></div>
+        <div class="sol-note">Then paste:</div>
+        <div class="sol-item"><code>y_1 ~ m*x_1 + b</code><button class="copy-btn">Copy</button></div>
+        <div class="sol-item"><code>(x_1, y_1 - (m*x_1 + b))</code><button class="copy-btn">Copy</button></div>
+      </details>
+    </div>
+    <div class="calc-frame">
+      <div class="calc-meta"><span class="tag">desmos · station 13</span><div class="dots"><span></span><span></span><span></span></div></div>
+      <iframe class="calc-iframe" src="https://www.desmos.com/calculator" loading="lazy" title="Desmos — Lab 13"></iframe>
+      <div class="calc-actions"><a class="btn primary" href="https://www.desmos.com/calculator" target="_blank" rel="noopener">Open in new tab ↗</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- LAB 14 -->
+<section class="lab stats-lab" id="lab14">
+  <div class="lab-header">
+    <div class="lab-number">14</div>
+    <div>
+      <h2 class="lab-title">Normal distribution &amp; probability</h2>
+      <div class="lab-subtitle">Bell curves, z-scores, and P(a ≤ X ≤ b) in two lines.</div>
+    </div>
+  </div>
+  <div class="lab-body">
+    <div class="panel">
+      <h4>What to know</h4>
+      <p><code>normaldist(μ, σ)</code> creates a normal distribution. Once you have it, chain methods onto it:</p>
+      <ul>
+        <li><code>.pdf(x)</code> — the density at <em>x</em> (used for graphing)</li>
+        <li><code>.cdf(a, b)</code> — probability that <em>a</em> ≤ X ≤ <em>b</em></li>
+        <li><code>.inversecdf(p)</code> — the <em>x</em> value where CDF = <em>p</em></li>
+      </ul>
+      <h4>Challenge</h4>
+      <div class="challenge"><strong>SAT scores.</strong> Suppose scores follow <em>N</em>(μ = 1050, σ = 200). Find P(1000 ≤ X ≤ 1200). Then graph the density curve. Then find the 90th-percentile cutoff score.</div>
+      <details class="solution">
+        <summary>Reveal solution</summary>
+        <div class="sol-item"><code>N = normaldist(1050, 200)</code><button class="copy-btn">Copy</button></div>
+        <div class="sol-item"><code>P = N.cdf(1000, 1200)</code><button class="copy-btn">Copy</button></div>
+        <div class="sol-item"><code>y = N.pdf(x)</code><button class="copy-btn">Copy</button></div>
+        <div class="sol-item"><code>c = N.inversecdf(0.90)</code><button class="copy-btn">Copy</button></div>
+        <div class="sol-note">You should see P ≈ 0.241 and c ≈ 1306.</div>
+      </details>
+    </div>
+    <div class="calc-frame">
+      <div class="calc-meta"><span class="tag">desmos · station 14</span><div class="dots"><span></span><span></span><span></span></div></div>
+      <iframe class="calc-iframe" src="https://www.desmos.com/calculator" loading="lazy" title="Desmos — Lab 14"></iframe>
+      <div class="calc-actions"><a class="btn primary" href="https://www.desmos.com/calculator" target="_blank" rel="noopener">Open in new tab ↗</a></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- CHEAT SHEET -->
+<section class="cheatsheet">
+  <div class="wrap">
+    <h2>The <em>cheat sheet</em></h2>
+    <p class="sub">Everything you just practiced, on one page you can print.</p>
+
+    <div class="cheat-group-label">Core syntax</div>
+    <div class="cheat-grid">
+      <div class="cheat-item"><span class="k">y = x^2</span><span class="v">Type an equation → it graphs. No Enter key needed.</span></div>
+      <div class="cheat-item"><span class="k">a = 1</span><span class="v">Define a parameter. Click "Add slider" when prompted.</span></div>
+      <div class="cheat-item"><span class="k">f(x) = 2x − 3</span><span class="v">Name a function. Reuse as f(4), f(x+1), f'(x).</span></div>
+      <div class="cheat-item"><span class="k">y = x² {0 ≤ x ≤ 3}</span><span class="v">Restrict a domain with curly braces.</span></div>
+      <div class="cheat-item"><span class="k">{x&lt;0: x², x≥0: 2x}</span><span class="v">Piecewise. Cases separated by commas.</span></div>
+      <div class="cheat-item"><span class="k">(3, 4)</span><span class="v">Plot a single point. Any expression in parens.</span></div>
+      <div class="cheat-item"><span class="k">y₁ ~ a·x₁ + b</span><span class="v">Regression. Works on any model you can write.</span></div>
+      <div class="cheat-item"><span class="k">y &lt; x + 2</span><span class="v">Inequality → shaded region.</span></div>
+      <div class="cheat-item"><span class="k">d/dx(x³)</span><span class="v">Derivative. Or use f'(x) after defining f.</span></div>
+      <div class="cheat-item"><span class="k">r = 2·cos(3θ)</span><span class="v">Polar — just swap x for θ.</span></div>
+      <div class="cheat-item"><span class="k">(cos(t), sin(2t))</span><span class="v">Parametric — parens with parameter t.</span></div>
+      <div class="cheat-item"><span class="k">Ctrl / ⌘ + Z</span><span class="v">Undo. Desmos remembers every step.</span></div>
+    </div>
+
+    <div class="cheat-group-label">Statistics</div>
+    <div class="cheat-grid">
+      <div class="cheat-item"><span class="k">L = [1, 2, 3, 4, 5]</span><span class="v">Make a list. Brackets, commas, done.</span></div>
+      <div class="cheat-item"><span class="k">mean(L), median(L)</span><span class="v">Center — arithmetic mean and median.</span></div>
+      <div class="cheat-item"><span class="k">stdev(L), stdevp(L)</span><span class="v">Sample vs. population standard deviation.</span></div>
+      <div class="cheat-item"><span class="k">quartile(L, 1)</span><span class="v">Q1. Use 2 or 3 for Q2 (median), Q3.</span></div>
+      <div class="cheat-item"><span class="k">histogram(L, 10)</span><span class="v">Histogram with bin width 10.</span></div>
+      <div class="cheat-item"><span class="k">boxplot(L)</span><span class="v">Five-number summary chart.</span></div>
+      <div class="cheat-item"><span class="k">dotplot(L)</span><span class="v">Stacked-dot display of each value.</span></div>
+      <div class="cheat-item"><span class="k">normaldist(μ, σ)</span><span class="v">Normal distribution object.</span></div>
+      <div class="cheat-item"><span class="k">N.cdf(a, b)</span><span class="v">P(a ≤ X ≤ b) for distribution N.</span></div>
+      <div class="cheat-item"><span class="k">N.inversecdf(p)</span><span class="v">The value where CDF = p. (Inverse normal.)</span></div>
+      <div class="cheat-item"><span class="k">binomialdist(n, p)</span><span class="v">Binomial distribution. Same .cdf / .pdf.</span></div>
+      <div class="cheat-item"><span class="k">random(20)</span><span class="v">20 random values in [0,1). Use for simulations.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="rule"></div>
+    <div class="sig">— the desmos lab —</div>
+    <div>Practice fourteen essentials in one sitting. Then go build something.</div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"><span class="check">✓</span><span id="toast-msg">Copied to clipboard</span></div>
+
+<script>
+const toast = document.getElementById('toast');
+const toastMsg = document.getElementById('toast-msg');
+let toastTimer;
+
+function showToast(msg) {
+  toastMsg.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 1600);
+}
+
+function decodeHTML(str) {
+  const el = document.createElement('textarea');
+  el.innerHTML = str;
+  return el.value;
+}
+
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    const codeEl = btn.parentElement.querySelector('code');
+    if (!codeEl) return;
+    const text = decodeHTML(codeEl.innerHTML)
+      .replace(/≤/g, '<=').replace(/≥/g, '>=')
+      .replace(/·/g, '*').replace(/−/g, '-')
+      .replace(/θ/g, 'theta').replace(/π/g, 'pi');
+
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch (e) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); } catch (_) {}
+      document.body.removeChild(ta);
+    }
+
+    btn.classList.add('copied');
+    btn.textContent = '✓ Copied';
+    showToast('Copied — now paste into Desmos');
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.textContent = 'Copy';
+    }, 1400);
+  });
+});
+
+document.querySelectorAll('.labnav a').forEach(a => {
+  a.addEventListener('click', (e) => {
+    const href = a.getAttribute('href');
+    if (href && href.startsWith('#')) {
+      e.preventDefault();
+      const target = document.querySelector(href);
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+</script>
+
+</body>
+</html>
