@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week of May 4, 2026 — Math Topics Newsletter</title>
+<meta name="description" content="The SPARK teaching framework — five phases for teaching algebra (and any math) — plus this week's featured videos and science headlines.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:#07090f;
+  color:#e2e8f6;
+  font-family:'Inter',sans-serif;
+  min-height:100vh;
+  line-height:1.65;
+}
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 70% 60% at 10% 5%,  rgba(245,158,11,.13) 0%,transparent 55%),
+    radial-gradient(ellipse 60% 50% at 90% 20%, rgba(139,92,246,.12) 0%,transparent 55%),
+    radial-gradient(ellipse 80% 40% at 50% 100%,rgba(14,165,233,.09) 0%,transparent 60%);
+  pointer-events:none;
+}
+
+.topnav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(7,9,15,.88);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(255,255,255,.07);
+  padding:0 32px;
+  display:flex;align-items:center;gap:0;height:58px;
+}
+.nav-brand{
+  font-family:'Playfair Display',serif;
+  font-size:1.15rem;font-weight:700;
+  background:linear-gradient(135deg,#fbbf24,#f59e0b 50%,#ef4444);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  text-decoration:none;margin-right:auto;
+}
+.nav-links{display:flex;gap:2px;flex-wrap:wrap;}
+.nav-link{
+  color:rgba(226,232,246,.45);
+  font-size:.82rem;font-weight:500;
+  padding:7px 14px;border-radius:7px;
+  text-decoration:none;transition:all .18s;
+}
+.nav-link:hover{color:#e2e8f6;background:rgba(255,255,255,.06);}
+.nav-link.active{color:#fbbf24;background:rgba(245,158,11,.12);}
+
+.wrap{
+  position:relative;z-index:1;
+  max-width:880px;margin:0 auto;
+  padding:48px 22px 80px;
+}
+
+.breadcrumb{font-size:.78rem;color:rgba(226,232,246,.4);margin-bottom:16px;}
+.breadcrumb a{color:#fbbf24;text-decoration:none;}
+.breadcrumb a:hover{text-decoration:underline;}
+
+.issue-eyebrow{
+  display:inline-block;
+  background:rgba(245,158,11,.16);
+  border:1px solid rgba(245,158,11,.4);
+  color:#fbbf24;
+  font-size:.7rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:2px;
+  padding:5px 14px;border-radius:20px;
+  margin-bottom:18px;
+}
+.issue-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2.2rem,5vw,3.6rem);
+  font-weight:800;line-height:1.05;
+  background:linear-gradient(135deg,#0ea5e9 0%,#8b5cf6 35%,#10b981 60%,#fbbf24 80%,#ef4444 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  letter-spacing:-.02em;margin-bottom:12px;
+}
+.issue-sub{
+  font-size:1.06rem;color:rgba(226,232,246,.58);
+  max-width:640px;line-height:1.7;
+}
+.issue-meta{
+  display:flex;gap:22px;flex-wrap:wrap;margin-top:22px;
+  padding-top:22px;border-top:1px solid rgba(255,255,255,.08);
+  font-size:.78rem;color:rgba(226,232,246,.4);
+}
+.issue-meta b{color:rgba(226,232,246,.65);font-weight:600;}
+
+.toc{
+  margin:40px 0;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;
+  padding:20px 26px;
+}
+.toc-title{
+  font-size:.68rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:2px;
+  color:rgba(226,232,246,.45);margin-bottom:12px;
+}
+.toc-list{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:6px 18px;
+  list-style:none;
+}
+.toc-list a{
+  display:block;color:rgba(226,232,246,.75);
+  text-decoration:none;font-size:.88rem;
+  padding:4px 0;transition:color .15s;
+}
+.toc-list a:hover{color:#fbbf24;}
+.toc-list a span{color:rgba(226,232,246,.35);margin-right:8px;}
+
+.sec{margin:56px 0;}
+.sec-label{
+  font-size:.68rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:2.5px;
+  color:#fbbf24;margin-bottom:10px;
+  display:flex;align-items:center;gap:8px;
+}
+.sec-label::before{content:'';width:22px;height:2px;background:#fbbf24;border-radius:1px;}
+.sec-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.6rem,3.5vw,2.2rem);
+  font-weight:700;line-height:1.15;
+  color:#e2e8f6;margin-bottom:18px;letter-spacing:-.01em;
+}
+.sec p{font-size:1.02rem;color:rgba(226,232,246,.78);margin-bottom:16px;}
+
+/* Cliff cards */
+.cliff-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:14px;margin-top:18px;
+}
+.cliff-card{
+  background:rgba(239,68,68,.05);
+  border:1px solid rgba(239,68,68,.18);
+  border-top:3px solid #ef4444;
+  border-radius:12px;
+  padding:18px 20px;
+}
+.cliff-card h4{
+  font-family:'Playfair Display',serif;
+  font-size:1rem;color:#fca5a5;margin-bottom:6px;
+}
+.cliff-card p{font-size:.88rem;color:rgba(226,232,246,.72);margin:0;}
+
+/* Phase quick-reference cards (S/P/A/R/K) */
+.phase-grid{display:grid;grid-template-columns:1fr;gap:14px;margin-top:14px;}
+.phase{
+  display:grid;grid-template-columns:80px 1fr;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;
+  overflow:hidden;
+  align-items:stretch;
+}
+.phase-letter{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;
+  font-size:2.4rem;font-weight:800;
+  color:#fff;letter-spacing:-.03em;
+  position:relative;
+}
+.phase-letter small{
+  font-family:'Inter',sans-serif;font-size:.55rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:1.2px;
+  margin-top:4px;opacity:.85;
+}
+.phase[data-l="S"] .phase-letter{background:linear-gradient(180deg,#0ea5e9,#0284c7);}
+.phase[data-l="P"] .phase-letter{background:linear-gradient(180deg,#8b5cf6,#7c3aed);}
+.phase[data-l="A"] .phase-letter{background:linear-gradient(180deg,#10b981,#059669);}
+.phase[data-l="R"] .phase-letter{background:linear-gradient(180deg,#f59e0b,#d97706);}
+.phase[data-l="K"] .phase-letter{background:linear-gradient(180deg,#ef4444,#dc2626);}
+.phase-body{padding:18px 22px;}
+.phase-body h3{
+  font-family:'Playfair Display',serif;
+  font-size:1.15rem;color:#e2e8f6;margin-bottom:8px;
+}
+.phase-body p{font-size:.94rem;color:rgba(226,232,246,.78);margin:0 0 8px;}
+.phase-body ul{list-style:none;padding:0;margin:6px 0 0;}
+.phase-body li{
+  font-size:.86rem;color:rgba(226,232,246,.7);
+  padding:3px 0 3px 16px;position:relative;
+}
+.phase-body li::before{
+  content:'▸';position:absolute;left:0;color:rgba(226,232,246,.45);font-weight:600;
+}
+
+/* Worked example: equation banner */
+.equation{
+  display:block;margin:18px 0 26px;
+  background:linear-gradient(135deg,#1e3a8a,#4c1d95 55%,#831843);
+  border-radius:14px;
+  padding:28px 22px;text-align:center;
+  border:1px solid rgba(255,255,255,.1);
+}
+.equation .lab{
+  font-size:.7rem;font-weight:700;letter-spacing:2px;
+  text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:8px;
+}
+.equation .expr{
+  font-family:'Playfair Display',serif;font-style:italic;
+  font-size:clamp(2rem,5vw,3rem);font-weight:700;color:#fff;
+}
+
+/* Step cards (S P A R K walk-through) */
+.step{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;
+  padding:22px 24px;margin:14px 0;
+  border-left:5px solid;
+  position:relative;
+}
+.step[data-l="S"]{border-left-color:#0ea5e9;}
+.step[data-l="P"]{border-left-color:#8b5cf6;}
+.step[data-l="A"]{border-left-color:#10b981;}
+.step[data-l="R"]{border-left-color:#f59e0b;}
+.step[data-l="K"]{border-left-color:#ef4444;}
+.step-head{
+  display:flex;align-items:center;gap:14px;margin-bottom:14px;
+}
+.step-badge{
+  width:42px;height:42px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-family:'Playfair Display',serif;
+  font-weight:800;font-size:1.25rem;flex-shrink:0;
+}
+.step[data-l="S"] .step-badge{background:#0ea5e9;}
+.step[data-l="P"] .step-badge{background:#8b5cf6;}
+.step[data-l="A"] .step-badge{background:#10b981;}
+.step[data-l="R"] .step-badge{background:#f59e0b;}
+.step[data-l="K"] .step-badge{background:#ef4444;}
+.step-head h3{
+  font-family:'Playfair Display',serif;
+  font-size:1.18rem;color:#e2e8f6;margin:0;line-height:1.25;
+}
+.step-head .meta{
+  font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;
+  color:rgba(226,232,246,.5);display:block;margin-top:2px;
+}
+.step p{font-size:.95rem;color:rgba(226,232,246,.78);margin:0 0 10px;}
+.step em{color:#fbbf24;font-style:italic;}
+.move{
+  background:rgba(15,18,28,.6);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:10px;
+  padding:12px 16px;margin:10px 0;
+}
+.move b{color:#fbbf24;font-size:.78rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:4px;}
+.move p{font-size:.88rem;color:rgba(226,232,246,.74);margin:0;}
+.formula{
+  display:block;
+  background:rgba(15,18,28,.8);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:10px;
+  padding:12px 16px;
+  margin:10px 0;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.95rem;color:#e8eaf6;
+  overflow-x:auto;
+}
+
+/* Balance scale SVG */
+.balance-svg{
+  display:block;margin:14px auto;max-width:420px;width:100%;
+  background:rgba(15,18,28,.5);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:12px;padding:16px;
+}
+
+/* YouTube video grid */
+.video-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:18px;margin-top:14px;
+}
+.video-card{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;
+  overflow:hidden;text-decoration:none;color:inherit;
+  transition:transform .2s,border-color .2s;
+  display:flex;flex-direction:column;
+}
+.video-card:hover{transform:translateY(-3px);border-color:rgba(245,158,11,.35);}
+.video-card img{
+  width:100%;aspect-ratio:16/9;object-fit:cover;display:block;
+  background:#000;
+}
+.video-card .vmeta{padding:14px 16px;}
+.video-card h4{
+  font-family:'Playfair Display',serif;
+  font-size:1rem;color:#e2e8f6;margin-bottom:4px;line-height:1.3;
+}
+.video-card p{font-size:.82rem;color:rgba(226,232,246,.55);margin:0;}
+
+/* News cards */
+.card{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:16px;
+  padding:24px 26px;
+  margin:16px 0;
+}
+.card h3{
+  font-family:'Playfair Display',serif;
+  font-size:1.15rem;color:#e2e8f6;margin-bottom:8px;
+}
+.card p{margin:0;font-size:.95rem;color:rgba(226,232,246,.72);}
+.two-col{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;}
+
+.callout{
+  border-left:3px solid #fbbf24;
+  padding:12px 18px;margin:18px 0;
+  background:rgba(245,158,11,.06);
+  border-radius:0 12px 12px 0;
+  font-size:.98rem;color:rgba(226,232,246,.78);
+}
+.callout b{color:#fbbf24;}
+
+/* Nav to next/prev */
+.nav-issues{
+  margin-top:60px;padding-top:28px;
+  border-top:1px solid rgba(255,255,255,.08);
+  display:flex;gap:12px;flex-wrap:wrap;
+}
+.nav-issues a{
+  flex:1;min-width:220px;
+  padding:18px 22px;border-radius:14px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  text-decoration:none;color:#e2e8f6;
+  transition:all .2s;
+}
+.nav-issues a:hover{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.18);}
+.nav-issues .ni-dir{font-size:.7rem;color:rgba(226,232,246,.45);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px;}
+.nav-issues .ni-title{font-family:'Playfair Display',serif;font-weight:700;color:#fbbf24;}
+.nav-issues .ni-disabled{opacity:.35;pointer-events:none;}
+
+.footer{
+  text-align:center;
+  padding:36px 20px 30px;
+  color:rgba(232,234,246,.32);font-size:.8rem;
+}
+.footer a{color:#fbbf24;text-decoration:none;}
+
+@media(max-width:600px){
+  .topnav{padding:0 16px;}
+  .wrap{padding:30px 14px 60px;}
+  .phase{grid-template-columns:60px 1fr;}
+  .phase-letter{font-size:1.8rem;}
+}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a class="nav-brand" href="index.html">MarreroMath</a>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">Home</a>
+    <a class="nav-link" href="labs.html">Labs</a>
+    <a class="nav-link active" href="newsletters.html">Newsletter</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <nav class="breadcrumb">
+    <a href="newsletters.html">← Newsletter Archive</a>
+  </nav>
+
+  <div class="issue-eyebrow">Math Topics · Week of May 4, 2026</div>
+  <h1 class="issue-title">SPARK — A Five-Phase Framework for Teaching Algebra</h1>
+  <p class="issue-sub">
+    This week: my SPARK teaching framework — five phases (See, Probe,
+    Anchor, Rehearse, Kindle) that turn algebra from a cliff into a
+    walkable path. We work through a full example, look at this week's
+    featured videos, and close with science headlines worth bringing
+    into class.
+  </p>
+
+  <div class="issue-meta">
+    <span>📅 <b>Published</b> May 4, 2026</span>
+    <span>✍️ <b>Author</b> Dr. Carlos Marrero</span>
+    <span>⏱️ <b>Read</b> ~12 min</span>
+  </div>
+
+  <div class="toc">
+    <div class="toc-title">In this issue</div>
+    <ol class="toc-list" style="list-style:none;">
+      <li><a href="#why"><span>01</span>Why Algebra Is Hard</a></li>
+      <li><a href="#spark"><span>02</span>The SPARK Framework</a></li>
+      <li><a href="#worked"><span>03</span>Worked Example: 2x + 5 = 13</a></li>
+      <li><a href="#videos"><span>04</span>Latest from YouTube</a></li>
+      <li><a href="#science"><span>05</span>Science News Briefs</a></li>
+    </ol>
+  </div>
+
+  <!-- 01 -->
+  <section class="sec" id="why">
+    <div class="sec-label">01 · The Problem</div>
+    <h2 class="sec-title">Why Algebra Is Hard — And Why Most Fixes Don't Work</h2>
+    <p>
+      Most algebra failures aren't about effort. They're about
+      unaddressed conceptual leaps. By the time a student is told
+      "move it to the other side and flip the sign," several quiet
+      shifts have already happened — and any one of them, left
+      unresolved, will sink the rest of the year.
+    </p>
+
+    <div class="cliff-grid">
+      <div class="cliff-card">
+        <h4>1. Numbers → Variables</h4>
+        <p>"x" stops being a missing number to find and starts standing for any number. Genuinely new thinking.</p>
+      </div>
+      <div class="cliff-card">
+        <h4>2. The equals sign</h4>
+        <p>From "calculate the answer" (3 + 4 = __) to "express balance" (3 + 4 = 5 + 2). Many students never make the shift.</p>
+      </div>
+      <div class="cliff-card">
+        <h4>3. Procedure without meaning</h4>
+        <p>"Move it over and flip the sign" — taught as ritual, forgotten by Friday.</p>
+      </div>
+      <div class="cliff-card">
+        <h4>4. Multiple representations</h4>
+        <p>Words ↔ tables ↔ equations ↔ graphs. Students must learn to translate fluently among all four.</p>
+      </div>
+      <div class="cliff-card">
+        <h4>5. The "why bother"</h4>
+        <p>Without a sense that algebra unlocks real questions, motivation collapses just as difficulty rises.</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <b>The argument behind SPARK.</b> If we want students to walk
+      across these cliffs instead of falling off them, we need a
+      teaching shape that addresses each leap on purpose — not as an
+      afterthought. That's what the framework below is for.
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section class="sec" id="spark">
+    <div class="sec-label">02 · Framework</div>
+    <h2 class="sec-title">The Five Phases of SPARK</h2>
+    <p>
+      SPARK is a five-phase cycle, applied to any algebra topic — from
+      a first variable to a last quadratic. The phases are not a rigid
+      script; they're a lens for designing instruction so every cliff
+      gets attention. Each letter has its own teaching job.
+    </p>
+
+    <div class="phase-grid">
+
+      <div class="phase" data-l="S">
+        <div class="phase-letter">S<small>See it</small></div>
+        <div class="phase-body">
+          <h3>See it — make the math visible</h3>
+          <p>Concrete and pictorial representations come first, before symbols. Algebra tiles, balance scales, area models, function machines, graphs.</p>
+          <ul>
+            <li>Balance scales for solving equations</li>
+            <li>Algebra tiles for distribution and factoring</li>
+            <li>Area models for multiplication and quadratics</li>
+            <li>Function machines for substitution and inverse</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="phase" data-l="P">
+        <div class="phase-letter">P<small>Probe it</small></div>
+        <div class="phase-body">
+          <h3>Probe it — wrestle before being told</h3>
+          <p>Students attempt the problem before the method is shown. Productive struggle, inquiry, and discourse surface real strategies — and real misconceptions.</p>
+          <ul>
+            <li>"What's the rule?" pattern tasks</li>
+            <li>"Always, sometimes, never true" claims</li>
+            <li>Compare two equations: same? different? why?</li>
+            <li>Predict, then check by graphing or substitution</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="phase" data-l="A">
+        <div class="phase-letter">A<small>Anchor it</small></div>
+        <div class="phase-body">
+          <h3>Anchor it — build a stable schema</h3>
+          <p>Now we formalize. Co-construct the rule, name vocabulary precisely, link multiple representations, study worked examples with self-explanation prompts.</p>
+          <ul>
+            <li>Schema: equation = a question; solution = a value that makes it true</li>
+            <li>Worked examples with "why this step?" prompts</li>
+            <li>Concept map: equation ↔ table ↔ graph ↔ situation</li>
+            <li>Non-examples and common errors made explicit</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="phase" data-l="R">
+        <div class="phase-letter">R<small>Rehearse it</small></div>
+        <div class="phase-body">
+          <h3>Rehearse it — retrieve, space, interleave</h3>
+          <p>Practice becomes a design problem, not a worksheet dump. Cognitive science gives us the levers: retrieval, spacing, interleaving, variation theory.</p>
+          <ul>
+            <li>Mixed problem sets — never single-topic drills</li>
+            <li>Daily 3-minute retrieval (no notes) on prior content</li>
+            <li>Spaced review: linear equations return week 4, 8, 12</li>
+            <li>Variation theory: change one feature per problem</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="phase" data-l="K">
+        <div class="phase-letter">K<small>Kindle it</small></div>
+        <div class="phase-body">
+          <h3>Kindle it — protect motivation, grow identity</h3>
+          <p>Even a perfectly engineered lesson dies without the affective layer. SPARK builds love and belonging into the topic — not as a bonus, but as a phase.</p>
+          <ul>
+            <li>Real-world modeling: phone plans, growth, motion, finance</li>
+            <li>Stories: al-Khwarizmi, Hypatia, Emmy Noether, Katherine Johnson</li>
+            <li>Honor multiple solution paths; celebrate elegance</li>
+            <li>Build identity: "I can think algebraically."</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section class="sec" id="worked">
+    <div class="sec-label">03 · Worked Example</div>
+    <h2 class="sec-title">SPARK in Action: Solving 2x + 5 = 13</h2>
+    <p>
+      One topic, walked through all five phases. The same shape works
+      for any algebra concept — variables, inequalities, systems,
+      quadratics — but here we keep it deliberately small so the
+      cycle stays visible.
+    </p>
+
+    <div class="equation">
+      <div class="lab">Today's Equation</div>
+      <div class="expr">2x + 5 = 13</div>
+    </div>
+
+    <!-- S -->
+    <div class="step" data-l="S">
+      <div class="step-head">
+        <div class="step-badge">S</div>
+        <div>
+          <h3>See it — make the equation visible</h3>
+          <span class="meta">Concrete · Pictorial · Abstract</span>
+        </div>
+      </div>
+      <p>
+        Before any symbol manipulation, learners <em>see</em> what an
+        equation actually is. Start with a balance scale: 2 mystery
+        boxes plus 5 unit cubes on the left side; 13 unit cubes on the
+        right side. The two pans hang level — that's what "=" means.
+      </p>
+      <svg class="balance-svg" viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
+        <line x1="200" y1="30" x2="200" y2="180" stroke="#94a3b8" stroke-width="3"/>
+        <polygon points="170,180 230,180 240,200 160,200" fill="#94a3b8"/>
+        <line x1="60" y1="55" x2="340" y2="55" stroke="#94a3b8" stroke-width="3"/>
+        <line x1="60" y1="55" x2="60" y2="100" stroke="#94a3b8" stroke-width="2"/>
+        <line x1="20" y1="100" x2="100" y2="100" stroke="#94a3b8" stroke-width="2"/>
+        <rect x="25" y="75" width="22" height="22" fill="#0ea5e9" stroke="#0c4a6e"/>
+        <text x="36" y="92" text-anchor="middle" fill="white" font-size="12" font-weight="700">x</text>
+        <rect x="50" y="75" width="22" height="22" fill="#0ea5e9" stroke="#0c4a6e"/>
+        <text x="61" y="92" text-anchor="middle" fill="white" font-size="12" font-weight="700">x</text>
+        <g fill="#fbbf24" stroke="#92400e">
+          <rect x="78" y="85" width="10" height="10"/>
+          <rect x="89" y="85" width="10" height="10"/>
+          <rect x="78" y="73" width="10" height="10"/>
+          <rect x="89" y="73" width="10" height="10"/>
+          <rect x="83" y="61" width="10" height="10"/>
+        </g>
+        <line x1="340" y1="55" x2="340" y2="100" stroke="#94a3b8" stroke-width="2"/>
+        <line x1="300" y1="100" x2="380" y2="100" stroke="#94a3b8" stroke-width="2"/>
+        <g fill="#fbbf24" stroke="#92400e">
+          <rect x="305" y="85" width="10" height="10"/>
+          <rect x="316" y="85" width="10" height="10"/>
+          <rect x="327" y="85" width="10" height="10"/>
+          <rect x="338" y="85" width="10" height="10"/>
+          <rect x="349" y="85" width="10" height="10"/>
+          <rect x="360" y="85" width="10" height="10"/>
+          <rect x="305" y="73" width="10" height="10"/>
+          <rect x="316" y="73" width="10" height="10"/>
+          <rect x="327" y="73" width="10" height="10"/>
+          <rect x="338" y="73" width="10" height="10"/>
+          <rect x="349" y="73" width="10" height="10"/>
+          <rect x="318" y="61" width="10" height="10"/>
+          <rect x="335" y="61" width="10" height="10"/>
+        </g>
+        <text x="60" y="135" text-anchor="middle" fill="#cbd5e1" font-size="14" font-weight="600">2x + 5</text>
+        <text x="200" y="135" text-anchor="middle" fill="#fbbf24" font-size="20" font-weight="800">=</text>
+        <text x="340" y="135" text-anchor="middle" fill="#cbd5e1" font-size="14" font-weight="600">13</text>
+      </svg>
+      <div class="move">
+        <b>Teacher move</b>
+        <p>"If I take 5 cubes off this side, what must I take off the other side to keep it balanced?" Students discover the subtraction property of equality by physical reasoning, not by memorization.</p>
+      </div>
+      <div class="move">
+        <b>Self-learner move</b>
+        <p>Use a Desmos balance applet, or draw the picture before any symbolic step. Repeat for the first five equations — then fade the picture as the symbol takes over.</p>
+      </div>
+    </div>
+
+    <!-- P -->
+    <div class="step" data-l="P">
+      <div class="step-head">
+        <div class="step-badge">P</div>
+        <div>
+          <h3>Probe it — wrestle before being told</h3>
+          <span class="meta">Productive struggle · Inquiry · Discourse</span>
+        </div>
+      </div>
+      <p>
+        Now show <strong>2x + 5 = 13</strong> with no method. "Find x.
+        Try anything." Some students will guess and check; some will
+        subtract first; some will draw the scale.
+        <em>Let the strategies surface before you teach a method.</em>
+      </p>
+      <div class="move">
+        <b>Discourse prompt</b>
+        <p>"Sara got x = 4 by guessing. Marcus got x = 4 by subtracting 5 first. Which method always works? When does each one break down?"</p>
+      </div>
+      <div class="move">
+        <b>Compare-and-contrast task</b>
+        <p>Side by side: 2x + 5 = 13 vs. 2(x + 5) = 13. Same? Different? Why? What does this teach about structure?</p>
+      </div>
+      <div class="move">
+        <b>Expected struggle</b>
+        <p>Some students will subtract 2 first ("undo the coefficient before the constant"). Don't correct yet — let the class find the contradiction. The error is the lesson.</p>
+      </div>
+    </div>
+
+    <!-- A -->
+    <div class="step" data-l="A">
+      <div class="step-head">
+        <div class="step-badge">A</div>
+        <div>
+          <h3>Anchor it — build a stable schema</h3>
+          <span class="meta">Schema · Worked examples · Cognitive load</span>
+        </div>
+      </div>
+      <p>
+        Now formalize. Co-construct the rule:
+        <em>"To solve, isolate the variable by undoing operations in
+        reverse order, applying the same operation to both sides."</em>
+        Pair a worked example with self-explanation prompts.
+      </p>
+      <span class="formula">2x + 5 = 13   →   2x + 5 − 5 = 13 − 5   →   2x = 8</span>
+      <span class="formula">2x = 8   →   2x ÷ 2 = 8 ÷ 2   →   x = 4</span>
+      <span class="formula">Check:  2(4) + 5 = 13  ✓</span>
+      <div class="move">
+        <b>Self-explanation prompts</b>
+        <p>"Why subtract 5 first?" · "Why divide by 2 second?" · "What does the check confirm?" Students answering these in writing learn three to four times more than students who only watch the steps.</p>
+      </div>
+      <div class="move">
+        <b>Concept map</b>
+        <p>Equation 2x + 5 = 13 ↔ table of values for y = 2x + 5 ↔ graph of y = 2x + 5 crossing y = 13 ↔ a word problem ("a taxi charges $5 plus $2/mile — how many miles for $13?"). All four are the same idea in different clothes.</p>
+      </div>
+      <div class="move">
+        <b>Vocabulary anchor</b>
+        <p>Equation · Expression · Variable · Coefficient · Constant · Term · Solution. Each named with non-examples ("2x + 5 alone is an expression, not an equation").</p>
+      </div>
+    </div>
+
+    <!-- R -->
+    <div class="step" data-l="R">
+      <div class="step-head">
+        <div class="step-badge">R</div>
+        <div>
+          <h3>Rehearse it — retrieve, space, interleave</h3>
+          <span class="meta">Retrieval · Spacing · Interleaving</span>
+        </div>
+      </div>
+      <p>
+        Practice now becomes a careful design problem, not a worksheet
+        dump. The science of memory tells us how.
+      </p>
+      <div class="move">
+        <b>Same-day retrieval</b>
+        <p>Three minutes at end of class — solve 3x − 4 = 11 from memory of today's reasoning, not from copying steps.</p>
+      </div>
+      <div class="move">
+        <b>Variation theory set</b>
+        <p>2x + 5 = 13 · 2x − 5 = 13 · −2x + 5 = 13 · 2x + 5 = −13 · ½x + 5 = 13. Each problem changes one feature, so the structure stays visible.</p>
+      </div>
+      <div class="move">
+        <b>Interleaved homework</b>
+        <p>Mix today's problems with yesterday's (combining like terms) and last week's (order of operations). Mixing forces real discrimination, not pattern-matching.</p>
+      </div>
+      <div class="move">
+        <b>Spaced return</b>
+        <p>This concept reappears in week 3 (paired with inequalities), week 6 (paired with systems), week 10 (paired with quadratic factoring). Never one-and-done.</p>
+      </div>
+    </div>
+
+    <!-- K -->
+    <div class="step" data-l="K">
+      <div class="step-head">
+        <div class="step-badge">K</div>
+        <div>
+          <h3>Kindle it — protect motivation, grow identity</h3>
+          <span class="meta">Motivation · Identity · Fascination</span>
+        </div>
+      </div>
+      <p>
+        Even a perfectly engineered lesson dies without the affective
+        layer. SPARK explicitly builds love and belonging into the
+        topic — as a phase, not a bonus.
+      </p>
+      <div class="move">
+        <b>Real question</b>
+        <p>"Phone plan A: $5 fee + $2/month. Plan B: $8 fee + $1/month. When are they equal? Solve 5 + 2x = 8 + x." Now the algebra is doing real work for the learner.</p>
+      </div>
+      <div class="move">
+        <b>Story / identity</b>
+        <p>The word <em>algebra</em> comes from al-Khwarizmi's 9th-century book <em>Al-jabr</em> — Arabic for "the reunion of broken parts." Every time you isolate x, you are doing what Baghdad mathematicians invented 1,200 years ago.</p>
+      </div>
+      <div class="move">
+        <b>Growth-mindset feedback</b>
+        <p>"That confusion you felt at step 2 is your brain literally building new structure. Confusion is the work, not the failure."</p>
+      </div>
+      <div class="move">
+        <b>Belonging</b>
+        <p>"We're going to share three different correct solutions today — yours, Maya's, and Devon's — because mathematicians always look for multiple paths to the same truth."</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <b>The takeaway.</b> SPARK isn't a script — it's a checklist of
+      teaching jobs. When all five phases get their share of the
+      week, the conceptual cliffs flatten into steps. When one is
+      missing, the cliff returns.
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section class="sec" id="videos">
+    <div class="sec-label">04 · From the Channel</div>
+    <h2 class="sec-title">Latest from the Math Topics YouTube Channel</h2>
+    <p>
+      A few hand-picked videos that pair well with this week's
+      theme. The first three connect directly to SPARK's emphasis on
+      conceptual understanding over procedure; the rest are recent
+      additions worth a watch.
+    </p>
+
+    <div class="video-grid">
+      <a class="video-card" href="https://www.youtube.com/watch?v=NxcjA9GsjDU" target="_blank" rel="noopener">
+        <img src="https://img.youtube.com/vi/NxcjA9GsjDU/hqdefault.jpg" alt="Claude AI Solves Your Biggest Math Teaching Problem" loading="lazy"/>
+        <div class="vmeta">
+          <h4>Claude AI Solves Your Biggest Math Teaching Problem</h4>
+          <p>How an AI assistant handles the lesson-planning bottleneck most teachers run into.</p>
+        </div>
+      </a>
+      <a class="video-card" href="https://www.youtube.com/watch?v=k9W5O6W9qgg" target="_blank" rel="noopener">
+        <img src="https://img.youtube.com/vi/k9W5O6W9qgg/hqdefault.jpg" alt="Why You Aren't 'Bad at Math' (And How to Fix It)" loading="lazy"/>
+        <div class="vmeta">
+          <h4>Why You Aren't "Bad at Math" (And How to Fix It)</h4>
+          <p>The myth of the "math person" — and the actual cognitive moves that close the gap.</p>
+        </div>
+      </a>
+      <a class="video-card" href="https://www.youtube.com/watch?v=uw3GrGcXpSM" target="_blank" rel="noopener">
+        <img src="https://img.youtube.com/vi/uw3GrGcXpSM/hqdefault.jpg" alt="Claude AI Just Changed How Teachers Build Presentations" loading="lazy"/>
+        <div class="vmeta">
+          <h4>Claude AI Just Changed How Teachers Build Presentations</h4>
+          <p>A fast, classroom-ready workflow for slide decks built with an AI co-pilot.</p>
+        </div>
+      </a>
+      <a class="video-card" href="https://www.youtube.com/watch?v=GN8yc_lZZCs" target="_blank" rel="noopener">
+        <img src="https://img.youtube.com/vi/GN8yc_lZZCs/hqdefault.jpg" alt="The Ultimate 16-Week Calculus Framework for Academic Success" loading="lazy"/>
+        <div class="vmeta">
+          <h4>The Ultimate 16-Week Calculus Framework for Academic Success</h4>
+          <p>A complete semester roadmap — week by week — for students serious about Calculus.</p>
+        </div>
+      </a>
+      <a class="video-card" href="https://www.youtube.com/watch?v=FLQRUXKj6JY" target="_blank" rel="noopener">
+        <img src="https://img.youtube.com/vi/FLQRUXKj6JY/hqdefault.jpg" alt="This Is Why You Struggle With Derivatives (The Real Reason)" loading="lazy"/>
+        <div class="vmeta">
+          <h4>This Is Why You Struggle With Derivatives</h4>
+          <p>The conceptual gap behind almost every "I just don't get derivatives" moment — and how to close it.</p>
+        </div>
+      </a>
+      <a class="video-card" href="https://www.youtube.com/watch?v=NA_Rz-N-JWU" target="_blank" rel="noopener">
+        <img src="https://img.youtube.com/vi/NA_Rz-N-JWU/hqdefault.jpg" alt="AP Calculus Limits — The Mistake Most Students Make" loading="lazy"/>
+        <div class="vmeta">
+          <h4>AP Calculus Limits — The Mistake Most Students Make</h4>
+          <p>The single most common conceptual error around limits, named and fixed.</p>
+        </div>
+      </a>
+    </div>
+
+    <div class="callout">
+      <b>Subscribe.</b> New videos drop every week. If a topic on your
+      list isn't there yet, reply and tell me — I read every email,
+      and reader requests shape the next month's plan.
+    </div>
+  </section>
+
+  <!-- 05 -->
+  <section class="sec" id="science">
+    <div class="sec-label">05 · Science News</div>
+    <h2 class="sec-title">Headlines Worth a Classroom Minute</h2>
+    <p>
+      A few short items from this week's science news — each worth
+      five minutes of class time, and each ties cleanly back to
+      mathematics.
+    </p>
+
+    <div class="two-col">
+      <div class="card">
+        <h3>🤖 AI Hits a New Bar on Mathematical Olympiad Problems</h3>
+        <p>
+          Researchers reported another step forward in machine
+          mathematical reasoning this week, with a system solving a
+          larger share of olympiad-level geometry and number-theory
+          problems than any previous result. The interesting wrinkle
+          for teachers: the system writes formal proofs, not just
+          answers — a useful talking point about what
+          "understanding" really means in math.
+        </p>
+      </div>
+      <div class="card">
+        <h3>🔭 Webb Telescope Pushes the Earliest-Galaxies Record Again</h3>
+        <p>
+          A new James Webb Space Telescope observation set extended
+          the catalog of confirmed galaxies in the universe's first
+          400 million years. The math angle: redshift, exponential
+          growth in light-travel time, and the difference between
+          "seeing" and "measuring" — all classroom-ready.
+        </p>
+      </div>
+      <div class="card">
+        <h3>⚛️ Quantum Error-Correction Crosses Another Threshold</h3>
+        <p>
+          A research team reported quantum logical qubits that stay
+          coherent longer than the underlying physical qubits — the
+          long-standing milestone for "useful" quantum computers. The
+          underlying math (linear algebra, stabilizer codes) is exactly
+          the algebra strand we cover in years 2 and 3.
+        </p>
+      </div>
+      <div class="card">
+        <h3>🌡️ Spring Heat Records Continue Across Northern Hemisphere</h3>
+        <p>
+          Temperature anomalies for April are again ranking among the
+          warmest on record across multiple continents. A natural
+          opening for a quick statistics conversation — what an
+          "anomaly" is, why we use averages over baselines, and how
+          we read uncertainty bands on a chart.
+        </p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <b>Why this section exists.</b> Five minutes of science news at
+      the start of class isn't a distraction from the math — it's the
+      "why bother" phase of SPARK in disguise. The world is the best
+      argument we have for caring about the symbols.
+    </div>
+  </section>
+
+  <!-- Nav -->
+  <div class="nav-issues">
+    <a class="ni-disabled">
+      <div class="ni-dir">Next issue</div>
+      <div class="ni-title">— (newest)</div>
+    </a>
+    <a href="newsletter-week3-april20.html">
+      <div class="ni-dir">Previous issue →</div>
+      <div class="ni-title">Week of April 20, 2026</div>
+    </a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>Math Topics Newsletter · Published weekly by Dr. Carlos Marrero · <a href="newsletters.html">All issues</a></p>
+</footer>
+
+</body>
+</html>
