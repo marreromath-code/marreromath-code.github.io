@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Operations with Integers</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body, {delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+
+<style>
+:root {
+  --paper: #faf6ef;
+  --paper-deep: #f1ebe0;
+  --ink: #2a2620;
+  --ink-soft: #5b5347;
+  --green: #1f4d33;
+  --green-soft: #3a6b4f;
+  --burgundy: #8b3a3a;
+  --burgundy-soft: #a85555;
+  --gold: #b58c3a;
+  --line: #d8cfbe;
+  --grid: #e8e0cf;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--paper);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 28px 28px;
+  background-position: -1px -1px;
+  color: var(--ink);
+  line-height: 1.65;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+}
+
+.wrap {
+  max-width: 980px;
+  margin: 0 auto;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(42, 38, 32, 0.06);
+  overflow: hidden;
+}
+
+header {
+  padding: 2.5rem 2.5rem 2rem;
+  border-bottom: 1px solid var(--line);
+  background: linear-gradient(180deg, var(--paper-deep) 0%, var(--paper) 100%);
+}
+
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--burgundy);
+  margin-bottom: 0.6rem;
+}
+
+h1 {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  color: var(--green);
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+
+.subtitle {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--ink-soft);
+  font-size: 1.05rem;
+  margin-top: 0.5rem;
+}
+
+/* TABS */
+nav.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  padding: 0 2.5rem;
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.tab-btn {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 1rem 1.1rem;
+  cursor: pointer;
+  color: var(--ink-soft);
+  transition: all 0.2s ease;
+  letter-spacing: 0.01em;
+}
+
+.tab-btn:hover { color: var(--green); }
+
+.tab-btn.active {
+  color: var(--green);
+  border-bottom-color: var(--burgundy);
+  font-weight: 600;
+}
+
+.tab-btn .num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--burgundy);
+  margin-right: 0.4rem;
+}
+
+/* SECTIONS */
+section.tab-content {
+  display: none;
+  padding: 2.5rem;
+}
+
+section.tab-content.active { display: block; }
+
+h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 1.7rem;
+  color: var(--green);
+  margin-bottom: 1rem;
+  letter-spacing: -0.005em;
+}
+
+h3 {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: var(--ink);
+  margin: 1.6rem 0 0.7rem;
+}
+
+p { margin-bottom: 1rem; color: var(--ink); }
+
+.lead {
+  font-family: 'Fraunces', serif;
+  font-size: 1.15rem;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin-bottom: 1.5rem;
+  border-left: 3px solid var(--burgundy);
+  padding-left: 1rem;
+}
+
+.rule-card {
+  background: var(--paper-deep);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--green);
+  border-radius: 8px;
+  padding: 1.2rem 1.4rem;
+  margin: 1.2rem 0;
+}
+
+.rule-card .rule-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 0.4rem;
+}
+
+.rule-card.warn { border-left-color: var(--burgundy); }
+.rule-card.warn .rule-label { color: var(--burgundy); }
+
+.rule-card.gold { border-left-color: var(--gold); }
+.rule-card.gold .rule-label { color: var(--gold); }
+
+/* WORKED EXAMPLE */
+.example {
+  background: #fffdf7;
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+  padding: 1.2rem 1.4rem;
+  margin: 1.2rem 0;
+}
+
+.example-title {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  color: var(--burgundy);
+  margin-bottom: 0.6rem;
+  font-size: 1rem;
+}
+
+.example .step {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.95rem;
+  margin: 0.3rem 0;
+  color: var(--ink);
+}
+
+/* SIGN TABLE */
+.sign-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.95rem;
+}
+
+.sign-table th {
+  background: var(--green);
+  color: var(--paper);
+  padding: 0.7rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.sign-table td {
+  border: 1px solid var(--line);
+  padding: 0.7rem;
+  text-align: center;
+  background: #fffdf7;
+}
+
+.sign-table .pos { color: var(--green); font-weight: 600; }
+.sign-table .neg { color: var(--burgundy); font-weight: 600; }
+
+/* PRACTICE PROBLEMS */
+.practice {
+  margin: 1.5rem 0;
+}
+
+.problem {
+  background: #fffdf7;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  margin: 0.8rem 0;
+}
+
+.problem-q {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1rem;
+  margin-bottom: 0.6rem;
+}
+
+.problem-q .label {
+  font-family: 'Inter', sans-serif;
+  color: var(--burgundy);
+  font-weight: 600;
+  margin-right: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.reveal-btn {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  background: var(--burgundy);
+  color: var(--paper);
+  border: none;
+  padding: 0.4rem 0.9rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.reveal-btn:hover { background: var(--burgundy-soft); }
+
+.answer {
+  display: none;
+  margin-top: 0.8rem;
+  padding-top: 0.8rem;
+  border-top: 1px dashed var(--line);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.95rem;
+  color: var(--green);
+}
+
+.answer.show { display: block; }
+
+.answer .a-label {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  color: var(--green);
+  margin-right: 0.4rem;
+  font-size: 0.85rem;
+}
+
+/* NUMBER LINE SVG */
+.number-line {
+  margin: 1.5rem 0;
+  text-align: center;
+}
+
+.number-line svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* QUIZ */
+.quiz-question {
+  background: #fffdf7;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 1.2rem 1.4rem;
+  margin: 1rem 0;
+}
+
+.quiz-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--burgundy);
+  letter-spacing: 0.1em;
+  margin-bottom: 0.4rem;
+}
+
+.quiz-prompt {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.05rem;
+  margin-bottom: 0.9rem;
+  font-weight: 500;
+}
+
+.quiz-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.6rem;
+}
+
+.quiz-option {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.95rem;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  padding: 0.7rem;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s ease;
+  color: var(--ink);
+}
+
+.quiz-option:hover {
+  border-color: var(--green);
+  background: var(--paper-deep);
+}
+
+.quiz-option.correct {
+  background: #e6efe6;
+  border-color: var(--green);
+  color: var(--green);
+  font-weight: 600;
+}
+
+.quiz-option.wrong {
+  background: #f3e3e3;
+  border-color: var(--burgundy);
+  color: var(--burgundy);
+  font-weight: 600;
+}
+
+.quiz-feedback {
+  display: none;
+  margin-top: 0.9rem;
+  padding: 0.8rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.quiz-feedback.show { display: block; }
+
+.quiz-feedback.right {
+  background: #e6efe6;
+  border-left: 3px solid var(--green);
+  color: var(--green);
+}
+
+.quiz-feedback.wrong-fb {
+  background: #f3e3e3;
+  border-left: 3px solid var(--burgundy);
+  color: var(--burgundy);
+}
+
+.score-display {
+  background: linear-gradient(135deg, var(--green) 0%, var(--green-soft) 100%);
+  color: var(--paper);
+  padding: 1.5rem 2rem;
+  border-radius: 10px;
+  text-align: center;
+  margin: 2rem 0;
+  font-family: 'Fraunces', serif;
+}
+
+.score-display .score-num {
+  font-size: 2.5rem;
+  font-weight: 700;
+  display: block;
+  margin: 0.4rem 0;
+}
+
+.score-display .score-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+footer {
+  padding: 1.5rem 2.5rem;
+  border-top: 1px solid var(--line);
+  background: var(--paper-deep);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+  text-align: center;
+  letter-spacing: 0.05em;
+}
+
+@media (max-width: 640px) {
+  body { padding: 1rem 0.5rem; }
+  header { padding: 1.8rem 1.4rem 1.4rem; }
+  nav.tabs { padding: 0 1rem; }
+  .tab-btn { padding: 0.8rem 0.7rem; font-size: 0.78rem; }
+  section.tab-content { padding: 1.5rem 1.4rem; }
+  footer { padding: 1.2rem 1.4rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">Algebra I · Foundations</div>
+  <h1>Operations with Integers</h1>
+  <div class="subtitle">Adding, subtracting, multiplying, and dividing positive and negative whole numbers.</div>
+</header>
+
+<nav class="tabs">
+  <button class="tab-btn active" data-tab="intro"><span class="num">01</span>Intro</button>
+  <button class="tab-btn" data-tab="add"><span class="num">02</span>Adding</button>
+  <button class="tab-btn" data-tab="subtract"><span class="num">03</span>Subtracting</button>
+  <button class="tab-btn" data-tab="multiply"><span class="num">04</span>Multiplying</button>
+  <button class="tab-btn" data-tab="divide"><span class="num">05</span>Dividing</button>
+  <button class="tab-btn" data-tab="quiz"><span class="num">06</span>Quiz</button>
+</nav>
+
+<!-- INTRO -->
+<section class="tab-content active" id="intro">
+  <h2>What is an integer?</h2>
+  <p class="lead">Integers are the whole numbers and their opposites — no fractions, no decimals — including zero.</p>
+
+  <p>The set of integers is written as:</p>
+  <p style="text-align:center; font-size:1.1rem;">$$\{ \ldots, -3, -2, -1, 0, 1, 2, 3, \ldots \}$$</p>
+
+  <h3>The number line</h3>
+  <p>Every integer has a place on the number line. Numbers to the <strong>right</strong> of zero are positive. Numbers to the <strong>left</strong> of zero are negative.</p>
+
+  <div class="number-line">
+    <svg viewBox="0 0 600 100" xmlns="http://www.w3.org/2000/svg">
+      <line x1="20" y1="50" x2="580" y2="50" stroke="#2a2620" stroke-width="2"/>
+      <polygon points="580,50 570,45 570,55" fill="#2a2620"/>
+      <polygon points="20,50 30,45 30,55" fill="#2a2620"/>
+      <g font-family="JetBrains Mono" font-size="14" text-anchor="middle">
+        <line x1="80" y1="45" x2="80" y2="55" stroke="#8b3a3a" stroke-width="2"/>
+        <text x="80" y="78" fill="#8b3a3a">-5</text>
+        <line x1="130" y1="45" x2="130" y2="55" stroke="#8b3a3a" stroke-width="2"/>
+        <text x="130" y="78" fill="#8b3a3a">-4</text>
+        <line x1="180" y1="45" x2="180" y2="55" stroke="#8b3a3a" stroke-width="2"/>
+        <text x="180" y="78" fill="#8b3a3a">-3</text>
+        <line x1="230" y1="45" x2="230" y2="55" stroke="#8b3a3a" stroke-width="2"/>
+        <text x="230" y="78" fill="#8b3a3a">-2</text>
+        <line x1="280" y1="45" x2="280" y2="55" stroke="#8b3a3a" stroke-width="2"/>
+        <text x="280" y="78" fill="#8b3a3a">-1</text>
+        <line x1="330" y1="40" x2="330" y2="60" stroke="#2a2620" stroke-width="3"/>
+        <text x="330" y="78" fill="#2a2620" font-weight="600">0</text>
+        <line x1="380" y1="45" x2="380" y2="55" stroke="#1f4d33" stroke-width="2"/>
+        <text x="380" y="78" fill="#1f4d33">1</text>
+        <line x1="430" y1="45" x2="430" y2="55" stroke="#1f4d33" stroke-width="2"/>
+        <text x="430" y="78" fill="#1f4d33">2</text>
+        <line x1="480" y1="45" x2="480" y2="55" stroke="#1f4d33" stroke-width="2"/>
+        <text x="480" y="78" fill="#1f4d33">3</text>
+        <line x1="530" y1="45" x2="530" y2="55" stroke="#1f4d33" stroke-width="2"/>
+        <text x="530" y="78" fill="#1f4d33">4</text>
+      </g>
+      <text x="180" y="20" font-family="Inter" font-size="12" fill="#8b3a3a" font-weight="600">NEGATIVE</text>
+      <text x="480" y="20" font-family="Inter" font-size="12" fill="#1f4d33" font-weight="600">POSITIVE</text>
+    </svg>
+  </div>
+
+  <div class="rule-card gold">
+    <div class="rule-label">Key idea — Opposites</div>
+    Two integers are <strong>opposites</strong> if they are the same distance from zero but on different sides. For example, $-7$ and $7$ are opposites. The opposite of $0$ is $0$.
+  </div>
+
+  <h3>Absolute value</h3>
+  <p>The <strong>absolute value</strong> of an integer is its distance from zero, regardless of direction. It is always positive (or zero).</p>
+  <p style="text-align:center;">$$|{-5}| = 5 \qquad |3| = 3 \qquad |0| = 0$$</p>
+
+  <p style="margin-top:2rem; color: var(--ink-soft); font-style: italic;">Use the tabs above to move through each operation. Each section ends with practice problems.</p>
+</section>
+
+<!-- ADDING -->
+<section class="tab-content" id="add">
+  <h2>Adding Integers</h2>
+  <p class="lead">When you add integers, the signs tell you what to do. There are only two cases.</p>
+
+  <div class="rule-card">
+    <div class="rule-label">Rule 1 — Same signs</div>
+    If both numbers have the <strong>same sign</strong>, add their absolute values and keep the sign.
+  </div>
+
+  <div class="example">
+    <div class="example-title">Example 1 — Both positive</div>
+    <div class="step">$\;\;5 + 3 = 8$</div>
+    <div class="step" style="color: var(--ink-soft);">Both positive → answer is positive.</div>
+  </div>
+
+  <div class="example">
+    <div class="example-title">Example 2 — Both negative</div>
+    <div class="step">$\;\;(-7) + (-4) = -11$</div>
+    <div class="step" style="color: var(--ink-soft);">Add 7 + 4 = 11. Both negative → answer is negative.</div>
+  </div>
+
+  <div class="rule-card warn">
+    <div class="rule-label">Rule 2 — Different signs</div>
+    If the numbers have <strong>different signs</strong>, subtract the smaller absolute value from the larger one. Keep the sign of the number with the larger absolute value.
+  </div>
+
+  <div class="example">
+    <div class="example-title">Example 3 — Different signs</div>
+    <div class="step">$\;\;(-9) + 4 = -5$</div>
+    <div class="step" style="color: var(--ink-soft);">$|-9| = 9$, $|4| = 4$. Subtract: $9 - 4 = 5$. The $9$ is bigger, and it was negative, so the answer is negative.</div>
+  </div>
+
+  <div class="example">
+    <div class="example-title">Example 4 — Different signs</div>
+    <div class="step">$\;\;12 + (-5) = 7$</div>
+    <div class="step" style="color: var(--ink-soft);">$|12| = 12$, $|-5| = 5$. Subtract: $12 - 5 = 7$. The $12$ is bigger and positive, so the answer is positive.</div>
+  </div>
+
+  <h3>Practice</h3>
+  <div class="practice">
+    <div class="problem">
+      <div class="problem-q"><span class="label">1.</span>$(-8) + (-6) = \;?$</div>
+      <button class="reveal-btn" onclick="toggleAnswer(this)">Show answer</button>
+      <div class="answer"><span class="a-label">Answer:</span>$-14$ &nbsp;(same signs → add 8 + 6, keep negative)</div>
+    </div>
+    <div class="problem">
+      <div class="problem-q"><span class="label">2.</span>$15 + (-9) = \;?$</div>
+      <button class="reveal-btn" onclick="toggleAnswer(this)">Show answer</button>
+      <div class="answer"><span class="a-label">Answer:</span>$6$ &nbsp;(different signs → 15 − 9, 15 is bigger and positive)</div>
+    </div>
+    <div class="problem">
+      <div class="problem-q"><span class="label">3.</span>$(-3) + 11 = \;?$</div>
+      <button class="reveal-btn" onclick="toggleAnswer(this)">Show answer</button>
+      <div class="answer"><span class="a-label">Answer:</span>$8$ &nbsp;(different signs → 11 − 3, 11 is bigger and positive)</div>
+    </div>
+    <div class="problem">
+      <div class="problem-q"><span class="label">4.</span>$(-20) + 7 = \;?$</div>
+      <button class="reveal-btn" onclick="toggleAnswer(this)">Show answer</button>
+      <div class="answer"><span class="a-label">Answer:</span>$-13$ &nbsp;(different signs → 20 − 7, 20 is bigger and negative)</div>
+    </div>
+  </div>
+</section>
+
+<!-- SUBTRACTING -->
+<section class="tab-content" id="subtract">
+  <h2>Subtracting Integers</h2>
+  <p class="lead">There is only one rule for subtraction — and it turns every subtraction into an addition you already know how to do.</p>
+
+  <div class="rule-card warn">
+    <div class="rule-label">The Golden Rule — Add the opposite</div>
+    To subtract an integer, <strong>add its opposite</strong>. Change the subtraction to addition, and change the sign of the second number.
+  </div>
+
+  <p style="text-align:center; font-size:1.15rem; margin: 1.5rem 0;">$$a - b \;=\; a + (-b)$$</p>
+
+  <div class="example">
+    <div class="example-title">Example 1</div>
+    <div class="step">$\;\;7 - 10$</div>
+    <div class="step">$=\; 7 + (-10)$ &nbsp;<span style="color: var(--ink-soft);">(add the opposite)</span></div>
+    <div class="step">$=\; -3$ &nbsp;<span style="color: var(--ink-soft);">(different signs, 10 is bigger and negative)</span></div>
+  </div>
+
+  <div class="example">
+    <div class="example-title">Example 2 — Two negatives</div>
+    <div class="step">$\;\;(-5) - (-8)$</div>
+    <div class="step">$=\; (-5) + (+8)$ &nbsp;<span style="color: var(--ink-soft);">(opposite of $-8$ is $+8$)</span></div>
+    <div class="step">$=\; 3$</div>
+  </div>
+
+  <div class="example">
+    <div class="example-title">Example 3</div>
+    <div class="step">$\;\;(-4) - 6$</div>
+    <div class="step">$=\; (-4) + (-6)$ &nbsp;<span style="color: var(--ink-soft);">(opposite of $+6$ is $-6$)</span></div>
+    <div class="step">$=\; -10$</div>
+  </div>
+
+  <div class="rule-card gold">
+    <div class="rule-label">Quick check — Two negatives in a row</div>
+    A minus sign next to a negative number turns into a plus: $\;a - (-b) = a + b$.
+  </div>
+
+  <h3>Practice</h3>
+  <div class="practice">
+    <div class="problem">
+      <div class="problem-q"><span class="label">1.</span>$9 - 14 = \;?$</div>
+      <button class="reveal-btn" onclick="toggleAnswer(this)">Show answer</button>
+      <div class="answer"><span class="a-label">Answer:</span>$-5$ &nbsp;(rewrite as $9 + (-14)$)</div>
+    </div>
+    <div class="problem">
+      <div class="problem-q"><span class="label">2.</span>$(-6) - 5 = \;?$</div>
+      <button class="reveal-btn" onclick="toggleAnswer(this)">Show answer</button>
+      <div class="answer"><span class="a-label">Answer:</span>$-11$ &nbsp;(rewrite as $(-6) + (-5)$)</div>
+    </div>
+    <div class="problem">
+      <div class="problem-q"><span class="label">3.</span>$3 - (-7) = \;?$</div>
+      <button class="reveal-btn" onclick="toggleAnswer(this)">Show answer</button>
+      <div class="answer"><span class="a-label">Answer:</span>$10$ &nbsp;(rewrite as $3 + 7$)</div>
+    </div>
+    <div class="problem">
+      <div class="problem-q"><span class="label">4.</span>$(-12) - (-4) = \;?$</div>
+      <button class="reveal-btn" onclick="toggleAnswer(this)">Show answer</button>
+      <div class="answer"><span class="a-label">Answer:</span>$-8$ &nbsp;(rewrite as $(-12) + 4$)</div>
+    </div>
+  </div>
+</section>
+
+<!-- MULTIPLYING -->
+<section class="tab-content" id="multiply">
+  <h2>Multiplying Integers</h2>
+  <p class="lead">Multiplying integers is easy if you remember one short table of signs.</p>
+
+  <table class="sign-table">
+    <thead>
+      <tr><th>Sign 1</th><th>Sign 2</th><th>Product</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="pos">(+)</td><td class="pos">(+)</td><td class="pos">(+)</td></tr>
+      <tr><td class="neg">(−)</td><td class="neg">(−)</td><td class="pos">(+)</td></tr>
+      <tr><td class="pos">(+)</td><td class="neg">(−)</td><td class="neg">(−)</td></tr>
+      <tr><td class="neg">(−)</td><td class="pos">(+)</td><td class="neg">(−)</td></tr>
+    </tbody>
+  </table>
+
+  <div class="rule-card">
+    <div class="rule-label">In plain English</div>
+    <strong>Same signs → positive.</strong> &nbsp; <strong>Different signs → negative.</strong>
+  </div>
+
+  <div class="example">
+    <div class="example-title">Example 1</div>
+    <div class="step">$\;\;(-6) \times (-4) = 24$ &nbsp;<span style="color: var(--ink-soft);">(both negative → positive)</span></div>
+  </div>
+
+  <div class="example">
+    <div class="example-title">Example 2</div>
+    <div class="step">$\;\;7 \times (-3) = -21$ &nbsp;<span style="color: var(--ink-soft);">(different signs → negative)</span></div>
+  </div>
+
+  <div class="example">
+    <div class="example-title">Example 3 — Three or more factors</div>
+    <div class="step">$\;\;(-2) \times (-3) \times (-5)$</div>
+    <div class="step">$=\; 6 \times (-5)$ &nbsp;<span style="color: var(--ink-soft);">(first two: same signs → +)</span></div>
+    <div class="step">$=\; -30$ &nbsp;<span style="color: var(--ink-soft);">(different signs → −)</span></div>
+  </div>
+
+  <div class="rule-card gold">
+    <div class="rule-label">Shortcut for many factors</div>
+    Count the negative signs. An <strong>even</strong> number of negatives gives a <strong>positive</strong> answer. An <strong>odd</strong> number of negatives gives a <strong>negative</strong> answer.
+  </div>
+
+  <h3>Practice</h3>
+  <div class="practice">
+    <div class="problem">
+      <div class="problem-q"><span class="label">1.</span>$(-8) \times 5 = \;?$</div>
+      <button class="reveal-btn" onclick="toggleAnswer(this)">Show answer</button>
+      <div class="answer"><span class="a-label">Answer:</span>$-40$ &nbsp;(different signs → negative)</div>
+    </div>
+    <div class="problem">
+      <div class="problem-q"><span class="label">2.</span>$(-9) \times (-7) = \;?$</div>
+      <button class="reveal-btn" onclick="toggleAnswer(this)">Show answer</button>
+      <div class="answer"><span class="a-label">Answer:</span>$63$ &nbsp;(same signs → positive)</div>
+    </div>
+    <div class="problem">
+      <div class="problem-q"><span class="label">3.</span>$(-1) \times (-2) \times (-3) \times (-4) = \;?$</div>
+      <button class="reveal-btn" onclick="toggleAnswer(this)">Show answer</button>
+      <div class="answer"><span class="a-label">Answer:</span>$24$ &nbsp;(four negatives → even → positive)</div>
+    </div>
+    <div class="problem">
+      <div class="problem-q"><span class="label">4.</span>$6 \times (-2) \times 3 = \;?$</div>
+      <button class="reveal-btn" onclick="toggleAnswer(this)">Show answer</button>
+      <div class="answer"><span class="a-label">Answer:</span>$-36$ &nbsp;(one negative → odd → negative)</div>
+    </div>
+  </div>
+</section>
+
+<!-- DIVIDING -->
+<section class="tab-content" id="divide">
+  <h2>Dividing Integers</h2>
+  <p class="lead">Good news — division uses the exact same sign rules as multiplication.</p>
+
+  <table class="sign-table">
+    <thead>
+      <tr><th>Sign 1</th><th>Sign 2</th><th>Quotient</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="pos">(+)</td><td class="pos">(+)</td><td class="pos">(+)</td></tr>
+      <tr><td class="neg">(−)</td><td class="neg">(−)</td><td class="pos">(+)</td></tr>
+      <tr><td class="pos">(+)</td><td class="neg">(−)</td><td class="neg">(−)</td></tr>
+      <tr><td class="neg">(−)</td><td class="pos">(+)</td><td class="neg">(−)</td></tr>
+    </tbody>
+  </table>
+
+  <div class="rule-card">
+    <div class="rule-label">Same idea</div>
+    <strong>Same signs → positive.</strong> &nbsp; <strong>Different signs → negative.</strong>
+  </div>
+
+  <div class="example">
+    <div class="example-title">Example 1</div>
+    <div class="step">$\;\;(-36) \div 4 = -9$ &nbsp;<span style="color: var(--ink-soft);">(different signs → negative)</span></div>
+  </div>
+
+  <div class="example">
+    <div class="example-title">Example 2</div>
+    <div class="step">$\;\;(-72) \div (-9) = 8$ &nbsp;<span style="color: var(--ink-soft);">(both negative → positive)</span></div>
+  </div>
+
+  <div class="example">
+    <div class="example-title">Example 3</div>
+    <div class="step">$\;\;\dfrac{45}{-5} = -9$ &nbsp;<span style="color: var(--ink-soft);">(different signs → negative)</span></div>
+  </div>
+
+  <div class="rule-card warn">
+    <div class="rule-label">Watch out — Zero</div>
+    $0 \div n = 0$ for any nonzero integer $n$. But $n \div 0$ is <strong>undefined</strong> — you can never divide by zero.
+  </div>
+
+  <h3>Practice</h3>
+  <div class="practice">
+    <div class="problem">
+      <div class="problem-q"><span class="label">1.</span>$(-48) \div 6 = \;?$</div>
+      <button class="reveal-btn" onclick="toggleAnswer(this)">Show answer</button>
+      <div class="answer"><span class="a-label">Answer:</span>$-8$ &nbsp;(different signs → negative)</div>
+    </div>
+    <div class="problem">
+      <div class="problem-q"><span class="label">2.</span>$(-100) \div (-10) = \;?$</div>
+      <button class="reveal-btn" onclick="toggleAnswer(this)">Show answer</button>
+      <div class="answer"><span class="a-label">Answer:</span>$10$ &nbsp;(same signs → positive)</div>
+    </div>
+    <div class="problem">
+      <div class="problem-q"><span class="label">3.</span>$\dfrac{56}{-8} = \;?$</div>
+      <button class="reveal-btn" onclick="toggleAnswer(this)">Show answer</button>
+      <div class="answer"><span class="a-label">Answer:</span>$-7$ &nbsp;(different signs → negative)</div>
+    </div>
+    <div class="problem">
+      <div class="problem-q"><span class="label">4.</span>$0 \div (-15) = \;?$</div>
+      <button class="reveal-btn" onclick="toggleAnswer(this)">Show answer</button>
+      <div class="answer"><span class="a-label">Answer:</span>$0$ &nbsp;(zero divided by anything nonzero is zero)</div>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section class="tab-content" id="quiz">
+  <h2>Practice Quiz</h2>
+  <p class="lead">Ten questions covering all four operations. Click an answer to check it — you'll get instant feedback and an explanation.</p>
+
+  <div id="quiz-container"></div>
+
+  <div class="score-display" id="score-board" style="display:none;">
+    <div class="score-label">Your Score</div>
+    <span class="score-num" id="score-num">0 / 10</span>
+    <div id="score-message"></div>
+  </div>
+</section>
+
+<footer>
+  Marrero Math · Operations with Integers · Algebra I Foundations
+</footer>
+
+</div>
+
+<script>
+// TAB SWITCHING
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(s => s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  });
+});
+
+// REVEAL ANSWER
+function toggleAnswer(btn) {
+  const ans = btn.nextElementSibling;
+  ans.classList.toggle('show');
+  btn.textContent = ans.classList.contains('show') ? 'Hide answer' : 'Show answer';
+}
+
+// QUIZ DATA
+const quizQuestions = [
+  {
+    prompt: "(-12) + (-5) = ?",
+    options: ["-17", "-7", "7", "17"],
+    correct: 0,
+    explain: "Same signs (both negative): add 12 + 5 = 17, keep the negative sign."
+  },
+  {
+    prompt: "8 + (-13) = ?",
+    options: ["-21", "-5", "5", "21"],
+    correct: 1,
+    explain: "Different signs: 13 - 8 = 5. The 13 is bigger and negative, so the answer is -5."
+  },
+  {
+    prompt: "(-6) - 9 = ?",
+    options: ["-15", "-3", "3", "15"],
+    correct: 0,
+    explain: "Add the opposite: (-6) + (-9) = -15."
+  },
+  {
+    prompt: "4 - (-11) = ?",
+    options: ["-15", "-7", "7", "15"],
+    correct: 3,
+    explain: "Add the opposite: 4 + 11 = 15."
+  },
+  {
+    prompt: "(-7) × (-8) = ?",
+    options: ["-56", "-15", "15", "56"],
+    correct: 3,
+    explain: "Same signs (both negative) → positive. 7 × 8 = 56."
+  },
+  {
+    prompt: "9 × (-6) = ?",
+    options: ["-54", "-15", "15", "54"],
+    correct: 0,
+    explain: "Different signs → negative. 9 × 6 = 54, so the answer is -54."
+  },
+  {
+    prompt: "(-2) × (-3) × (-4) = ?",
+    options: ["-24", "-9", "9", "24"],
+    correct: 0,
+    explain: "Three negatives (odd) → negative. 2 × 3 × 4 = 24, so the answer is -24."
+  },
+  {
+    prompt: "(-72) ÷ 8 = ?",
+    options: ["-9", "-8", "8", "9"],
+    correct: 0,
+    explain: "Different signs → negative. 72 ÷ 8 = 9, so the answer is -9."
+  },
+  {
+    prompt: "(-90) ÷ (-9) = ?",
+    options: ["-10", "-9", "9", "10"],
+    correct: 3,
+    explain: "Same signs (both negative) → positive. 90 ÷ 9 = 10."
+  },
+  {
+    prompt: "(-3) - (-7) + (-4) = ?",
+    options: ["-14", "-6", "0", "6"],
+    correct: 2,
+    explain: "Step 1: (-3) - (-7) = -3 + 7 = 4. Step 2: 4 + (-4) = 0."
+  }
+];
+
+const quizContainer = document.getElementById('quiz-container');
+const userAnswers = new Array(quizQuestions.length).fill(null);
+
+quizQuestions.forEach((q, i) => {
+  const div = document.createElement('div');
+  div.className = 'quiz-question';
+  div.innerHTML = `
+    <div class="quiz-num">QUESTION ${String(i+1).padStart(2,'0')} OF 10</div>
+    <div class="quiz-prompt">${q.prompt}</div>
+    <div class="quiz-options">
+      ${q.options.map((opt, j) => `<button class="quiz-option" data-q="${i}" data-opt="${j}">${opt}</button>`).join('')}
+    </div>
+    <div class="quiz-feedback" id="fb-${i}"></div>
+  `;
+  quizContainer.appendChild(div);
+});
+
+document.querySelectorAll('.quiz-option').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const qIdx = parseInt(btn.dataset.q);
+    const optIdx = parseInt(btn.dataset.opt);
+    if (userAnswers[qIdx] !== null) return; // already answered
+
+    const q = quizQuestions[qIdx];
+    const isCorrect = optIdx === q.correct;
+    userAnswers[qIdx] = isCorrect;
+
+    // Mark options
+    const allOpts = document.querySelectorAll(`.quiz-option[data-q="${qIdx}"]`);
+    allOpts.forEach((b, idx) => {
+      b.style.cursor = 'default';
+      if (idx === q.correct) b.classList.add('correct');
+      else if (idx === optIdx) b.classList.add('wrong');
+    });
+
+    // Show feedback
+    const fb = document.getElementById(`fb-${qIdx}`);
+    fb.classList.add('show');
+    if (isCorrect) {
+      fb.classList.add('right');
+      fb.innerHTML = `<strong>Correct!</strong> ${q.explain}`;
+    } else {
+      fb.classList.add('wrong-fb');
+      fb.innerHTML = `<strong>Not quite.</strong> ${q.explain}`;
+    }
+
+    // Check if all answered
+    if (userAnswers.every(a => a !== null)) {
+      const score = userAnswers.filter(a => a === true).length;
+      document.getElementById('score-num').textContent = `${score} / 10`;
+      const msgEl = document.getElementById('score-message');
+      if (score === 10) msgEl.textContent = "Perfect — you've mastered integer operations.";
+      else if (score >= 8) msgEl.textContent = "Excellent work. Review any missed problems.";
+      else if (score >= 6) msgEl.textContent = "Solid effort. Revisit the rules and try again.";
+      else msgEl.textContent = "Go back through the lessons and practice more — you've got this.";
+      document.getElementById('score-board').style.display = 'block';
+      document.getElementById('score-board').scrollIntoView({behavior: 'smooth', block: 'center'});
+    }
+  });
+});
+</script>
+
+</body>
+</html>
