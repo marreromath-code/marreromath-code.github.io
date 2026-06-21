@@ -357,6 +357,7 @@
       .nav-links a.nav-shop { text-align:center; }
       .nav-toggle { display:block; }
     }
+    @media (max-width: 768px) { .sat-banner { grid-template-columns: 1fr !important; } .sat-banner .sat-aside { display:none; } }
     @media (max-width: 480px) { .footer-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
@@ -377,7 +378,7 @@
         <li><a href="resources.html">Resources</a></li>
         <li><a href="labs.html">Labs</a></li>
         <li><a href="newsletters.html" target="_blank" rel="noopener">Newsletter</a></li>
-        <li><a href="#store" class="nav-shop">🛒 Lessons</a></li>
+        <li><a href="https://marreromathsat.com" target="_blank" rel="noopener" class="nav-shop">🎯 SAT Math App</a></li>
       </ul>
     </div>
   </nav>
@@ -444,6 +445,29 @@
       <h2 class="section-title reveal">Interactive Lessons Shop</h2>
       <div class="section-divider reveal"></div>
       <p class="section-sub reveal">Two ways to learn: premium self-grading <strong>interactive lessons</strong> you open in any browser, and print-ready <strong>workbooks &amp; bundles</strong> on Teachers Pay Teachers.</p>
+
+      <!-- ── SAT Math App feature banner ── -->
+      <div class="reveal sat-banner" style="display:grid; grid-template-columns:1.6fr 1fr; gap:2rem; align-items:center; background:radial-gradient(900px 360px at 90% -20%, rgba(240,208,96,.16), transparent 60%), linear-gradient(135deg, var(--navy-deep), var(--navy-soft)); border-radius:var(--radius); padding:2.4rem; margin-bottom:2.8rem; box-shadow:var(--shadow-md);">
+        <div>
+          <span style="display:inline-block; background:rgba(240,208,96,.16); color:var(--gold-light); border:1px solid rgba(240,208,96,.4); font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; padding:.35rem 1rem; border-radius:100px; margin-bottom:1rem;">★ New · Subscription App</span>
+          <h3 style="color:#fff; font-size:1.7rem; margin-bottom:.6rem;">SAT Math Command Center</h3>
+          <p style="color:#c8d0e8; font-size:.98rem; margin-bottom:1rem;">A powerful Digital SAT Math app: adaptive practice, a full module-adaptive 44-question test simulator, mistake review, and progress tracking — across all four math domains. Free to start; Premium unlocks everything.</p>
+          <ul style="list-style:none; display:flex; flex-wrap:wrap; gap:.5rem 1.2rem; margin-bottom:1.5rem; padding:0;">
+            <li style="color:#e7ecf8; font-size:.9rem;">✓ 150+ practice questions</li>
+            <li style="color:#e7ecf8; font-size:.9rem;">✓ Real-length adaptive test</li>
+            <li style="color:#e7ecf8; font-size:.9rem;">✓ Instant worked solutions</li>
+            <li style="color:#e7ecf8; font-size:.9rem;">✓ Score &amp; streak tracking</li>
+          </ul>
+          <div style="display:flex; gap:.8rem; flex-wrap:wrap;">
+            <a href="https://marreromathsat.com" target="_blank" rel="noopener" class="btn btn-primary btn-lg">🎯 Launch the SAT Math App →</a>
+            <a href="https://marreromathsat.com" target="_blank" rel="noopener" class="btn btn-outline btn-lg">Start free</a>
+          </div>
+        </div>
+        <div class="sat-aside" style="text-align:center; font-family:var(--font-display); color:var(--gold-light);">
+          <div style="font-size:3.4rem; line-height:1;">∑</div>
+          <div style="font-size:1rem; color:#9fb0d4; margin-top:.6rem; letter-spacing:.04em;">marreromathsat.com</div>
+        </div>
+      </div>
 
       <!-- Group 1: Interactive lessons (Lemon Squeezy) -->
       <div class="store-group-head reveal">
