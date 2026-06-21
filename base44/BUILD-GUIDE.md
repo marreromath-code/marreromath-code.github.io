@@ -4,6 +4,12 @@ Everything you need to rebuild the SAT app inside **Base44** as a real, account-
 Stripe-subscription product. I can't log into Base44 for you, but this kit is paste-ready:
 schemas, data, logic, and the exact prompts to drive Base44's AI builder.
 
+> ## ⭐ SCOPE: MATH ONLY
+> This product is **SAT Math** — no Reading & Writing. The bank, practice, and simulator
+> are 100% math across four domains (Algebra, Advanced Math, Problem-Solving & Data,
+> Geometry & Trig). The simulator runs **two adaptive Math modules** and estimates a
+> **200–800 Math score**. Ignore any Reading & Writing references in the older prompts below.
+
 ## What's in this folder
 | File | Use it for |
 |------|-----------|
@@ -31,13 +37,15 @@ schemas, data, logic, and the exact prompts to drive Base44's AI builder.
 In Base44, start a new app and paste this as the opening prompt:
 
 > **Build prompt (paste into Base44):**
-> Create a Digital SAT prep web app called **"SAT Command Center."** Signed-in students
-> practice SAT questions, take a module-adaptive full-length simulator, review mistakes,
-> and track progress toward a target score. It has a free tier (limited daily practice)
-> and a paid **Premium** subscription (Stripe) that unlocks the full simulator, mistake
-> review, and unlimited practice. Use a refined navy (#1a2744) + gold (#d4af1f) theme on a
-> warm cream (#f9f7f2) background, serif display headings (Fraunces) and Inter for UI.
-> I will provide the database schemas and question data next.
+> Create a **Digital SAT Math** prep web app called **"SAT Math Command Center."** Signed-in
+> students practice SAT **math** questions across four domains (Algebra, Advanced Math,
+> Problem-Solving & Data, Geometry & Trig), take a module-adaptive Math simulator, review
+> mistakes, and track progress toward a target Math score (200–800). There is **no Reading &
+> Writing section.** It has a free tier (limited daily practice) and a paid **Premium**
+> subscription (Stripe) that unlocks the full simulator, mistake review, and unlimited
+> practice. Use a refined navy (#1a2744) + gold (#d4af1f) theme on a warm cream (#f9f7f2)
+> background, serif display headings (Fraunces) and Inter for UI. I will provide the database
+> schemas and question data next.
 
 ---
 
