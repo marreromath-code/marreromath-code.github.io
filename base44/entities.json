@@ -1,0 +1,89 @@
+{
+  "_readme": "Base44 entity (database) schemas for the SAT Command Center. In Base44, open the Data/Entities panel, create each entity below, and paste its JSON schema. Base44 automatically adds: id, created_date, updated_date, created_by (the user's email). Do NOT re-add those.",
+
+  "Question": {
+    "name": "Question",
+    "type": "object",
+    "description": "The SAT question bank. One record per question. Import base44/questions.json into this entity to seed it.",
+    "properties": {
+      "question_id":   { "type": "string", "description": "Stable unique key, e.g. m01, r03" },
+      "section":       { "type": "string", "enum": ["math", "rw"], "description": "math or Reading & Writing" },
+      "section_name":  { "type": "string" },
+      "domain":        { "type": "string", "description": "e.g. Algebra, Craft & Structure" },
+      "difficulty":    { "type": "number", "description": "1 easy, 2 medium, 3 hard" },
+      "difficulty_label": { "type": "string" },
+      "type":          { "type": "string", "enum": ["mc", "grid"], "description": "multiple-choice or grid-in" },
+      "passage":       { "type": "string", "description": "Optional reading passage / context" },
+      "stem":          { "type": "string", "description": "The question text" },
+      "choices":       { "type": "array", "items": { "type": "string" }, "description": "MC answer options (empty for grid-in)" },
+      "answer_index":  { "type": "number", "description": "Index of correct choice for MC (0=A)" },
+      "answer_text":   { "type": "string", "description": "Correct value for grid-in (accepts numeric equivalents)" },
+      "explanation":   { "type": "string", "description": "Worked solution shown after answering" },
+      "is_premium":    { "type": "boolean", "default": false, "description": "If true, only premium users can be served this item" },
+      "active":        { "type": "boolean", "default": true }
+    },
+    "required": ["question_id", "section", "domain", "difficulty", "type", "stem", "explanation"]
+  },
+
+  "Attempt": {
+    "name": "Attempt",
+    "type": "object",
+    "description": "One record every time a user answers a question (practice OR test). Drives stats, mastery, streaks, and the review list.",
+    "properties": {
+      "question_id":  { "type": "string" },
+      "section":      { "type": "string", "enum": ["math", "rw"] },
+      "domain":       { "type": "string" },
+      "difficulty":   { "type": "number" },
+      "is_correct":   { "type": "boolean" },
+      "given_answer": { "type": "string", "description": "What the user chose/typed (for review)" },
+      "mode":         { "type": "string", "enum": ["practice", "test"] },
+      "time_seconds": { "type": "number" },
+      "session_id":   { "type": "string", "description": "Groups attempts from one practice set or test" }
+    },
+    "required": ["question_id", "is_correct", "mode"]
+  },
+
+  "TestSession": {
+    "name": "TestSession",
+    "type": "object",
+    "description": "One record per completed full-test simulation. Powers the score report and Progress history.",
+    "properties": {
+      "rw_score":     { "type": "number", "description": "200-800" },
+      "math_score":   { "type": "number", "description": "200-800" },
+      "total_score":  { "type": "number", "description": "400-1600" },
+      "rw_hard":      { "type": "boolean", "description": "Routed to the higher R&W Module 2" },
+      "math_hard":    { "type": "boolean", "description": "Routed to the higher Math Module 2" },
+      "rw_correct":   { "type": "number" },
+      "rw_total":     { "type": "number" },
+      "math_correct": { "type": "number" },
+      "math_total":   { "type": "number" },
+      "completed_at": { "type": "string", "format": "date-time" }
+    },
+    "required": ["total_score"]
+  },
+
+  "Bookmark": {
+    "name": "Bookmark",
+    "type": "object",
+    "description": "A user's saved/starred questions for later review. One record per (user, question).",
+    "properties": {
+      "question_id": { "type": "string" }
+    },
+    "required": ["question_id"]
+  },
+
+  "_UserEntity": {
+    "note": "Base44 has a BUILT-IN User entity (do not recreate it). Add these CUSTOM fields to it via the User entity settings so each signed-in user carries their own study state and plan.",
+    "custom_fields": {
+      "test_date":           { "type": "string", "format": "date", "description": "Student's chosen SAT date (for countdown)" },
+      "goal_score":          { "type": "number", "default": 1400 },
+      "streak_days":         { "type": "number", "default": 0 },
+      "last_active_date":    { "type": "string", "format": "date" },
+      "plan":                { "type": "string", "enum": ["free", "premium"], "default": "free", "description": "Set to 'premium' by the Stripe webhook on active subscription" },
+      "subscription_status": { "type": "string", "description": "e.g. active, canceled, past_due — mirrored from Stripe" },
+      "stripe_customer_id":  { "type": "string" },
+      "daily_quota_date":    { "type": "string", "format": "date", "description": "Date the free quota counter applies to" },
+      "daily_quota_used":    { "type": "number", "default": 0 }
+    }
+  }
+}
