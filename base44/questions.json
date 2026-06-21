@@ -633,6 +633,7 @@
     "domain": "Information & Ideas",
     "difficulty": 1,
     "difficulty_label": "Easy",
+    "type": "mc",
     "passage": "Honeybees communicate the location of food through a \"waggle dance.\" The angle of the dance relative to vertical signals the direction of the food relative to the sun, while the duration of the waggle indicates distance.",
     "stem": "Which choice best states the main idea of the text?",
     "choices": [
@@ -641,7 +642,7 @@
       "The waggle dance is the only way bees locate the sun.",
       "Bees dance more vigorously when food is scarce."
     ],
-    "answer_index": null,
+    "answer_index": 1,
     "answer_text": "Honeybees use a dance to convey both the direction and distance of food.",
     "explanation": "The text says the angle conveys direction and the duration conveys distance — choice B captures both. The others add claims the text does not make.",
     "is_premium": false,
@@ -654,6 +655,7 @@
     "domain": "Information & Ideas",
     "difficulty": 2,
     "difficulty_label": "Medium",
+    "type": "mc",
     "passage": "A researcher measured plant growth under three light colors. Plants under red light grew an average of 12 cm, those under blue light 18 cm, and those under green light only 4 cm over the study period.",
     "stem": "Which statement is best supported by the data?",
     "choices": [
@@ -662,7 +664,7 @@
       "All three colors produced equal growth.",
       "Red light produced less growth than green light."
     ],
-    "answer_index": null,
+    "answer_index": 1,
     "answer_text": "Blue light was associated with the greatest average growth.",
     "explanation": "Blue light produced the highest average (18 cm), so B is supported. Red (12) exceeded green (4), making D false.",
     "is_premium": false,
@@ -675,6 +677,7 @@
     "domain": "Information & Ideas",
     "difficulty": 3,
     "difficulty_label": "Hard",
+    "type": "mc",
     "passage": "Although the new policy was intended to reduce traffic, commute times in the city center actually rose by 8% in the first year. Supporters argue, however, that the increase reflects a surge in overall population rather than a failure of the policy.",
     "stem": "Based on the text, supporters would most likely agree that:",
     "choices": [
@@ -683,7 +686,7 @@
       "Commute times fell in the first year.",
       "Traffic policy has no effect on commute times."
     ],
-    "answer_index": null,
+    "answer_index": 1,
     "answer_text": "Population growth may obscure the policy’s true effect on traffic.",
     "explanation": "Supporters attribute the rise to population growth rather than the policy, implying the policy’s real effect is masked — choice B.",
     "is_premium": false,
@@ -696,6 +699,7 @@
     "domain": "Craft & Structure",
     "difficulty": 1,
     "difficulty_label": "Easy",
+    "type": "mc",
     "passage": "The committee praised the architect’s ______ design, noting how every beam and joint served a clear purpose with nothing wasted.",
     "stem": "Which choice best completes the text?",
     "choices": [
@@ -704,7 +708,7 @@
       "careless",
       "enormous"
     ],
-    "answer_index": null,
+    "answer_index": 1,
     "answer_text": "economical",
     "explanation": "\"Nothing wasted\" and \"clear purpose\" point to \"economical\" (efficient, without excess).",
     "is_premium": false,
@@ -717,6 +721,7 @@
     "domain": "Craft & Structure",
     "difficulty": 2,
     "difficulty_label": "Medium",
+    "type": "mc",
     "passage": "Early critics dismissed the novel as trivial, but later scholars came to regard it as a ______ work that anticipated themes central to modern literature.",
     "stem": "Which choice best completes the text?",
     "choices": [
@@ -725,7 +730,7 @@
       "seminal",
       "tedious"
     ],
-    "answer_index": null,
+    "answer_index": 2,
     "answer_text": "seminal",
     "explanation": "\"Anticipated themes central to modern literature\" signals influence and originality — \"seminal\" (foundational, influential).",
     "is_premium": false,
@@ -738,6 +743,7 @@
     "domain": "Craft & Structure",
     "difficulty": 2,
     "difficulty_label": "Medium",
+    "type": "mc",
     "passage": "Paragraph 1 introduces a long-held assumption about migratory birds. Paragraph 2 then presents a recent study whose findings contradict that assumption.",
     "stem": "What is the main rhetorical purpose of the second paragraph?",
     "choices": [
@@ -746,7 +752,7 @@
       "To dismiss the study as unreliable",
       "To summarize the first paragraph"
     ],
-    "answer_index": null,
+    "answer_index": 1,
     "answer_text": "To challenge the assumption with new evidence",
     "explanation": "The second paragraph presents findings that contradict the assumption — its purpose is to challenge it with new evidence.",
     "is_premium": false,
@@ -759,6 +765,7 @@
     "domain": "Expression of Ideas",
     "difficulty": 1,
     "difficulty_label": "Easy",
+    "type": "mc",
     "passage": "The early trains were slow and unreliable. ______ , within a decade, rail travel had become the fastest way to cross the country.",
     "stem": "Which transition best fits the blank?",
     "choices": [
@@ -767,7 +774,7 @@
       "Similarly",
       "In addition"
     ],
-    "answer_index": null,
+    "answer_index": 1,
     "answer_text": "Nevertheless",
     "explanation": "The sentence contrasts slow early trains with later speed, so a contrast transition — \"Nevertheless\" — fits.",
     "is_premium": false,
@@ -780,6 +787,7 @@
     "domain": "Expression of Ideas",
     "difficulty": 2,
     "difficulty_label": "Medium",
+    "type": "mc",
     "passage": "Notes:\n• The mural took three years to complete.\n• It covers 2,000 square feet.\n• It was painted by a team of twelve artists.",
     "stem": "The writer wants to emphasize the scale of the project. Which choice best uses the notes to accomplish this?",
     "choices": [
@@ -788,7 +796,7 @@
       "The mural took three years to complete.",
       "The mural is a notable work of public art."
     ],
-    "answer_index": null,
+    "answer_index": 1,
     "answer_text": "Covering 2,000 square feet, the mural took a team of twelve artists three years to complete.",
     "explanation": "Choice B combines all three large-scale details (size, team, time) to emphasize the project’s scale.",
     "is_premium": false,
@@ -801,6 +809,7 @@
     "domain": "Expression of Ideas",
     "difficulty": 3,
     "difficulty_label": "Hard",
+    "type": "mc",
     "passage": "The first study found a strong link between sleep and memory. ______ the second study, which used a larger sample, found no such link.",
     "stem": "Which transition best fits the blank?",
     "choices": [
@@ -809,7 +818,7 @@
       "For instance,",
       "Likewise,"
     ],
-    "answer_index": null,
+    "answer_index": 1,
     "answer_text": "By contrast,",
     "explanation": "The second study contradicts the first, so a contrast transition — \"By contrast,\" — is correct.",
     "is_premium": false,
@@ -822,6 +831,7 @@
     "domain": "English Conventions",
     "difficulty": 1,
     "difficulty_label": "Easy",
+    "type": "mc",
     "passage": "The collection of rare coins ______ displayed in the museum’s east wing.",
     "stem": "Which choice makes the sentence grammatically correct?",
     "choices": [
@@ -830,7 +840,7 @@
       "were",
       "have been"
     ],
-    "answer_index": null,
+    "answer_index": 1,
     "answer_text": "is",
     "explanation": "The subject is \"collection\" (singular), so the verb must be singular: \"is.\"",
     "is_premium": false,
@@ -843,6 +853,7 @@
     "domain": "English Conventions",
     "difficulty": 2,
     "difficulty_label": "Medium",
+    "type": "mc",
     "passage": "The hikers reached the summit at dawn ______ they had been climbing since midnight.",
     "stem": "Which choice correctly joins the two independent clauses?",
     "choices": [
@@ -851,7 +862,7 @@
       "they",
       ", and quickly they"
     ],
-    "answer_index": null,
+    "answer_index": 1,
     "answer_text": "; they",
     "explanation": "Two independent clauses can be joined with a semicolon: \"...at dawn; they had been climbing...\"",
     "is_premium": false,
@@ -864,6 +875,7 @@
     "domain": "English Conventions",
     "difficulty": 2,
     "difficulty_label": "Medium",
+    "type": "mc",
     "passage": "My sister, ______ lives in Denver, is visiting next week.",
     "stem": "Which choice correctly completes the sentence?",
     "choices": [
@@ -872,7 +884,7 @@
       "which",
       "that"
     ],
-    "answer_index": null,
+    "answer_index": 0,
     "answer_text": "who",
     "explanation": "The relative pronoun refers to a person and is the subject of \"lives,\" so \"who\" is correct.",
     "is_premium": false,
@@ -885,6 +897,7 @@
     "domain": "English Conventions",
     "difficulty": 3,
     "difficulty_label": "Hard",
+    "type": "mc",
     "passage": "Each of the students ______ responsible for bringing their own materials to the lab.",
     "stem": "Which choice makes the sentence grammatically correct?",
     "choices": [
@@ -893,7 +906,7 @@
       "is",
       "have been"
     ],
-    "answer_index": null,
+    "answer_index": 2,
     "answer_text": "is",
     "explanation": "\"Each\" is singular, so the verb is \"is\": \"Each of the students is responsible...\"",
     "is_premium": false,
