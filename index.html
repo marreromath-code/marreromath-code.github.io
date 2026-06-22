@@ -77,43 +77,59 @@
 
     /* ── Nav ── */
     nav {
-      background: rgba(17,28,51,.92);
-      backdrop-filter: saturate(160%) blur(10px);
-      -webkit-backdrop-filter: saturate(160%) blur(10px);
+      background: linear-gradient(180deg, rgba(17,28,51,.97), rgba(17,28,51,.90));
+      backdrop-filter: saturate(170%) blur(12px);
+      -webkit-backdrop-filter: saturate(170%) blur(12px);
       position: sticky; top: 0; z-index: 100;
-      box-shadow: 0 1px 0 rgba(255,255,255,.05), 0 4px 18px rgba(0,0,0,.25);
+      border-bottom: 1px solid rgba(240,208,96,.16);
+      box-shadow: 0 6px 26px rgba(0,0,0,.30);
     }
     .nav-inner {
       max-width: var(--maxw); margin: 0 auto;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 0 1.6rem; height: 66px;
+      padding: 0 1.6rem; height: 70px;
     }
-    .nav-logo { color: #fff; font-family: var(--font-display); font-size: 1.18rem; font-weight: 600; letter-spacing: .01em; display:flex; align-items:center; gap:.55rem; }
+    .nav-logo { color: #fff; font-family: var(--font-display); font-size: 1.2rem; font-weight: 600; letter-spacing: .01em; display:flex; align-items:center; gap:.6rem; }
+    .nav-logo:hover { text-decoration:none; }
     .nav-logo .mark {
-      width: 30px; height: 30px; border-radius: 8px; flex-shrink:0;
+      width: 34px; height: 34px; border-radius: 9px; flex-shrink:0;
       background: linear-gradient(135deg, var(--gold), var(--gold-light));
       color: var(--navy-deep); display:flex; align-items:center; justify-content:center;
-      font-weight:700; font-size:1.05rem;
+      font-weight:700; font-size:1.15rem;
+      box-shadow: 0 0 0 1px rgba(240,208,96,.4), 0 4px 14px rgba(184,150,12,.42);
+      transition: transform .25s ease, box-shadow .25s ease;
     }
+    .nav-logo:hover .mark { transform: translateY(-1px) rotate(-4deg); box-shadow: 0 0 0 1px rgba(240,208,96,.65), 0 7px 20px rgba(184,150,12,.6); }
     .nav-logo span { color: var(--gold-light); }
-    .nav-links { display: flex; gap: 1.7rem; list-style: none; align-items:center; }
+    .nav-links { display: flex; gap: .35rem; list-style: none; align-items:center; }
     .nav-links a {
       color: #cdd4e6; font-family: var(--font-body);
-      font-size: .82rem; letter-spacing: .06em; text-transform: uppercase; font-weight: 500;
-      position: relative; padding: .2rem 0;
+      font-size: .8rem; letter-spacing: .05em; text-transform: uppercase; font-weight: 600;
+      position: relative; padding: .5rem .85rem; border-radius: 8px;
+      transition: color .2s, background .2s;
     }
-    .nav-links a::after {
-      content:""; position:absolute; left:0; right:100%; bottom:-4px; height:2px;
-      background: var(--gold-light); transition: right .25s ease;
+    .nav-links a:not(.nav-shop)::after {
+      content:""; position:absolute; left:.85rem; right:calc(100% - .85rem); bottom:.32rem; height:2px;
+      background: var(--gold-light); border-radius:2px; transition: right .25s ease;
     }
-    .nav-links a:hover { color: #fff; text-decoration: none; }
-    .nav-links a:hover::after { right: 0; }
+    .nav-links a:not(.nav-shop):hover { color: #fff; background: rgba(255,255,255,.07); text-decoration:none; }
+    .nav-links a:not(.nav-shop):hover::after { right: .85rem; }
     .nav-links a.nav-shop {
       color: var(--navy-deep); background: linear-gradient(135deg, var(--gold-light), var(--gold-bright));
-      padding: .45rem .95rem; border-radius: 7px; font-weight: 700;
+      padding: .55rem 1.1rem; border-radius: 100px; font-weight: 700; letter-spacing:.015em;
+      margin-left: .5rem; overflow: hidden;
+      box-shadow: 0 4px 16px rgba(212,175,31,.4);
+      transition: transform .15s, box-shadow .2s, filter .2s;
     }
     .nav-links a.nav-shop::after { display:none; }
-    .nav-links a.nav-shop:hover { color: var(--navy-deep); filter: brightness(1.06); transform: translateY(-1px); }
+    .nav-links a.nav-shop::before {
+      content:""; position:absolute; top:0; left:-130%; width:55%; height:100%;
+      background: linear-gradient(100deg, transparent, rgba(255,255,255,.55), transparent);
+      transform: skewX(-20deg); pointer-events:none;
+    }
+    .nav-links a.nav-shop:hover { color: var(--navy-deep); transform: translateY(-2px); box-shadow: 0 9px 24px rgba(212,175,31,.55); filter: brightness(1.05); }
+    .nav-links a.nav-shop:hover::before { animation: navshine .75s ease; }
+    @keyframes navshine { from { left:-130%; } to { left:140%; } }
     .nav-toggle { display:none; background:none; border:none; color:#fff; font-size:1.5rem; cursor:pointer; }
 
     /* ── Buttons ── */
