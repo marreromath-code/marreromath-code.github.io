@@ -114,6 +114,8 @@
     }
     .nav-links a:not(.nav-shop):hover { color: #fff; background: rgba(255,255,255,.07); text-decoration:none; }
     .nav-links a:not(.nav-shop):hover::after { right: .85rem; }
+    .nav-links a.active:not(.nav-shop) { color: #fff; background: rgba(240,208,96,.10); }
+    .nav-links a.active:not(.nav-shop)::after { right: .85rem; }
     .nav-links a.nav-shop {
       color: var(--navy-deep); background: linear-gradient(135deg, var(--gold-light), var(--gold-bright));
       padding: .55rem 1.1rem; border-radius: 100px; font-weight: 700; letter-spacing:.015em;
@@ -850,6 +852,24 @@
         facade.appendChild(iframe);
       });
     });
+
+    // Active-section highlight (scroll spy)
+    (function(){
+      var links = document.querySelectorAll('.nav-links a[href^="#"]');
+      if (!links.length || !('IntersectionObserver' in window)) return;
+      var sections = [];
+      links.forEach(function(a){
+        var s = document.getElementById(a.getAttribute('href').slice(1));
+        if (s) sections.push(s);
+      });
+      function setActive(id){
+        links.forEach(function(a){ a.classList.toggle('active', a.getAttribute('href') === '#' + id); });
+      }
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(en){ if (en.isIntersecting) setActive(en.target.id); });
+      }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+      sections.forEach(function(s){ io.observe(s); });
+    })();
 
     // Scroll reveal
     (function(){
