@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <!-- ── SEO / Social ── -->
+  <title>SAT Command Center · Digital SAT Prep App by Dr. Marrero</title>
+  <meta name="description" content="A powerful Digital SAT prep app by Dr. Carlos Marrero — adaptive practice, a full module-adaptive test simulator, score tracking, a study dashboard, and a formula reference. Free to start; Premium unlocks everything." />
+  <meta name="author" content="Dr. Carlos Marrero" />
+  <meta name="theme-color" content="#1a2744" />
+  <link rel="canonical" href="https://marreromath-code.github.io/sat.html" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="SAT Command Center — Digital SAT Prep App" />
+  <meta property="og:description" content="Adaptive practice, a module-adaptive test simulator, score tracking, and a study dashboard for the Digital SAT." />
+  <meta property="og:url" content="https://marreromath-code.github.io/sat.html" />
+  <meta property="og:image" content="https://marreromath-code.github.io/dr_marrero.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- Favicon (inline SVG) -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%231a2744'/%3E%3Ctext x='50' y='72' font-size='62' text-anchor='middle' fill='%23f0d060' font-family='Georgia,serif'%3E%E2%88%91%3C/text%3E%3C/svg%3E" />
+
+  <!-- Fonts: Fraunces (display) + Inter (UI/body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--cream); color: var(--text); line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Color palette (matches site) ── */
+    :root {
+      --navy:#1a2744; --navy-deep:#111c33; --navy-soft:#2d3f6e;
+      --gold:#b8960c; --gold-bright:#d4af1f; --gold-light:#f0d060;
+      --cream:#f9f7f2; --cream-warm:#f3eee2; --light-gray:#eeeae0; --line:#e3ddcd;
+      --text:#1a1a2e; --muted:#5a5a7a; --coral:#e07a52;
+      --green:#1f9d6b; --green-soft:#e4f5ee; --red:#d2543e; --red-soft:#fbe9e5;
+      --font-display:'Fraunces', Georgia, 'Times New Roman', serif;
+      --font-body:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --shadow-sm:0 1px 3px rgba(26,39,68,.06), 0 1px 2px rgba(26,39,68,.10);
+      --shadow-md:0 6px 18px rgba(26,39,68,.10);
+      --shadow-lg:0 18px 48px rgba(26,39,68,.16);
+      --radius:14px; --maxw:1140px;
+    }
+
+    h1,h2,h3,h4 { font-family: var(--font-display); color: var(--navy); line-height:1.15; font-weight:600; }
+    a { color: var(--gold); text-decoration:none; transition: color .2s; }
+    a:hover { text-decoration: underline; }
+    ::selection { background: var(--gold-light); color: var(--navy-deep); }
+    .skip { position:absolute; left:-9999px; top:0; background:var(--gold); color:#fff; padding:.6rem 1rem; z-index:300; border-radius:0 0 6px 0; }
+    .skip:focus { left:0; }
+
+    /* ── Nav (matches site) ── */
+    nav {
+      background: rgba(17,28,51,.92);
+      backdrop-filter: saturate(160%) blur(10px); -webkit-backdrop-filter: saturate(160%) blur(10px);
+      position: sticky; top:0; z-index:100;
+      box-shadow: 0 1px 0 rgba(255,255,255,.05), 0 4px 18px rgba(0,0,0,.25);
+    }
+    .nav-inner { max-width: var(--maxw); margin:0 auto; display:flex; align-items:center; justify-content:space-between; padding:0 1.6rem; height:66px; }
+    .nav-logo { color:#fff; font-family: var(--font-display); font-size:1.18rem; font-weight:600; display:flex; align-items:center; gap:.55rem; }
+    .nav-logo .mark { width:30px; height:30px; border-radius:8px; flex-shrink:0; background: linear-gradient(135deg, var(--gold), var(--gold-light)); color: var(--navy-deep); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:1.05rem; }
+    .nav-logo span { color: var(--gold-light); }
+    .nav-links { display:flex; gap:1.7rem; list-style:none; align-items:center; }
+    .nav-links a { color:#cdd4e6; font-family: var(--font-body); font-size:.82rem; letter-spacing:.06em; text-transform:uppercase; font-weight:500; position:relative; padding:.2rem 0; }
+    .nav-links a::after { content:""; position:absolute; left:0; right:100%; bottom:-4px; height:2px; background: var(--gold-light); transition: right .25s ease; }
+    .nav-links a:hover { color:#fff; text-decoration:none; } .nav-links a:hover::after { right:0; }
+    .nav-links a.nav-shop { color: var(--navy-deep); background: linear-gradient(135deg, var(--gold-light), var(--gold-bright)); padding:.45rem .95rem; border-radius:7px; font-weight:700; }
+    .nav-links a.nav-shop::after { display:none; } .nav-links a.nav-shop:hover { color: var(--navy-deep); filter:brightness(1.06); transform: translateY(-1px); }
+    .nav-toggle { display:none; background:none; border:none; color:#fff; font-size:1.5rem; cursor:pointer; }
+
+    /* ── Buttons ── */
+    .btn { display:inline-flex; align-items:center; gap:.5rem; justify-content:center; padding:.8rem 1.7rem; border-radius:9px; font-family: var(--font-body); font-size:.9rem; font-weight:600; letter-spacing:.02em; cursor:pointer; border:2px solid transparent; transition: transform .15s, box-shadow .2s, background .2s, filter .2s; }
+    .btn:hover { transform: translateY(-2px); text-decoration:none; }
+    .btn:disabled { opacity:.5; cursor:not-allowed; transform:none; }
+    .btn-primary { background: linear-gradient(135deg, var(--gold-bright), var(--gold)); color:#fff; box-shadow:0 6px 18px rgba(184,150,12,.32); }
+    .btn-primary:hover { box-shadow:0 10px 26px rgba(184,150,12,.42); filter:brightness(1.04); }
+    .btn-outline { background:transparent; color: var(--navy); border-color: var(--line); }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+    .btn-dark { background: var(--navy); color:#fff; } .btn-dark:hover { background: var(--navy-deep); }
+    .btn-ghost { background: var(--light-gray); color: var(--navy); }
+    .btn-ghost:hover { background: var(--line); }
+    .btn-lg { padding:.95rem 2.1rem; font-size:.98rem; }
+    .btn-sm { padding:.5rem 1rem; font-size:.82rem; }
+
+    /* ── Hero header ── */
+    .apphero {
+      background:
+        radial-gradient(1100px 500px at 80% -10%, rgba(240,208,96,.14), transparent 60%),
+        linear-gradient(135deg, var(--navy-deep) 0%, var(--navy) 45%, var(--navy-soft) 100%);
+      color:#fff; padding: 3.2rem 1.6rem 2.4rem; position:relative; overflow:hidden;
+    }
+    .apphero-inner { max-width: var(--maxw); margin:0 auto; position:relative; }
+    .apphero .badge { display:inline-block; background: rgba(240,208,96,.14); color: var(--gold-light); border:1px solid rgba(240,208,96,.35); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; font-weight:600; padding:.4rem 1.1rem; border-radius:100px; margin-bottom:1rem; }
+    .apphero h1 { color:#fff; font-size: clamp(1.9rem, 4.4vw, 2.9rem); margin-bottom:.5rem; }
+    .apphero h1 em { font-style:normal; color: var(--gold-light); }
+    .apphero p { color:#c8d0e8; max-width:640px; font-size:1.02rem; }
+    .plan-flag { position:absolute; top:0; right:0; display:flex; align-items:center; gap:.6rem; }
+    .plan-pill { font-size:.74rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; padding:.4rem .85rem; border-radius:100px; }
+    .plan-pill.free { background: rgba(255,255,255,.12); color:#e7ecf8; border:1px solid rgba(255,255,255,.22); }
+    .plan-pill.premium { background: linear-gradient(135deg, var(--gold-light), var(--gold-bright)); color: var(--navy-deep); }
+
+    /* ── App tab bar ── */
+    .tabbar { background: var(--navy-deep); border-top:1px solid rgba(255,255,255,.06); position:sticky; top:66px; z-index:90; }
+    .tabbar-inner { max-width: var(--maxw); margin:0 auto; display:flex; gap:.2rem; padding:0 1rem; overflow-x:auto; }
+    .tab { color:#a9b6d6; background:none; border:none; font-family: var(--font-body); font-size:.86rem; font-weight:600; letter-spacing:.02em; padding:.95rem 1.05rem; cursor:pointer; white-space:nowrap; border-bottom:3px solid transparent; transition: color .2s, border-color .2s; display:flex; align-items:center; gap:.45rem; }
+    .tab:hover { color:#fff; }
+    .tab.active { color: var(--gold-light); border-bottom-color: var(--gold-light); }
+    .tab .lock { font-size:.78rem; opacity:.8; }
+
+    /* ── Main wrapper ── */
+    main { max-width: var(--maxw); margin:0 auto; padding: 2.4rem 1.6rem 4rem; min-height: 60vh; }
+    .view { display:none; }
+    .view.active { display:block; animation: fade .35s ease; }
+    @keyframes fade { from { opacity:0; transform: translateY(10px);} to { opacity:1; transform:none; } }
+
+    .view-head { margin-bottom:1.6rem; }
+    .view-head h2 { font-size: clamp(1.5rem, 3vw, 2rem); }
+    .view-head p { color: var(--muted); font-size:.96rem; }
+
+    /* ── Cards ── */
+    .card { background:#fff; border:1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-sm); padding:1.6rem; }
+    .grid { display:grid; gap:1.4rem; }
+    .g-2 { grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); }
+    .g-3 { grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); }
+    .g-4 { grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); }
+
+    /* ── Dashboard ── */
+    .stat-tile { text-align:center; padding:1.5rem 1rem; }
+    .stat-tile .big { font-family: var(--font-display); font-size:2.3rem; color: var(--navy); font-weight:600; line-height:1; }
+    .stat-tile .big.gold { color: var(--gold); }
+    .stat-tile .lbl { font-size:.78rem; color: var(--muted); text-transform:uppercase; letter-spacing:.05em; margin-top:.45rem; }
+    .stat-tile .sub { font-size:.8rem; color: var(--muted); margin-top:.2rem; }
+
+    .countdown { background: linear-gradient(135deg, var(--navy), var(--navy-soft)); color:#fff; border:none; }
+    .countdown h3 { color:#fff; }
+    .countdown .days { font-family: var(--font-display); font-size:3.2rem; color: var(--gold-light); line-height:1; }
+    .countdown input[type=date] { background: rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.25); color:#fff; border-radius:8px; padding:.5rem .7rem; font-family: var(--font-body); }
+    .countdown label { color:#c8d0e8; font-size:.85rem; }
+
+    .mastery-row { display:flex; align-items:center; gap:1rem; margin-bottom:1rem; }
+    .mastery-row .name { flex: 0 0 200px; font-size:.9rem; font-weight:600; color: var(--navy); }
+    .mastery-row .name small { display:block; font-weight:400; color: var(--muted); font-size:.74rem; text-transform:uppercase; letter-spacing:.04em; }
+    .bar { flex:1; height:12px; background: var(--light-gray); border-radius:100px; overflow:hidden; }
+    .bar > i { display:block; height:100%; background: linear-gradient(90deg, var(--gold), var(--gold-light)); border-radius:100px; transition: width .6s ease; }
+    .mastery-row .pct { flex:0 0 56px; text-align:right; font-weight:700; color: var(--navy); font-size:.9rem; }
+
+    .quick-grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); gap:1rem; }
+    .quick { text-align:left; padding:1.3rem; border:1px solid var(--line); border-radius:12px; background:#fff; cursor:pointer; transition: transform .18s, box-shadow .18s; border-left:5px solid var(--gold); }
+    .quick:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .quick .ic { font-size:1.7rem; } .quick h4 { font-size:1.05rem; margin:.4rem 0 .25rem; }
+    .quick p { font-size:.84rem; color: var(--muted); }
+
+    /* ── Practice setup ── */
+    .chip-set { display:flex; flex-wrap:wrap; gap:.6rem; margin:.6rem 0 1.2rem; }
+    .chip { padding:.55rem 1.05rem; border-radius:100px; border:1.5px solid var(--line); background:#fff; cursor:pointer; font-size:.86rem; font-weight:600; color: var(--navy); transition: all .15s; }
+    .chip:hover { border-color: var(--gold); }
+    .chip.on { background: var(--navy); color:#fff; border-color: var(--navy); }
+    .field-label { font-size:.78rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color: var(--muted); }
+
+    /* ── Question UI ── */
+    .q-shell { max-width: 760px; margin:0 auto; }
+    .q-top { display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:1rem; flex-wrap:wrap; }
+    .q-meta { display:flex; gap:.5rem; flex-wrap:wrap; align-items:center; }
+    .q-pill { font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em; padding:.3rem .7rem; border-radius:100px; background: var(--light-gray); color: var(--navy); }
+    .q-pill.diff1 { background:#e4f5ee; color:#1f7d56; } .q-pill.diff2 { background:#fdf3df; color:#9a7b10; } .q-pill.diff3 { background:#fbe9e5; color:#b1432e; }
+    .q-timer { font-family: var(--font-display); font-weight:600; color: var(--navy); font-variant-numeric: tabular-nums; }
+    .q-progress { font-size:.85rem; color: var(--muted); }
+    .passage { background: var(--cream-warm); border-left:4px solid var(--gold); border-radius:0 10px 10px 0; padding:1.1rem 1.3rem; margin-bottom:1.3rem; font-size:.96rem; color:#3a3a4d; line-height:1.75; }
+    .q-stem { font-size:1.12rem; color: var(--text); margin-bottom:1.3rem; line-height:1.6; }
+    .choices { display:grid; gap:.7rem; }
+    .choice { display:flex; gap:.85rem; align-items:flex-start; padding:.95rem 1.1rem; border:1.5px solid var(--line); border-radius:11px; background:#fff; cursor:pointer; transition: all .15s; text-align:left; font-size:.98rem; width:100%; }
+    .choice:hover { border-color: var(--gold); background: var(--cream); }
+    .choice .key { flex:0 0 26px; height:26px; border-radius:50%; border:1.5px solid var(--muted); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:.82rem; color: var(--navy); }
+    .choice.sel { border-color: var(--navy); background: var(--cream); }
+    .choice.sel .key { background: var(--navy); color:#fff; border-color: var(--navy); }
+    .choice.correct { border-color: var(--green); background: var(--green-soft); }
+    .choice.correct .key { background: var(--green); color:#fff; border-color: var(--green); }
+    .choice.wrong { border-color: var(--red); background: var(--red-soft); }
+    .choice.wrong .key { background: var(--red); color:#fff; border-color: var(--red); }
+    .choice.disabled { pointer-events:none; }
+    .gridin { display:flex; gap:.7rem; align-items:center; }
+    .gridin input { font-size:1.2rem; font-family: var(--font-display); padding:.7rem 1rem; border:1.5px solid var(--line); border-radius:10px; width:200px; }
+    .gridin input:focus { outline:none; border-color: var(--gold); }
+
+    .feedback { margin-top:1.3rem; border-radius:12px; padding:1.1rem 1.3rem; border:1px solid; display:none; }
+    .feedback.show { display:block; animation: fade .3s ease; }
+    .feedback.ok { background: var(--green-soft); border-color: #bfe6d4; }
+    .feedback.no { background: var(--red-soft); border-color:#f1c9bf; }
+    .feedback .verdict { font-family: var(--font-display); font-size:1.1rem; font-weight:600; margin-bottom:.4rem; }
+    .feedback.ok .verdict { color:#177a52; } .feedback.no .verdict { color:#b1432e; }
+    .feedback .exp { font-size:.95rem; color:#3a3a4d; line-height:1.7; }
+    .q-actions { display:flex; gap:.7rem; margin-top:1.4rem; flex-wrap:wrap; }
+    .q-actions .spacer { flex:1; }
+    .iconbtn { background:none; border:1.5px solid var(--line); border-radius:9px; padding:.6rem .8rem; cursor:pointer; font-size:.95rem; color: var(--muted); transition: all .15s; }
+    .iconbtn:hover { border-color: var(--gold); color: var(--gold); }
+    .iconbtn.on { color: var(--gold); border-color: var(--gold); background: #fdf6e0; }
+
+    /* ── Session summary ── */
+    .summary-score { text-align:center; padding:2rem; }
+    .summary-score .ring { font-family: var(--font-display); font-size:3.4rem; color: var(--gold); font-weight:600; }
+
+    /* ── Simulator ── */
+    .sim-intro ol { margin:1rem 0 1.4rem 1.2rem; color:#3a3a4d; }
+    .sim-intro li { margin-bottom:.5rem; }
+    .module-banner { background: var(--navy); color:#fff; border-radius:12px; padding:1rem 1.3rem; display:flex; justify-content:space-between; align-items:center; gap:1rem; margin-bottom:1.3rem; flex-wrap:wrap; }
+    .module-banner h3 { color:#fff; font-size:1.05rem; } .module-banner .t { font-family: var(--font-display); font-size:1.6rem; color: var(--gold-light); font-variant-numeric: tabular-nums; }
+    .module-banner .t.warn { color: var(--coral); }
+    .scorecard { text-align:center; }
+    .scorecard .total { font-family: var(--font-display); font-size:4rem; color: var(--navy); line-height:1; font-weight:600; }
+    .scorecard .total small { font-size:1.2rem; color: var(--muted); }
+    .scorecard .sect { display:flex; justify-content:center; gap:2.5rem; margin:1.4rem 0; flex-wrap:wrap; }
+    .scorecard .sect .v { font-family: var(--font-display); font-size:2rem; color: var(--gold); }
+    .scorecard .sect .k { font-size:.8rem; color: var(--muted); text-transform:uppercase; letter-spacing:.05em; }
+
+    /* ── Reference ── */
+    .ref-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap:1rem; }
+    .formula { background:#fff; border:1px solid var(--line); border-radius:10px; padding:1rem; text-align:center; }
+    .formula .eq { font-family: var(--font-display); font-size:1.25rem; color: var(--navy); margin-bottom:.3rem; }
+    .formula .nm { font-size:.78rem; color: var(--muted); }
+    .qt-list { counter-reset: qt; display:grid; gap:.6rem; }
+    .qt-item { display:flex; gap:.9rem; align-items:flex-start; background:#fff; border:1px solid var(--line); border-radius:10px; padding:.9rem 1.1rem; }
+    .qt-item::before { counter-increment: qt; content: counter(qt); flex:0 0 28px; height:28px; border-radius:50%; background: var(--navy); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:.82rem; }
+    .qt-item b { color: var(--navy); } .qt-item span { color: var(--muted); font-size:.9rem; }
+
+    /* ── Progress ── */
+    .hist-table { width:100%; border-collapse:collapse; font-size:.9rem; }
+    .hist-table th, .hist-table td { text-align:left; padding:.7rem .6rem; border-bottom:1px solid var(--line); }
+    .hist-table th { font-size:.74rem; text-transform:uppercase; letter-spacing:.05em; color: var(--muted); }
+    .hist-table td .tag { font-size:.78rem; padding:.15rem .55rem; border-radius:100px; background: var(--light-gray); }
+
+    /* ── Lock / Premium ── */
+    .lockwrap { position:relative; }
+    .lock-overlay { text-align:center; max-width:560px; margin:2rem auto; background: linear-gradient(160deg, var(--navy), var(--navy-soft)); color:#fff; border-radius: var(--radius); padding:2.4rem; box-shadow: var(--shadow-lg); }
+    .lock-overlay .ic { font-size:2.6rem; }
+    .lock-overlay h3 { color:#fff; font-size:1.5rem; margin:.6rem 0; }
+    .lock-overlay p { color:#c8d0e8; margin-bottom:1.4rem; }
+    .lock-overlay .price { font-family: var(--font-display); font-size:2.4rem; color: var(--gold-light); }
+    .lock-overlay .feat { display:grid; gap:.5rem; text-align:left; max-width:340px; margin:1.2rem auto 1.6rem; }
+    .lock-overlay .feat li { list-style:none; font-size:.9rem; color:#e7ecf8; display:flex; gap:.5rem; }
+    .lock-overlay .feat li::before { content:"✓"; color: var(--gold-light); font-weight:700; }
+    .lock-cta { display:flex; gap:.8rem; flex-wrap:wrap; justify-content:center; }
+
+    /* ── Modal ── */
+    .modal-bg { position:fixed; inset:0; background: rgba(17,28,51,.7); backdrop-filter: blur(4px); z-index:300; display:none; align-items:center; justify-content:center; padding:1.2rem; }
+    .modal-bg.show { display:flex; animation: fade .25s ease; }
+    .modal { background:#fff; border-radius: var(--radius); max-width:480px; width:100%; padding:2rem; box-shadow: var(--shadow-lg); }
+    .modal h3 { font-size:1.4rem; margin-bottom:.4rem; }
+    .modal p { color: var(--muted); font-size:.92rem; margin-bottom:1.2rem; }
+    .modal input[type=text] { width:100%; padding:.8rem 1rem; border:1.5px solid var(--line); border-radius:9px; font-family: var(--font-body); font-size:.95rem; margin-bottom:.8rem; }
+    .modal input[type=text]:focus { outline:none; border-color: var(--gold); }
+    .modal .msg { font-size:.86rem; margin-bottom:.8rem; min-height:1.2rem; }
+    .modal .msg.err { color: var(--red); } .modal .msg.ok { color: var(--green); }
+    .modal-close { float:right; background:none; border:none; font-size:1.3rem; cursor:pointer; color: var(--muted); }
+
+    /* ── Toast ── */
+    .toast { position:fixed; bottom:1.4rem; left:50%; transform: translateX(-50%) translateY(120%); background: var(--navy-deep); color:#fff; padding:.85rem 1.4rem; border-radius:10px; box-shadow: var(--shadow-lg); z-index:400; font-size:.9rem; transition: transform .3s ease; }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* ── Footer ── */
+    footer { background: var(--navy-deep); color:#8a96b4; padding:2.4rem 1.6rem 1.6rem; font-size:.88rem; }
+    .footer-bottom { max-width: var(--maxw); margin:0 auto; text-align:center; }
+    .footer-bottom a { color:#9aa6c4; }
+
+    .muted { color: var(--muted); } .center { text-align:center; }
+    .mt { margin-top:1.2rem; } .mb { margin-bottom:1.2rem; }
+    .hidden { display:none !important; }
+    .disclaimer { font-size:.8rem; color: var(--muted); font-style:italic; }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .nav-links { display:none; position:absolute; top:66px; left:0; right:0; flex-direction:column; background: var(--navy-deep); padding:1rem 1.6rem 1.5rem; gap:1.1rem; box-shadow: var(--shadow-lg); }
+      .nav-links.open { display:flex; } .nav-links a.nav-shop { text-align:center; } .nav-toggle { display:block; }
+      .plan-flag { position:static; margin-top:1rem; }
+      .mastery-row .name { flex:0 0 130px; }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main" class="skip">Skip to content</a>
+
+  <!-- ── Navigation ── -->
+  <nav>
+    <div class="nav-inner">
+      <a class="nav-logo" href="index.html" style="text-decoration:none"><span class="mark">∑</span>Math Topics <span>By Dr. Marrero</span></a>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="index.html#store">Shop</a></li>
+        <li><a href="labs.html">Labs</a></li>
+        <li><a href="resources.html">Resources</a></li>
+        <li><a href="newsletters.html" target="_blank" rel="noopener">Newsletter</a></li>
+        <li><a href="sat.html" class="nav-shop">🎯 SAT App</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ── Hero ── -->
+  <header class="apphero">
+    <div class="apphero-inner">
+      <div class="plan-flag" id="planFlag"></div>
+      <div class="badge">Digital SAT Prep · Powered by Dr. Marrero</div>
+      <h1>SAT <em>Command Center</em></h1>
+      <p>Adaptive practice, a module-adaptive full-test simulator, a study dashboard, and a complete reference — everything you need to walk into test day ready.</p>
+    </div>
+  </header>
+
+  <!-- ── Tab bar ── -->
+  <div class="tabbar">
+    <div class="tabbar-inner" id="tabbar">
+      <button class="tab active" data-view="dashboard">📊 Dashboard</button>
+      <button class="tab" data-view="practice">✏️ Practice</button>
+      <button class="tab" data-view="simulator">🧪 Full Test <span class="lock" data-lock>🔒</span></button>
+      <button class="tab" data-view="review">🔁 Review <span class="lock" data-lock>🔒</span></button>
+      <button class="tab" data-view="progress">📈 Progress</button>
+      <button class="tab" data-view="reference">📖 Reference</button>
+    </div>
+  </div>
+
+  <main id="main">
+
+    <!-- ════════ DASHBOARD ════════ -->
+    <section class="view active" id="view-dashboard">
+      <div class="view-head"><h2>Your SAT Dashboard</h2><p>Track your countdown, score goal, and mastery across every Digital SAT domain.</p></div>
+
+      <div class="grid g-2 mb">
+        <div class="card countdown">
+          <h3>Test-Day Countdown</h3>
+          <div style="display:flex; align-items:baseline; gap:.7rem; margin:.6rem 0;">
+            <span class="days" id="cdDays">—</span><span style="color:#c8d0e8;">days to go</span>
+          </div>
+          <label>Set your test date:
+            <input type="date" id="testDate" />
+          </label>
+        </div>
+
+        <div class="card">
+          <h3 class="mb">Score Goal</h3>
+          <div style="display:flex; gap:1rem; align-items:center; justify-content:space-around; text-align:center;">
+            <div>
+              <div class="stat-tile" style="padding:0">
+                <div class="big" id="estScore">—</div><div class="lbl">Est. Score</div>
+                <div class="sub">from your practice</div>
+              </div>
+            </div>
+            <div style="font-size:1.6rem; color:var(--muted)">→</div>
+            <div>
+              <div class="stat-tile" style="padding:0">
+                <div class="big gold" id="goalScore">1400</div><div class="lbl">Target</div>
+              </div>
+              <input type="range" id="goalRange" min="400" max="1600" step="10" value="1400" style="width:120px; margin-top:.5rem;" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid g-4 mb">
+        <div class="card stat-tile"><div class="big" id="stAnswered">0</div><div class="lbl">Questions Done</div></div>
+        <div class="card stat-tile"><div class="big" id="stAccuracy">—</div><div class="lbl">Overall Accuracy</div></div>
+        <div class="card stat-tile"><div class="big" id="stStreak">0</div><div class="lbl">Day Streak 🔥</div></div>
+        <div class="card stat-tile"><div class="big" id="stTests">0</div><div class="lbl">Practice Tests</div></div>
+      </div>
+
+      <div class="card mb">
+        <h3 class="mb">Domain Mastery</h3>
+        <div id="masteryList"></div>
+      </div>
+
+      <h3 class="mb">Jump Back In</h3>
+      <div class="quick-grid">
+        <button class="quick" data-go="practice"><div class="ic">✏️</div><h4>Targeted Practice</h4><p>Drill a domain with instant feedback and worked solutions.</p></button>
+        <button class="quick" data-go="simulator"><div class="ic">🧪</div><h4>Full Test Simulator</h4><p>Take a module-adaptive Digital SAT and get a 400–1600 estimate.</p></button>
+        <button class="quick" data-go="review"><div class="ic">🔁</div><h4>Review Mistakes</h4><p>Revisit every question you missed or bookmarked.</p></button>
+        <button class="quick" data-go="reference"><div class="ic">📖</div><h4>Formula Reference</h4><p>The official-style reference sheet plus key strategies.</p></button>
+      </div>
+    </section>
+
+    <!-- ════════ PRACTICE ════════ -->
+    <section class="view" id="view-practice">
+      <!-- Setup -->
+      <div id="practiceSetup">
+        <div class="view-head"><h2>Targeted Practice</h2><p>Pick a section, focus a domain, and choose your difficulty. Free plan includes <b id="freeQuota">10</b> questions per day.</p></div>
+        <div class="card">
+          <div class="field-label">Section</div>
+          <div class="chip-set" id="setSection">
+            <button class="chip on" data-sec="math">Math</button>
+            <button class="chip" data-sec="rw">Reading &amp; Writing</button>
+            <button class="chip" data-sec="mix">Mixed</button>
+          </div>
+          <div class="field-label">Domain</div>
+          <div class="chip-set" id="setDomain"></div>
+          <div class="field-label">Difficulty</div>
+          <div class="chip-set" id="setDiff">
+            <button class="chip on" data-diff="adaptive">🎯 Adaptive</button>
+            <button class="chip" data-diff="1">Easy</button>
+            <button class="chip" data-diff="2">Medium</button>
+            <button class="chip" data-diff="3">Hard</button>
+          </div>
+          <div class="field-label">Length</div>
+          <div class="chip-set" id="setLen">
+            <button class="chip" data-len="5">5</button>
+            <button class="chip on" data-len="10">10</button>
+            <button class="chip" data-len="20">20</button>
+          </div>
+          <button class="btn btn-primary btn-lg" id="startPractice" style="margin-top:.6rem;">Start Practice →</button>
+          <p class="muted" id="quotaNote" style="margin-top:.8rem; font-size:.85rem;"></p>
+        </div>
+      </div>
+
+      <!-- Runner -->
+      <div id="practiceRunner" class="hidden q-shell">
+        <div class="q-top">
+          <div class="q-meta" id="pMeta"></div>
+          <div style="display:flex; gap:1rem; align-items:center;">
+            <span class="q-timer" id="pTimer">0:00</span>
+            <span class="q-progress" id="pProgress"></span>
+          </div>
+        </div>
+        <div id="pPassage"></div>
+        <div class="q-stem" id="pStem"></div>
+        <div id="pAnswerArea"></div>
+        <div class="feedback" id="pFeedback"><div class="verdict"></div><div class="exp"></div></div>
+        <div class="q-actions">
+          <button class="iconbtn" id="pBookmark" title="Bookmark">☆</button>
+          <button class="btn btn-ghost" id="pQuit">Quit</button>
+          <span class="spacer"></span>
+          <button class="btn btn-primary" id="pCheck">Check Answer</button>
+          <button class="btn btn-primary hidden" id="pNext">Next →</button>
+        </div>
+      </div>
+
+      <!-- Summary -->
+      <div id="practiceSummary" class="hidden q-shell">
+        <div class="card summary-score">
+          <div class="ring" id="sumPct">—</div>
+          <p class="muted" id="sumLine"></p>
+          <div class="grid g-3 mt">
+            <div class="stat-tile"><div class="big" id="sumRight">0</div><div class="lbl">Correct</div></div>
+            <div class="stat-tile"><div class="big" id="sumWrong">0</div><div class="lbl">Missed</div></div>
+            <div class="stat-tile"><div class="big" id="sumTime">0:00</div><div class="lbl">Time</div></div>
+          </div>
+          <div class="q-actions" style="justify-content:center;">
+            <button class="btn btn-outline" id="sumReview">Review Mistakes</button>
+            <button class="btn btn-primary" id="sumAgain">Practice Again</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════ SIMULATOR ════════ -->
+    <section class="view" id="view-simulator">
+      <div class="view-head"><h2>Full Test Simulator</h2><p>A condensed, <b>module-adaptive</b> Digital SAT: Reading &amp; Writing then Math, two modules each. Module 2 adapts to how you did in Module 1 — just like the real thing.</p></div>
+      <div id="simGate"></div>
+    </section>
+
+    <!-- ════════ REVIEW ════════ -->
+    <section class="view" id="view-review">
+      <div class="view-head"><h2>Review</h2><p>Every question you've missed or bookmarked, with full explanations.</p></div>
+      <div id="reviewGate"></div>
+    </section>
+
+    <!-- ════════ PROGRESS ════════ -->
+    <section class="view" id="view-progress">
+      <div class="view-head"><h2>Progress</h2><p>Your accuracy by domain and your full session history.</p></div>
+      <div class="card mb">
+        <h3 class="mb">Accuracy by Domain</h3>
+        <div id="progMastery"></div>
+      </div>
+      <div class="card">
+        <h3 class="mb">Session History</h3>
+        <div id="histWrap"><p class="muted">No sessions yet — complete a practice set or a full test to see your history.</p></div>
+        <div style="margin-top:1rem;"><button class="btn btn-ghost btn-sm" id="resetData">Reset all my data</button></div>
+      </div>
+    </section>
+
+    <!-- ════════ REFERENCE ════════ -->
+    <section class="view" id="view-reference">
+      <div class="view-head"><h2>Reference</h2><p>The Digital SAT gives you this reference sheet — memorize the rest.</p></div>
+
+      <div class="card mb">
+        <h3 class="mb">Geometry &amp; Formula Reference</h3>
+        <div class="ref-grid">
+          <div class="formula"><div class="eq">A = πr²</div><div class="nm">Circle area</div></div>
+          <div class="formula"><div class="eq">C = 2πr</div><div class="nm">Circumference</div></div>
+          <div class="formula"><div class="eq">A = ½bh</div><div class="nm">Triangle area</div></div>
+          <div class="formula"><div class="eq">a² + b² = c²</div><div class="nm">Pythagorean</div></div>
+          <div class="formula"><div class="eq">V = ℓwh</div><div class="nm">Box volume</div></div>
+          <div class="formula"><div class="eq">V = πr²h</div><div class="nm">Cylinder</div></div>
+          <div class="formula"><div class="eq">x:x√3:2x</div><div class="nm">30-60-90 △</div></div>
+          <div class="formula"><div class="eq">x:x:x√2</div><div class="nm">45-45-90 △</div></div>
+        </div>
+      </div>
+
+      <div class="grid g-2 mb">
+        <div class="card">
+          <h3 class="mb">Must-Know Formulas (not given)</h3>
+          <div class="ref-grid">
+            <div class="formula"><div class="eq">m = Δy/Δx</div><div class="nm">Slope</div></div>
+            <div class="formula"><div class="eq">y = mx + b</div><div class="nm">Slope-intercept</div></div>
+            <div class="formula"><div class="eq">x = −b±√(b²−4ac) / 2a</div><div class="nm">Quadratic formula</div></div>
+            <div class="formula"><div class="eq">y = a(1±r)ᵗ</div><div class="nm">Exponential growth/decay</div></div>
+            <div class="formula"><div class="eq">%Δ = new−old / old</div><div class="nm">Percent change</div></div>
+            <div class="formula"><div class="eq">d = rt</div><div class="nm">Distance</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <h3 class="mb">Top Strategies</h3>
+          <ul style="list-style:none; display:grid; gap:.7rem;">
+            <li>⏱️ <b>Pace:</b> ~1.2 min/math Q, ~1.2 min/R&amp;W Q. Don't camp on one question.</li>
+            <li>🎯 <b>Plug in:</b> test answer choices or pick smart numbers when stuck.</li>
+            <li>🖩 <b>Desmos:</b> the built-in graphing calculator solves equations, systems, and zeros fast.</li>
+            <li>✂️ <b>Eliminate:</b> kill two wrong answers, then guess — never leave blanks.</li>
+            <li>📖 <b>R&amp;W:</b> answer from the text, not outside knowledge.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="mb">The 12 Digital SAT Math Question Types</h3>
+        <div class="qt-list">
+          <div class="qt-item"><b>Linear equations in 1 variable</b>&nbsp;<span>— solve & interpret.</span></div>
+          <div class="qt-item"><b>Linear equations in 2 variables</b>&nbsp;<span>— slope, intercepts, modeling.</span></div>
+          <div class="qt-item"><b>Linear functions</b>&nbsp;<span>— evaluate, build, interpret.</span></div>
+          <div class="qt-item"><b>Systems of linear equations</b>&nbsp;<span>— solve & count solutions.</span></div>
+          <div class="qt-item"><b>Linear inequalities</b>&nbsp;<span>— one/two variables, regions.</span></div>
+          <div class="qt-item"><b>Nonlinear functions</b>&nbsp;<span>— quadratic, exponential, polynomial.</span></div>
+          <div class="qt-item"><b>Nonlinear equations & systems</b>&nbsp;<span>— solve, graph intersections.</span></div>
+          <div class="qt-item"><b>Equivalent expressions</b>&nbsp;<span>— factor, expand, simplify.</span></div>
+          <div class="qt-item"><b>Ratios, rates, proportions, units</b>&nbsp;<span>— scaling & conversions.</span></div>
+          <div class="qt-item"><b>Percentages</b>&nbsp;<span>— increase, decrease, of.</span></div>
+          <div class="qt-item"><b>One-variable data & probability</b>&nbsp;<span>— mean, median, spread, chance.</span></div>
+          <div class="qt-item"><b>Geometry & trigonometry</b>&nbsp;<span>— angles, area, volume, SOH-CAH-TOA.</span></div>
+        </div>
+        <p class="mt"><a href="https://www.youtube.com/watch?v=11Oi9gd3BdU" target="_blank" rel="noopener">▶ Watch Dr. Marrero break down all 12 types →</a></p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── Premium modal ── -->
+  <div class="modal-bg" id="premiumModal">
+    <div class="modal">
+      <button class="modal-close" id="modalClose">×</button>
+      <h3>Unlock SAT Premium</h3>
+      <p>Subscribe for unlimited practice, the full-test simulator, mistake review, and progress tracking. Already subscribed? Enter your license key to activate this device.</p>
+      <input type="text" id="licenseInput" placeholder="Paste your license key (XXXXXXXX-XXXX-…)" />
+      <div class="msg" id="licenseMsg"></div>
+      <div style="display:flex; gap:.7rem; flex-wrap:wrap;">
+        <button class="btn btn-primary" id="activateBtn">Activate</button>
+        <a class="btn btn-outline" id="subscribeBtn" href="#" target="_blank" rel="noopener">Subscribe →</a>
+      </div>
+      <p class="disclaimer" style="margin-top:1rem;">Your key is stored only on this device. Manage your subscription anytime from your Lemon Squeezy email receipt.</p>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <footer>
+    <div class="footer-bottom">
+      © 2026 Math Topics By Dr. Marrero · <a href="index.html">Home</a> · <a href="index.html#store">Shop</a> · <a href="resources.html">Resources</a>
+      <p style="margin-top:.6rem; font-size:.8rem;">Practice questions are original, SAT-style items written by Dr. Marrero. “SAT” is a trademark of the College Board, which does not endorse this product.</p>
+    </div>
+  </footer>
+
+  <script>
+  /* ═══════════════════════════════════════════════════════════════
+     SAT COMMAND CENTER  —  single-file app
+     ───────────────────────────────────────────────────────────────
+     SUBSCRIPTION CONFIG (Lemon Squeezy)
+     1. Create a SUBSCRIPTION product in Lemon Squeezy with license keys
+        enabled (Settings → enable "Generate license keys").
+     2. Put your hosted checkout/buy URL in LS.checkoutUrl below.
+     3. (Optional) Set LS.storeId / LS.productId to the numeric IDs from
+        Lemon Squeezy to require the key to belong to THIS product.
+        Leave null to accept any valid active key from your store.
+     The app validates keys against Lemon Squeezy's public License API
+     (no secret key needed — safe for the browser).
+     ═══════════════════════════════════════════════════════════════ */
+  const LS = {
+    checkoutUrl: 'https://marreromathsat.com',   // ← the live SAT Math subscription app (Base44)
+    storeId:   null,    // e.g. 12345  (optional enforcement)
+    productId: null,    // e.g. 67890  (optional enforcement)
+    validateEndpoint: 'https://api.lemonsqueezy.com/v1/licenses/validate',
+    activateEndpoint: 'https://api.lemonsqueezy.com/v1/licenses/activate',
+  };
+  const FREE_DAILY_QUOTA = 10;
+
+  /* ───────── State / persistence ───────── */
+  const KEY = 'marreroSAT_v1';
+  const todayStr = () => new Date().toISOString().slice(0,10);
+  const defaultState = () => ({
+    premium:false, license:null, instanceId:null,
+    testDate:null, goal:1400,
+    answered:0, correct:0,
+    byDomain:{},               // domain -> {a, c}
+    streakDays:0, lastActive:null,
+    quota:{ date:todayStr(), used:0 },
+    bookmarks:[],              // question ids
+    missed:[],                 // question ids (most recent first)
+    history:[],                // {type, date, detail, score}
+    bestTest:null,
+  });
+  let S = load();
+  function load(){ try { return Object.assign(defaultState(), JSON.parse(localStorage.getItem(KEY)||'{}')); } catch(e){ return defaultState(); } }
+  function save(){ localStorage.setItem(KEY, JSON.stringify(S)); }
+
+  function touchStreak(){
+    const t = todayStr();
+    if (S.lastActive === t) return;
+    const y = new Date(Date.now()-86400000).toISOString().slice(0,10);
+    S.streakDays = (S.lastActive === y) ? (S.streakDays+1) : 1;
+    S.lastActive = t; save();
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     QUESTION BANK  (original, SAT-style)
+     diff: 1 easy · 2 medium · 3 hard   |   type: 'mc' or 'grid'
+     For 'mc', ans = index of correct choice.  For 'grid', ans = string/number (accepts numeric equivalents).
+     Extend freely — the whole app scales to whatever you add here.
+     ═══════════════════════════════════════════════════════════════ */
+  const DOMAINS = {
+    math: ['Algebra','Advanced Math','Problem-Solving & Data','Geometry & Trig'],
+    rw:   ['Information & Ideas','Craft & Structure','Expression of Ideas','English Conventions'],
+  };
+
+  const BANK = [
+    /* ───── MATH · Algebra ───── */
+    {id:'m01',sec:'math',dom:'Algebra',diff:1,type:'mc',stem:'If 3x + 7 = 22, what is the value of x?',ch:['3','5','7','15'],ans:1,exp:'Subtract 7: 3x = 15. Divide by 3: x = 5.'},
+    {id:'m02',sec:'math',dom:'Algebra',diff:1,type:'mc',stem:'Solve: 5(x − 2) = 3x + 4.',ch:['x = 3','x = 5','x = 7','x = 9'],ans:2,exp:'Distribute: 5x − 10 = 3x + 4. Subtract 3x and add 10: 2x = 14, so x = 7.'},
+    {id:'m03',sec:'math',dom:'Algebra',diff:1,type:'mc',stem:'A line passes through (2, 3) and (6, 11). What is its slope?',ch:['1/2','2','4','8'],ans:1,exp:'Slope = (11 − 3)/(6 − 2) = 8/4 = 2.'},
+    {id:'m04',sec:'math',dom:'Algebra',diff:2,type:'mc',stem:'For the system 2x + y = 11 and x − y = 1, what is the value of x?',ch:['3','4','5','7'],ans:1,exp:'Add the equations: 3x = 12, so x = 4 (and y = 3).'},
+    {id:'m05',sec:'math',dom:'Algebra',diff:2,type:'mc',stem:'Which value of x satisfies 4 − 2x > 10?',ch:['−4','−2','0','3'],ans:0,exp:'4 − 2x > 10 → −2x > 6 → x < −3. Only −4 is less than −3.'},
+    {id:'m06',sec:'math',dom:'Algebra',diff:2,type:'grid',stem:'A gym charges a $25 sign-up fee plus $15 per month. After how many months is the total cost $145?',ans:'8',exp:'25 + 15m = 145 → 15m = 120 → m = 8 months.'},
+    {id:'m07',sec:'math',dom:'Algebra',diff:1,type:'grid',stem:'A line has equation y = 3x − 4. What is its y-value when x = 0?',ans:'-4',exp:'When x = 0, y = 3(0) − 4 = −4 (the y-intercept).'},
+    {id:'m08',sec:'math',dom:'Algebra',diff:3,type:'mc',stem:'The line y = mx + b passes through (0, −4) and (3, 5). What is m + b?',ch:['−1','1','3','5'],ans:0,exp:'b = −4 (the y-intercept). Slope m = (5 − (−4))/(3 − 0) = 9/3 = 3. So m + b = 3 + (−4) = −1.'},
+
+    /* ───── MATH · Advanced Math ───── */
+    {id:'m09',sec:'math',dom:'Advanced Math',diff:1,type:'grid',stem:'If f(x) = 2x² − 3x + 1, what is f(2)?',ans:'3',exp:'f(2) = 2(4) − 3(2) + 1 = 8 − 6 + 1 = 3.'},
+    {id:'m10',sec:'math',dom:'Advanced Math',diff:1,type:'mc',stem:'What is the constant term when (x + 3)(x − 4) is expanded?',ch:['−12','−1','7','12'],ans:0,exp:'(x + 3)(x − 4) = x² − x − 12. The constant term is −12.'},
+    {id:'m11',sec:'math',dom:'Advanced Math',diff:2,type:'mc',stem:'What is the larger solution of x² − 5x + 6 = 0?',ch:['1','2','3','6'],ans:2,exp:'Factor: (x − 2)(x − 3) = 0, so x = 2 or 3. The larger is 3.'},
+    {id:'m12',sec:'math',dom:'Advanced Math',diff:2,type:'grid',stem:'If 2ˣ = 32, what is the value of x?',ans:'5',exp:'32 = 2⁵, so x = 5.'},
+    {id:'m13',sec:'math',dom:'Advanced Math',diff:2,type:'mc',stem:'The graph of y = x² − 6x + 5 is a parabola. What is the x-coordinate of its vertex?',ch:['−3','3','5','6'],ans:1,exp:'Vertex x = −b/(2a) = −(−6)/(2·1) = 3.'},
+    {id:'m14',sec:'math',dom:'Advanced Math',diff:3,type:'mc',stem:'A bacteria culture of 500 doubles every 3 hours, modeled by P = 500·2^(t/3). How many bacteria are there after 9 hours?',ch:['1,500','2,000','4,000','8,000'],ans:2,exp:'t = 9 → 2^(9/3) = 2³ = 8. P = 500·8 = 4,000.'},
+    {id:'m15',sec:'math',dom:'Advanced Math',diff:3,type:'mc',stem:'What are the solutions of x² + 2x − 15 = 0?',ch:['x = 3 or x = 5','x = −3 or x = 5','x = 3 or x = −5','x = −3 or x = −5'],ans:2,exp:'Factor: (x + 5)(x − 3) = 0, so x = −5 or x = 3.'},
+
+    /* ───── MATH · Problem-Solving & Data ───── */
+    {id:'m16',sec:'math',dom:'Problem-Solving & Data',diff:1,type:'grid',stem:'What is 20% of 150?',ans:'30',exp:'0.20 × 150 = 30.'},
+    {id:'m17',sec:'math',dom:'Problem-Solving & Data',diff:1,type:'mc',stem:'A $40 shirt is marked down 25%. What is the sale price?',ch:['$10','$15','$30','$35'],ans:2,exp:'25% of 40 = 10 off, so 40 − 10 = $30.'},
+    {id:'m18',sec:'math',dom:'Problem-Solving & Data',diff:1,type:'grid',stem:'What is the mean (average) of 4, 8, 10, and 14?',ans:'9',exp:'Sum = 36; 36 ÷ 4 = 9.'},
+    {id:'m19',sec:'math',dom:'Problem-Solving & Data',diff:2,type:'mc',stem:'A bag has 3 red and 5 blue marbles. What is the probability of drawing a red marble?',ch:['3/8','3/5','5/8','1/3'],ans:0,exp:'There are 8 marbles total; P(red) = 3/8.'},
+    {id:'m20',sec:'math',dom:'Problem-Solving & Data',diff:2,type:'mc',stem:'Two numbers are in the ratio 3 : 5 and sum to 40. What is the larger number?',ch:['15','24','25','30'],ans:2,exp:'8 parts = 40, so 1 part = 5. The larger is 5 × 5 = 25.'},
+    {id:'m21',sec:'math',dom:'Problem-Solving & Data',diff:2,type:'grid',stem:'A car travels 180 miles in 3 hours at a constant rate. How many miles does it travel in 5 hours?',ans:'300',exp:'Rate = 180/3 = 60 mph. 60 × 5 = 300 miles.'},
+    {id:'m22',sec:'math',dom:'Problem-Solving & Data',diff:3,type:'mc',stem:'A price increases from $50 to $65. What is the percent increase?',ch:['15%','23%','30%','65%'],ans:2,exp:'Change = 15; 15/50 = 0.30 = 30%.'},
+    {id:'m23',sec:'math',dom:'Problem-Solving & Data',diff:3,type:'grid',stem:'A recipe that serves 4 uses 6 cups of flour. How many cups are needed to serve 10 people at the same rate?',ans:'15',exp:'Flour per serving = 6/4 = 1.5 cups. 1.5 × 10 = 15 cups.'},
+
+    /* ───── MATH · Geometry & Trig ───── */
+    {id:'m24',sec:'math',dom:'Geometry & Trig',diff:1,type:'mc',stem:'A circle has radius 5. What is its area?',ch:['10π','25π','50π','100π'],ans:1,exp:'A = πr² = π(5)² = 25π.'},
+    {id:'m25',sec:'math',dom:'Geometry & Trig',diff:1,type:'grid',stem:'A right triangle has legs of length 6 and 8. What is the length of the hypotenuse?',ans:'10',exp:'c² = 6² + 8² = 36 + 64 = 100, so c = 10.'},
+    {id:'m26',sec:'math',dom:'Geometry & Trig',diff:1,type:'grid',stem:'Two angles of a triangle measure 50° and 60°. What is the measure, in degrees, of the third angle?',ans:'70',exp:'Angles sum to 180°: 180 − 50 − 60 = 70°.'},
+    {id:'m27',sec:'math',dom:'Geometry & Trig',diff:2,type:'mc',stem:'In a right triangle, the side opposite angle θ is 3 and the hypotenuse is 5. What is sin θ?',ch:['3/5','4/5','3/4','5/3'],ans:0,exp:'sin θ = opposite/hypotenuse = 3/5.'},
+    {id:'m28',sec:'math',dom:'Geometry & Trig',diff:2,type:'grid',stem:'A cube has edge length 4. What is its volume?',ans:'64',exp:'V = s³ = 4³ = 64.'},
+    {id:'m29',sec:'math',dom:'Geometry & Trig',diff:2,type:'mc',stem:'A right triangle has a hypotenuse of 13 and one leg of 5. What is the other leg?',ch:['8','12','12.5','18'],ans:1,exp:'leg² = 13² − 5² = 169 − 25 = 144, so leg = 12.'},
+    {id:'m30',sec:'math',dom:'Geometry & Trig',diff:3,type:'mc',stem:'Triangle A has sides 4 and 6. A similar triangle B has the side corresponding to 4 equal to 10. What is the side of B corresponding to 6?',ch:['12','14','15','16'],ans:2,exp:'Scale factor = 10/4 = 2.5. Corresponding side = 6 × 2.5 = 15.'},
+    {id:'m31',sec:'math',dom:'Geometry & Trig',diff:3,type:'mc',stem:'A 45-45-90 right triangle has legs of length 5. What is the length of the hypotenuse?',ch:['5','5√2','10','5√3'],ans:1,exp:'In a 45-45-90 triangle the hypotenuse = leg × √2 = 5√2.'},
+
+    /* ───── READING & WRITING · Information & Ideas ───── */
+    {id:'r01',sec:'rw',dom:'Information & Ideas',diff:1,passage:'Honeybees communicate the location of food through a "waggle dance." The angle of the dance relative to vertical signals the direction of the food relative to the sun, while the duration of the waggle indicates distance.',stem:'Which choice best states the main idea of the text?',ch:['Honeybees prefer food that is close to the hive.','Honeybees use a dance to convey both the direction and distance of food.','The waggle dance is the only way bees locate the sun.','Bees dance more vigorously when food is scarce.'],ans:1,exp:'The text says the angle conveys direction and the duration conveys distance — choice B captures both. The others add claims the text does not make.'},
+    {id:'r02',sec:'rw',dom:'Information & Ideas',diff:2,passage:'A researcher measured plant growth under three light colors. Plants under red light grew an average of 12 cm, those under blue light 18 cm, and those under green light only 4 cm over the study period.',stem:'Which statement is best supported by the data?',ch:['Green light produced the most growth.','Blue light was associated with the greatest average growth.','All three colors produced equal growth.','Red light produced less growth than green light.'],ans:1,exp:'Blue light produced the highest average (18 cm), so B is supported. Red (12) exceeded green (4), making D false.'},
+    {id:'r03',sec:'rw',dom:'Information & Ideas',diff:3,passage:'Although the new policy was intended to reduce traffic, commute times in the city center actually rose by 8% in the first year. Supporters argue, however, that the increase reflects a surge in overall population rather than a failure of the policy.',stem:'Based on the text, supporters would most likely agree that:',ch:['The policy clearly failed to reduce traffic.','Population growth may obscure the policy’s true effect on traffic.','Commute times fell in the first year.','Traffic policy has no effect on commute times.'],ans:1,exp:'Supporters attribute the rise to population growth rather than the policy, implying the policy’s real effect is masked — choice B.'},
+
+    /* ───── READING & WRITING · Craft & Structure ───── */
+    {id:'r04',sec:'rw',dom:'Craft & Structure',diff:1,passage:'The committee praised the architect’s ______ design, noting how every beam and joint served a clear purpose with nothing wasted.',stem:'Which choice best completes the text?',ch:['ornate','economical','careless','enormous'],ans:1,exp:'"Nothing wasted" and "clear purpose" point to "economical" (efficient, without excess).'},
+    {id:'r05',sec:'rw',dom:'Craft & Structure',diff:2,passage:'Early critics dismissed the novel as trivial, but later scholars came to regard it as a ______ work that anticipated themes central to modern literature.',stem:'Which choice best completes the text?',ch:['forgettable','derivative','seminal','tedious'],ans:2,exp:'"Anticipated themes central to modern literature" signals influence and originality — "seminal" (foundational, influential).'},
+    {id:'r06',sec:'rw',dom:'Craft & Structure',diff:2,passage:'Paragraph 1 introduces a long-held assumption about migratory birds. Paragraph 2 then presents a recent study whose findings contradict that assumption.',stem:'What is the main rhetorical purpose of the second paragraph?',ch:['To restate the assumption in different words','To challenge the assumption with new evidence','To dismiss the study as unreliable','To summarize the first paragraph'],ans:1,exp:'The second paragraph presents findings that contradict the assumption — its purpose is to challenge it with new evidence.'},
+
+    /* ───── READING & WRITING · Expression of Ideas ───── */
+    {id:'r07',sec:'rw',dom:'Expression of Ideas',diff:1,passage:'The early trains were slow and unreliable. ______ , within a decade, rail travel had become the fastest way to cross the country.',stem:'Which transition best fits the blank?',ch:['For example','Nevertheless','Similarly','In addition'],ans:1,exp:'The sentence contrasts slow early trains with later speed, so a contrast transition — "Nevertheless" — fits.'},
+    {id:'r08',sec:'rw',dom:'Expression of Ideas',diff:2,passage:'Notes:\n• The mural took three years to complete.\n• It covers 2,000 square feet.\n• It was painted by a team of twelve artists.',stem:'The writer wants to emphasize the scale of the project. Which choice best uses the notes to accomplish this?',ch:['The mural was painted by a team of twelve artists.','Covering 2,000 square feet, the mural took a team of twelve artists three years to complete.','The mural took three years to complete.','The mural is a notable work of public art.'],ans:1,exp:'Choice B combines all three large-scale details (size, team, time) to emphasize the project’s scale.'},
+    {id:'r09',sec:'rw',dom:'Expression of Ideas',diff:3,passage:'The first study found a strong link between sleep and memory. ______ the second study, which used a larger sample, found no such link.',stem:'Which transition best fits the blank?',ch:['Consequently,','By contrast,','For instance,','Likewise,'],ans:1,exp:'The second study contradicts the first, so a contrast transition — "By contrast," — is correct.'},
+
+    /* ───── READING & WRITING · English Conventions ───── */
+    {id:'r10',sec:'rw',dom:'English Conventions',diff:1,passage:'The collection of rare coins ______ displayed in the museum’s east wing.',stem:'Which choice makes the sentence grammatically correct?',ch:['are','is','were','have been'],ans:1,exp:'The subject is "collection" (singular), so the verb must be singular: "is."'},
+    {id:'r11',sec:'rw',dom:'English Conventions',diff:2,passage:'The hikers reached the summit at dawn ______ they had been climbing since midnight.',stem:'Which choice correctly joins the two independent clauses?',ch:[', they','; they','they',', and quickly they'],ans:1,exp:'Two independent clauses can be joined with a semicolon: "...at dawn; they had been climbing..."'},
+    {id:'r12',sec:'rw',dom:'English Conventions',diff:2,passage:'My sister, ______ lives in Denver, is visiting next week.',stem:'Which choice correctly completes the sentence?',ch:['who','whom','which','that'],ans:0,exp:'The relative pronoun refers to a person and is the subject of "lives," so "who" is correct.'},
+    {id:'r13',sec:'rw',dom:'English Conventions',diff:3,passage:'Each of the students ______ responsible for bringing their own materials to the lab.',stem:'Which choice makes the sentence grammatically correct?',ch:['are','were','is','have been'],ans:2,exp:'"Each" is singular, so the verb is "is": "Each of the students is responsible..."'},
+  ];
+
+  const byId = id => BANK.find(q => q.id === id);
+  const DOMSHORT = { 'Algebra':'ALG','Advanced Math':'ADV','Problem-Solving & Data':'DATA','Geometry & Trig':'GEO','Information & Ideas':'INFO','Craft & Structure':'CRAFT','Expression of Ideas':'EXPR','English Conventions':'CONV' };
+  const SECNAME = { math:'Math', rw:'Reading & Writing' };
+
+  /* ═══════════════════════════════════════════════════════════════
+     PREMIUM / LICENSING
+     ═══════════════════════════════════════════════════════════════ */
+  function isPremium(){ return !!S.premium; }
+  function refreshPlanUI(){
+    document.getElementById('planFlag').innerHTML = isPremium()
+      ? '<span class="plan-pill premium">★ Premium</span>'
+      : '<span class="plan-pill free">Free Plan</span> <button class="btn btn-primary btn-sm" id="upgradeTop">Upgrade</button>';
+    if (!isPremium()){ const u=document.getElementById('upgradeTop'); if(u) u.onclick=openPremium; }
+    document.querySelectorAll('.tab [data-lock]').forEach(el=> el.style.display = isPremium()?'none':'inline');
+    document.getElementById('subscribeBtn').href = LS.checkoutUrl;
+    document.getElementById('freeQuota').textContent = FREE_DAILY_QUOTA;
+    renderSimGate(); renderReviewGate();
+  }
+
+  function openPremium(){ document.getElementById('premiumModal').classList.add('show'); document.getElementById('licenseMsg').textContent=''; }
+  function closePremium(){ document.getElementById('premiumModal').classList.remove('show'); }
+
+  async function activateLicense(){
+    const key = document.getElementById('licenseInput').value.trim();
+    const msg = document.getElementById('licenseMsg');
+    if (!key){ msg.className='msg err'; msg.textContent='Please paste your license key.'; return; }
+    msg.className='msg'; msg.textContent='Checking…';
+    try {
+      const res = await fetch(LS.activateEndpoint, {
+        method:'POST', headers:{'Accept':'application/json','Content-Type':'application/x-www-form-urlencoded'},
+        body: new URLSearchParams({ license_key:key, instance_name:'SAT Command Center · '+navigator.platform })
+      });
+      const data = await res.json();
+      if (data && data.activated && data.license_key && data.license_key.status === 'active' && productOk(data)){
+        S.premium=true; S.license=key; S.instanceId = data.instance ? data.instance.id : null; save();
+        msg.className='msg ok'; msg.textContent='✓ Activated! Premium unlocked.';
+        refreshPlanUI(); setTimeout(()=>{ closePremium(); toast('Premium unlocked 🎉'); }, 900);
+      } else {
+        msg.className='msg err';
+        msg.textContent = (data && data.error) ? data.error : 'That key could not be activated. Check the key or your subscription status.';
+      }
+    } catch(e){
+      msg.className='msg err'; msg.textContent='Network error reaching the license server. Try again.';
+    }
+  }
+  function productOk(data){
+    if (LS.productId && data.meta && data.meta.product_id && data.meta.product_id !== LS.productId) return false;
+    if (LS.storeId && data.meta && data.meta.store_id && data.meta.store_id !== LS.storeId) return false;
+    return true;
+  }
+  // Silent re-validation on load (handles expired/canceled subscriptions)
+  async function revalidate(){
+    if (!S.license) return;
+    try {
+      const res = await fetch(LS.validateEndpoint, {
+        method:'POST', headers:{'Accept':'application/json','Content-Type':'application/x-www-form-urlencoded'},
+        body: new URLSearchParams(Object.assign({ license_key:S.license }, S.instanceId?{instance_id:S.instanceId}:{}))
+      });
+      const data = await res.json();
+      const ok = data && data.valid && data.license_key && data.license_key.status === 'active' && productOk(data);
+      if (S.premium !== !!ok){ S.premium = !!ok; save(); refreshPlanUI();
+        if (!ok) toast('Your subscription is no longer active.'); }
+    } catch(e){ /* offline — keep last known state */ }
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     ROUTING / TABS
+     ═══════════════════════════════════════════════════════════════ */
+  const LOCKED_VIEWS = ['simulator','review'];
+  function go(view){
+    if (LOCKED_VIEWS.includes(view) && !isPremium()){ /* still show the gate */ }
+    document.querySelectorAll('.tab').forEach(t=> t.classList.toggle('active', t.dataset.view===view));
+    document.querySelectorAll('.view').forEach(v=> v.classList.remove('active'));
+    document.getElementById('view-'+view).classList.add('active');
+    if (view==='dashboard') renderDashboard();
+    if (view==='progress') renderProgress();
+    if (view==='review') renderReviewGate();
+    if (view==='simulator') renderSimGate();
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+  document.getElementById('tabbar').addEventListener('click', e=>{ const t=e.target.closest('.tab'); if(t) go(t.dataset.view); });
+  document.querySelectorAll('[data-go]').forEach(b=> b.onclick=()=>go(b.dataset.go));
+
+  /* ═══════════════════════════════════════════════════════════════
+     DASHBOARD
+     ═══════════════════════════════════════════════════════════════ */
+  function estScore(){
+    if (S.answered < 4) return null;
+    const acc = S.correct / S.answered;
+    return Math.round((400 + acc*1200)/10)*10;  // 400–1600 estimate
+  }
+  function renderDashboard(){
+    // countdown
+    if (S.testDate){
+      document.getElementById('testDate').value = S.testDate;
+      const diff = Math.ceil((new Date(S.testDate) - new Date(todayStr()))/86400000);
+      document.getElementById('cdDays').textContent = diff >= 0 ? diff : 'Past';
+    }
+    const est = estScore();
+    document.getElementById('estScore').textContent = est ? est : '—';
+    document.getElementById('goalScore').textContent = S.goal;
+    document.getElementById('goalRange').value = S.goal;
+    document.getElementById('stAnswered').textContent = S.answered;
+    document.getElementById('stAccuracy').textContent = S.answered ? Math.round(100*S.correct/S.answered)+'%' : '—';
+    document.getElementById('stStreak').textContent = S.streakDays;
+    document.getElementById('stTests').textContent = S.history.filter(h=>h.type==='test').length;
+    renderMastery(document.getElementById('masteryList'));
+  }
+  function renderMastery(host){
+    const all = [...DOMAINS.math, ...DOMAINS.rw];
+    host.innerHTML = all.map(d=>{
+      const rec = S.byDomain[d] || {a:0,c:0};
+      const pct = rec.a ? Math.round(100*rec.c/rec.a) : 0;
+      const sec = DOMAINS.math.includes(d) ? 'Math' : 'R&W';
+      return `<div class="mastery-row"><div class="name">${d}<small>${sec}</small></div><div class="bar"><i style="width:${pct}%"></i></div><div class="pct">${rec.a?pct+'%':'—'}</div></div>`;
+    }).join('');
+  }
+  document.getElementById('testDate').addEventListener('change', e=>{ S.testDate=e.target.value; save(); renderDashboard(); });
+  document.getElementById('goalRange').addEventListener('input', e=>{ S.goal=+e.target.value; document.getElementById('goalScore').textContent=S.goal; save(); });
+
+  /* ═══════════════════════════════════════════════════════════════
+     PRACTICE SETUP
+     ═══════════════════════════════════════════════════════════════ */
+  let setup = { sec:'math', dom:'all', diff:'adaptive', len:10 };
+  function renderDomainChips(){
+    const host = document.getElementById('setDomain');
+    let doms;
+    if (setup.sec==='mix') doms = [...DOMAINS.math, ...DOMAINS.rw];
+    else doms = DOMAINS[setup.sec];
+    host.innerHTML = `<button class="chip ${setup.dom==='all'?'on':''}" data-dom="all">All domains</button>` +
+      doms.map(d=>`<button class="chip ${setup.dom===d?'on':''}" data-dom="${d}">${d}</button>`).join('');
+  }
+  function chipGroup(id, attr, cb){
+    document.getElementById(id).addEventListener('click', e=>{
+      const c = e.target.closest('.chip'); if(!c) return;
+      document.querySelectorAll(`#${id} .chip`).forEach(x=>x.classList.remove('on'));
+      c.classList.add('on'); cb(c.dataset[attr]);
+    });
+  }
+  chipGroup('setSection','sec', v=>{ setup.sec=v; setup.dom='all'; renderDomainChips(); });
+  chipGroup('setDomain','dom', v=>{ setup.dom=v; });
+  chipGroup('setDiff','diff', v=>{ setup.diff=v; });
+  chipGroup('setLen','len', v=>{ setup.len=+v; });
+
+  function quotaLeft(){
+    if (S.quota.date !== todayStr()){ S.quota={date:todayStr(),used:0}; save(); }
+    return FREE_DAILY_QUOTA - S.quota.used;
+  }
+  function refreshQuotaNote(){
+    const note = document.getElementById('quotaNote');
+    if (isPremium()){ note.innerHTML='★ <b>Premium:</b> unlimited practice unlocked.'; return; }
+    const left = Math.max(0, quotaLeft());
+    note.innerHTML = `Free plan: <b>${left}</b> of ${FREE_DAILY_QUOTA} questions left today. <a href="#" id="upQuota">Go unlimited →</a>`;
+    const u=document.getElementById('upQuota'); if(u) u.onclick=(e)=>{e.preventDefault();openPremium();};
+  }
+
+  /* ───── Build a question set ───── */
+  function buildSet(){
+    let pool = BANK.filter(q => setup.sec==='mix' ? true : q.sec===setup.sec);
+    if (setup.dom!=='all') pool = pool.filter(q=>q.dom===setup.dom);
+    if (setup.diff!=='adaptive') pool = pool.filter(q=>q.diff===+setup.diff);
+    pool = shuffle(pool.slice());
+    let n = setup.len;
+    if (!isPremium()) n = Math.min(n, Math.max(0, quotaLeft()));
+    if (setup.diff==='adaptive'){
+      // start easier, ramp up: sort lightly by difficulty with randomness
+      pool.sort((a,b)=> (a.diff - b.diff) + (Math.random()-0.5));
+    }
+    return pool.slice(0, n);
+  }
+  function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+  /* ═══════════════════════════════════════════════════════════════
+     PRACTICE RUNNER
+     ═══════════════════════════════════════════════════════════════ */
+  let run = null;
+  document.getElementById('startPractice').onclick = ()=>{
+    if (!isPremium() && quotaLeft() <= 0){ openPremium(); return; }
+    const set = buildSet();
+    if (!set.length){ toast('No questions match — try different filters.'); return; }
+    run = { set, i:0, right:0, wrong:0, started:Date.now(), answered:false, missedIds:[], grade:[] };
+    show('practiceRunner'); hide('practiceSetup'); hide('practiceSummary');
+    loadQuestion();
+    startTimer();
+  };
+
+  let timerInt=null, qStart=0;
+  function startTimer(){ qStart=Date.now(); clearInterval(timerInt); timerInt=setInterval(()=>{ document.getElementById('pTimer').textContent=fmt((Date.now()-qStart)/1000); },1000); document.getElementById('pTimer').textContent='0:00'; }
+  function fmt(s){ s=Math.floor(s); return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); }
+
+  function loadQuestion(){
+    const q = run.set[run.i]; run.answered=false; qStart=Date.now();
+    document.getElementById('pMeta').innerHTML =
+      `<span class="q-pill">${SECNAME[q.sec]}</span><span class="q-pill">${q.dom}</span><span class="q-pill diff${q.diff}">${['','Easy','Medium','Hard'][q.diff]}</span>`;
+    document.getElementById('pProgress').textContent = `${run.i+1} / ${run.set.length}`;
+    document.getElementById('pPassage').innerHTML = q.passage ? `<div class="passage">${escapeHTML(q.passage).replace(/\n/g,'<br>')}</div>` : '';
+    document.getElementById('pStem').innerHTML = escapeHTML(q.stem);
+    const area = document.getElementById('pAnswerArea');
+    if (q.type==='grid'){
+      area.innerHTML = `<div class="field-label" style="margin-bottom:.4rem">Enter your answer</div><div class="gridin"><input type="text" id="gridAns" autocomplete="off" placeholder="answer"/></div>`;
+    } else {
+      area.innerHTML = `<div class="choices">` + q.ch.map((c,idx)=>
+        `<button class="choice" data-i="${idx}"><span class="key">${'ABCD'[idx]}</span><span>${escapeHTML(c)}</span></button>`).join('') + `</div>`;
+      area.querySelectorAll('.choice').forEach(ch=> ch.onclick=()=>selectChoice(ch));
+    }
+    run.sel = null;
+    const fb=document.getElementById('pFeedback'); fb.className='feedback';
+    document.getElementById('pBookmark').classList.toggle('on', S.bookmarks.includes(q.id));
+    document.getElementById('pBookmark').textContent = S.bookmarks.includes(q.id)?'★':'☆';
+    show('pCheck'); hide('pNext');
+  }
+  function selectChoice(el){
+    if (run.answered) return;
+    document.querySelectorAll('#pAnswerArea .choice').forEach(c=>c.classList.remove('sel'));
+    el.classList.add('sel'); run.sel = +el.dataset.i;
+  }
+
+  document.getElementById('pCheck').onclick = ()=>{
+    const q = run.set[run.i];
+    let correct, given;
+    if (q.type==='grid'){
+      given = (document.getElementById('gridAns').value||'').trim();
+      if (given==='') { toast('Enter an answer first.'); return; }
+      correct = gridMatch(given, q.ans);
+    } else {
+      if (run.sel==null){ toast('Select an answer first.'); return; }
+      given = run.sel; correct = (run.sel===q.ans);
+    }
+    run.answered=true;
+    // reveal
+    if (q.type==='mc'){
+      document.querySelectorAll('#pAnswerArea .choice').forEach(c=>{
+        const i=+c.dataset.i; c.classList.add('disabled');
+        if (i===q.ans) c.classList.add('correct');
+        else if (i===run.sel) c.classList.add('wrong');
+      });
+    } else {
+      const inp=document.getElementById('gridAns'); inp.disabled=true;
+      inp.style.borderColor = correct ? 'var(--green)' : 'var(--red)';
+    }
+    const fb=document.getElementById('pFeedback');
+    fb.className='feedback show '+(correct?'ok':'no');
+    fb.querySelector('.verdict').textContent = correct ? '✓ Correct!' : '✗ Not quite';
+    let expHTML = escapeHTML(q.exp);
+    if (q.type==='grid' && !correct) expHTML = `Correct answer: <b>${escapeHTML(String(q.ans))}</b>. ` + expHTML;
+    fb.querySelector('.exp').innerHTML = expHTML;
+
+    // record
+    if (correct) run.right++; else { run.wrong++; run.missedIds.push(q.id); }
+    recordAnswer(q, correct);
+    hide('pCheck'); show('pNext');
+    document.getElementById('pNext').textContent = (run.i+1<run.set.length)?'Next →':'See Results →';
+  };
+  function gridMatch(given, ans){
+    const a = parseFloat(given), b = parseFloat(ans);
+    if (!isNaN(a) && !isNaN(b)) return Math.abs(a-b) < 1e-6;
+    return given.replace(/\s/g,'').toLowerCase() === String(ans).replace(/\s/g,'').toLowerCase();
+  }
+
+  function recordAnswer(q, correct){
+    S.answered++; if (correct) S.correct++;
+    const d = S.byDomain[q.dom] || {a:0,c:0}; d.a++; if (correct) d.c++; S.byDomain[q.dom]=d;
+    if (!correct && !S.missed.includes(q.id)) S.missed.unshift(q.id);
+    if (correct){ const k=S.missed.indexOf(q.id); if(k>-1) S.missed.splice(k,1); }
+    if (!isPremium()){ if (S.quota.date!==todayStr()) S.quota={date:todayStr(),used:0}; S.quota.used++; }
+    touchStreak(); save(); refreshQuotaNote();
+  }
+
+  document.getElementById('pNext').onclick = ()=>{
+    if (run.i+1 < run.set.length){ run.i++; loadQuestion(); }
+    else finishPractice();
+  };
+  document.getElementById('pBookmark').onclick = ()=>{
+    const q=run.set[run.i]; const k=S.bookmarks.indexOf(q.id);
+    if (k>-1){ S.bookmarks.splice(k,1); document.getElementById('pBookmark').textContent='☆'; document.getElementById('pBookmark').classList.remove('on'); }
+    else { S.bookmarks.push(q.id); document.getElementById('pBookmark').textContent='★'; document.getElementById('pBookmark').classList.add('on'); toast('Bookmarked'); }
+    save();
+  };
+  document.getElementById('pQuit').onclick = ()=>{ if (confirm('Quit this practice set? Your answered questions are still saved.')) finishPractice(); };
+
+  function finishPractice(){
+    clearInterval(timerInt);
+    const total = run.right+run.wrong;
+    const pct = total ? Math.round(100*run.right/total) : 0;
+    const secs = Math.round((Date.now()-run.started)/1000);
+    document.getElementById('sumPct').textContent = pct+'%';
+    document.getElementById('sumLine').textContent = `You answered ${run.right} of ${total} correctly.`;
+    document.getElementById('sumRight').textContent = run.right;
+    document.getElementById('sumWrong').textContent = run.wrong;
+    document.getElementById('sumTime').textContent = fmt(secs);
+    if (total){
+      S.history.unshift({ type:'practice', date:new Date().toISOString(),
+        detail:`${setup.sec==='mix'?'Mixed':SECNAME[setup.sec]}${setup.dom!=='all'?' · '+DOMSHORT[setup.dom]:''}`,
+        score:`${run.right}/${total}` });
+      S.history = S.history.slice(0,50); save();
+    }
+    hide('practiceRunner'); show('practiceSummary');
+  }
+  document.getElementById('sumAgain').onclick = ()=>{ show('practiceSetup'); hide('practiceSummary'); refreshQuotaNote(); };
+  document.getElementById('sumReview').onclick = ()=> go('review');
+
+  /* ═══════════════════════════════════════════════════════════════
+     SIMULATOR  (module-adaptive)
+     ═══════════════════════════════════════════════════════════════ */
+  function renderSimGate(){
+    const host = document.getElementById('simGate');
+    if (!isPremium()){ host.innerHTML = lockHTML('the Full-Test Simulator',
+      ['Module-adaptive Reading &amp; Writing + Math','Real Bluebook-style timing','Estimated 400–1600 score report','Unlimited retakes']); wireLock(host); return; }
+    if (!sim){ host.innerHTML = simIntroHTML(); document.getElementById('simStart').onclick=startSim; }
+  }
+  function simIntroHTML(){
+    return `<div class="card sim-intro">
+      <h3>How the simulator works</h3>
+      <ol>
+        <li><b>Reading &amp; Writing</b> — Module 1, then an adaptive Module 2.</li>
+        <li><b>Math</b> — Module 1, then an adaptive Module 2.</li>
+        <li>Do well on Module 1 and Module 2 gets harder (and your score ceiling rises) — exactly like the real Digital SAT.</li>
+        <li>Each module is <b>timed</b>; you'll get a full score report at the end.</li>
+      </ol>
+      <p class="disclaimer mb">This is a condensed simulator using Dr. Marrero's original items; scores are estimates to guide your studying, not official predictions.</p>
+      <button class="btn btn-primary btn-lg" id="simStart">Begin Full Test →</button>
+    </div>`;
+  }
+
+  let sim = null, simTimer=null;
+  function modulePool(sec, hard){
+    let pool = BANK.filter(q=>q.sec===sec);
+    pool = pool.filter(q=> hard ? q.diff>=2 : q.diff<=2);
+    return shuffle(pool.slice());
+  }
+  function startSim(){
+    sim = {
+      stage:0,  // 0 RW-M1, 1 RW-M2, 2 Math-M1, 3 Math-M2, 4 done
+      modules:[
+        {sec:'rw', label:'Reading & Writing · Module 1', secs:600},
+      ],
+      answers:{}, // qid -> correct bool
+      rw:{m1:0,m1n:0,hard:false,correct:0,total:0},
+      math:{m1:0,m1n:0,hard:false,correct:0,total:0},
+      cur:[], curi:0, started:Date.now(),
+    };
+    // build first module
+    loadModule('rw', false, 'Reading & Writing · Module 1', 600);
+  }
+  const SIM_MOD_SIZE = 6;
+  function loadModule(sec, hard, label, secs){
+    sim.curSec=sec; sim.curHard=hard;
+    sim.cur = modulePool(sec, hard).slice(0, SIM_MOD_SIZE);
+    sim.curi=0; sim.curLabel=label; sim.curEnd=Date.now()+secs*1000;
+    renderSimModule();
+    clearInterval(simTimer);
+    simTimer=setInterval(simTick,1000);
+  }
+  function simTick(){
+    const left = Math.max(0, Math.round((sim.curEnd-Date.now())/1000));
+    const t=document.getElementById('simTimer'); if(t){ t.textContent=fmt(left); t.classList.toggle('warn', left<=60); }
+    if (left<=0){ clearInterval(simTimer); toast('Time! Moving on.'); nextSimQuestion(true); }
+  }
+  function renderSimModule(){
+    const q = sim.cur[sim.curi];
+    const host = document.getElementById('simGate');
+    host.innerHTML = `
+      <div class="module-banner"><div><h3>${sim.curLabel}</h3><div class="muted" style="color:#c8d0e8;font-size:.85rem">Question ${sim.curi+1} of ${sim.cur.length}</div></div><div class="t" id="simTimer">--:--</div></div>
+      <div class="q-shell">
+        ${q.passage?`<div class="passage">${escapeHTML(q.passage).replace(/\n/g,'<br>')}</div>`:''}
+        <div class="q-stem">${escapeHTML(q.stem)}</div>
+        <div id="simArea"></div>
+        <div class="q-actions"><span class="spacer"></span><button class="btn btn-primary" id="simNext">${sim.curi+1<sim.cur.length?'Next →':'Finish Module →'}</button></div>
+      </div>`;
+    const area=document.getElementById('simArea');
+    if (q.type==='grid'){ area.innerHTML=`<div class="gridin"><input type="text" id="simGrid" autocomplete="off" placeholder="answer"/></div>`; }
+    else {
+      area.innerHTML=`<div class="choices">`+q.ch.map((c,i)=>`<button class="choice" data-i="${i}"><span class="key">${'ABCD'[i]}</span><span>${escapeHTML(c)}</span></button>`).join('')+`</div>`;
+      area.querySelectorAll('.choice').forEach(ch=>ch.onclick=()=>{ area.querySelectorAll('.choice').forEach(x=>x.classList.remove('sel')); ch.classList.add('sel'); sim.sel=+ch.dataset.i; });
+    }
+    sim.sel=null;
+    document.getElementById('simNext').onclick=()=>nextSimQuestion(false);
+  }
+  function nextSimQuestion(timedOut){
+    const q = sim.cur[sim.curi];
+    let correct=false;
+    if (!timedOut){
+      if (q.type==='grid'){ const v=(document.getElementById('simGrid').value||'').trim(); if(v==='') {toast('Enter an answer or it will be marked blank.'); } correct = v!=='' && gridMatch(v,q.ans); }
+      else correct = (sim.sel===q.ans);
+    }
+    sim.answers[q.id]=correct;
+    // tally + record to global stats
+    const grp = q.sec==='rw'?sim.rw:sim.math; grp.total++; if(correct) grp.correct++;
+    recordAnswer(q, correct);
+    if (sim.curi+1 < sim.cur.length && !timedOut){ sim.curi++; renderSimModule(); clearInterval(simTimer); simTimer=setInterval(simTick,1000); return; }
+    if (timedOut){ /* skip remaining as blank */ for(let k=sim.curi+ (q? 1:0); k<sim.cur.length;k++){ const qq=sim.cur[k]; sim.answers[qq.id]=false; const g=qq.sec==='rw'?sim.rw:sim.math; g.total++; recordAnswer(qq,false);} }
+    clearInterval(simTimer);
+    advanceStage();
+  }
+  function advanceStage(){
+    // Decide what module comes next based on current state
+    const sec = sim.curSec;
+    if (sec==='rw' && !sim.rwM2Done && sim.rwM1Done){ /* shouldn't happen */ }
+    if (sec==='rw' && !sim.rwM1Done){
+      sim.rwM1Done=true;
+      const acc = sim.rw.total? sim.rw.correct/sim.rw.total : 0;
+      sim.rw.hard = acc >= 0.6;
+      loadModule('rw', sim.rw.hard, 'Reading & Writing · Module 2 ('+(sim.rw.hard?'higher':'standard')+')', 600); return;
+    }
+    if (sec==='rw' && sim.rwM1Done && !sim.rwM2Done){
+      sim.rwM2Done=true;
+      loadModule('math', false, 'Math · Module 1', 700); return;
+    }
+    if (sec==='math' && !sim.mathM1Done){
+      sim.mathM1Done=true;
+      const acc = sim.math.total? sim.math.correct/sim.math.total : 0;
+      sim.math.hard = acc >= 0.6;
+      loadModule('math', sim.math.hard, 'Math · Module 2 ('+(sim.math.hard?'higher':'standard')+')', 700); return;
+    }
+    // done
+    finishSim();
+  }
+  function sectionScore(grp){
+    const acc = grp.total? grp.correct/grp.total : 0;
+    // base 200–800; routing to the harder module raises the ceiling
+    const ceil = grp.hard ? 800 : 650;
+    const floor = 200;
+    return Math.round((floor + acc*(ceil-floor))/10)*10;
+  }
+  function finishSim(){
+    clearInterval(simTimer);
+    const rw = sectionScore(sim.rw), math = sectionScore(sim.math);
+    const total = rw+math;
+    const isBest = !S.bestTest || total > S.bestTest;
+    if (isBest) S.bestTest = total;
+    S.history.unshift({ type:'test', date:new Date().toISOString(), detail:`R&W ${rw} · Math ${math}`, score:String(total) });
+    S.history = S.history.slice(0,50); save();
+    const host=document.getElementById('simGate');
+    host.innerHTML = `<div class="card scorecard">
+      <p class="muted">Estimated Digital SAT Score</p>
+      <div class="total">${total}<small> / 1600</small></div>
+      ${isBest?'<p style="color:var(--green);font-weight:600;margin-top:.4rem">🏆 New personal best!</p>':''}
+      <div class="sect">
+        <div><div class="v">${rw}</div><div class="k">Reading &amp; Writing</div></div>
+        <div><div class="v">${math}</div><div class="k">Math</div></div>
+      </div>
+      <p class="disclaimer mb">Estimate based on a condensed adaptive test. Routing: R&amp;W ${sim.rw.hard?'higher':'standard'} module, Math ${sim.math.hard?'higher':'standard'} module.</p>
+      <div class="q-actions" style="justify-content:center">
+        <button class="btn btn-outline" id="simReviewBtn">Review Mistakes</button>
+        <button class="btn btn-primary" id="simRetake">Take Another</button>
+      </div>
+    </div>`;
+    sim=null;
+    document.getElementById('simRetake').onclick=()=>{ renderSimGate(); };
+    document.getElementById('simReviewBtn').onclick=()=> go('review');
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     REVIEW
+     ═══════════════════════════════════════════════════════════════ */
+  function renderReviewGate(){
+    const host=document.getElementById('reviewGate');
+    if (!isPremium()){ host.innerHTML=lockHTML('Mistake Review',
+      ['Every question you missed, saved automatically','All your bookmarked questions','Full worked solutions','Build a personal weak-spot list']); wireLock(host); return; }
+    const ids = [...new Set([...S.missed, ...S.bookmarks])];
+    if (!ids.length){ host.innerHTML='<div class="card center"><p class="muted">No missed or bookmarked questions yet. As you practice, anything you miss or star shows up here for review.</p></div>'; return; }
+    host.innerHTML = `<p class="muted mb">${S.missed.length} missed · ${S.bookmarks.length} bookmarked</p>` + ids.map(id=>{
+      const q=byId(id); if(!q) return '';
+      const missed=S.missed.includes(id), marked=S.bookmarks.includes(id);
+      const ansText = q.type==='grid' ? q.ans : (q.ch?('<b>'+'ABCD'[q.ans]+'.</b> '+escapeHTML(q.ch[q.ans])):'');
+      return `<div class="card mb">
+        <div class="q-meta mb">${missed?'<span class="q-pill diff3">Missed</span>':''}${marked?'<span class="q-pill" style="background:#fdf6e0;color:#9a7b10">★ Bookmarked</span>':''}<span class="q-pill">${q.dom}</span></div>
+        ${q.passage?`<div class="passage">${escapeHTML(q.passage).replace(/\n/g,'<br>')}</div>`:''}
+        <div class="q-stem" style="font-size:1rem">${escapeHTML(q.stem)}</div>
+        <div class="feedback ok show"><div class="verdict" style="font-size:1rem">Answer: ${ansText}</div><div class="exp">${escapeHTML(q.exp)}</div></div>
+        <div style="margin-top:.8rem"><button class="btn btn-ghost btn-sm" data-clear="${id}">Remove from review</button></div>
+      </div>`;
+    }).join('');
+    host.querySelectorAll('[data-clear]').forEach(b=> b.onclick=()=>{
+      const id=b.dataset.clear;
+      S.missed=S.missed.filter(x=>x!==id); S.bookmarks=S.bookmarks.filter(x=>x!==id); save(); renderReviewGate();
+    });
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     PROGRESS
+     ═══════════════════════════════════════════════════════════════ */
+  function renderProgress(){
+    renderMastery(document.getElementById('progMastery'));
+    const wrap=document.getElementById('histWrap');
+    if (!S.history.length){ wrap.innerHTML='<p class="muted">No sessions yet — complete a practice set or a full test to see your history.</p>'; return; }
+    wrap.innerHTML = `<table class="hist-table"><thead><tr><th>Date</th><th>Type</th><th>Detail</th><th>Result</th></tr></thead><tbody>`+
+      S.history.map(h=>`<tr><td>${new Date(h.date).toLocaleDateString()}</td><td><span class="tag">${h.type==='test'?'Full Test':'Practice'}</span></td><td>${h.detail}</td><td><b>${h.score}</b></td></tr>`).join('')+
+      `</tbody></table>`;
+  }
+  document.getElementById('resetData').onclick = ()=>{
+    if (confirm('This erases all your progress, bookmarks, and history on this device. Your subscription stays active. Continue?')){
+      const keepPrem=S.premium, keepLic=S.license, keepInst=S.instanceId;
+      S = defaultState(); S.premium=keepPrem; S.license=keepLic; S.instanceId=keepInst; save();
+      renderDashboard(); renderProgress(); refreshQuotaNote(); toast('Progress reset.');
+    }
+  };
+
+  /* ═══════════════════════════════════════════════════════════════
+     SHARED UI HELPERS
+     ═══════════════════════════════════════════════════════════════ */
+  function lockHTML(what, feats){
+    return `<div class="lock-overlay">
+      <div class="ic">🔒</div>
+      <h3>${what} is a Premium feature</h3>
+      <p>Subscribe to unlock ${what.toLowerCase()} and everything else in the SAT Command Center.</p>
+      <ul class="feat">${feats.map(f=>`<li>${f}</li>`).join('')}</ul>
+      <div class="lock-cta">
+        <button class="btn btn-primary btn-lg" data-open-premium>Unlock Premium</button>
+        <a class="btn btn-outline btn-lg" href="${LS.checkoutUrl}" target="_blank" rel="noopener" style="color:#fff;border-color:rgba(255,255,255,.5)">See plans →</a>
+      </div>
+      <p style="margin-top:1rem;font-size:.85rem;color:#9fb0d4">Already subscribed? <a href="#" data-open-premium style="color:var(--gold-light)">Enter your license key →</a></p>
+    </div>`;
+  }
+  function wireLock(host){ host.querySelectorAll('[data-open-premium]').forEach(b=> b.onclick=(e)=>{e.preventDefault();openPremium();}); }
+
+  function show(id){ document.getElementById(id).classList.remove('hidden'); }
+  function hide(id){ document.getElementById(id).classList.add('hidden'); }
+  function escapeHTML(s){ return String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+  let toastT=null;
+  function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'),2200); }
+
+  /* Nav toggle (mobile) */
+  (function(){ const tg=document.querySelector('.nav-toggle'), lk=document.getElementById('navLinks');
+    if(tg&&lk){ tg.onclick=()=>{ const o=lk.classList.toggle('open'); tg.setAttribute('aria-expanded',o?'true':'false'); }; } })();
+
+  /* Modal wiring */
+  document.getElementById('modalClose').onclick=closePremium;
+  document.getElementById('premiumModal').addEventListener('click', e=>{ if(e.target.id==='premiumModal') closePremium(); });
+  document.getElementById('activateBtn').onclick=activateLicense;
+  document.getElementById('licenseInput').addEventListener('keydown', e=>{ if(e.key==='Enter') activateLicense(); });
+
+  /* ═══════════════════════════════════════════════════════════════
+     INIT
+     ═══════════════════════════════════════════════════════════════ */
+  function init(){
+    // quota reset on day change
+    if (S.quota.date !== todayStr()){ S.quota={date:todayStr(),used:0}; save(); }
+    renderDomainChips();
+    refreshPlanUI();
+    refreshQuotaNote();
+    renderDashboard();
+    revalidate(); // silently confirm subscription status
+  }
+  init();
+  </script>
+</body>
+</html>
