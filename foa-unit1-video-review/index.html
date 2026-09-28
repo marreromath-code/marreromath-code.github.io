@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FOA Unit 1 Video Review · Marrero Math</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0E1B33; --card:#16264A; --edge:#2C4270; --ink:#FFFFFF; --muted:#9DB2D0;
+  --gold:#FFD166; --green:#38E1B0; --orange:#FF9E57; --red:#FF5C7A;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--navy);color:var(--ink);font-family:Inter,system-ui,sans-serif;line-height:1.5}
+a{color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+header{padding:34px 0 18px;border-bottom:1px solid var(--edge);
+  background:radial-gradient(1200px 300px at 20% -20%, #1d3566 0%, transparent 70%)}
+.brand{font-family:"JetBrains Mono",monospace;font-size:13px;letter-spacing:.14em;color:var(--gold);text-transform:uppercase}
+h1{font-family:Fraunces,serif;font-weight:800;font-size:clamp(30px,5vw,48px);margin:6px 0 6px;line-height:1.1}
+.sub{color:var(--muted);max-width:760px;margin:0}
+.pdfs{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:12px;background:var(--card);
+  border:1px solid var(--edge);text-decoration:none;font-weight:600;font-size:14px;transition:.15s}
+.btn:hover{border-color:var(--gold);transform:translateY(-1px)}
+button.btn{color:var(--ink);font-family:Inter,system-ui,sans-serif;cursor:pointer}
+.ctrl button{font-family:Inter,system-ui,sans-serif}
+.btn.primary{background:var(--gold);color:var(--navy);border-color:var(--gold)}
+main{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(0,1fr);gap:24px;padding:24px 0 40px}
+@media(max-width:900px){main{grid-template-columns:1fr}}
+.player{position:sticky;top:16px;align-self:start}
+@media(max-width:900px){.player{position:static}}
+video{width:100%;aspect-ratio:16/9;border-radius:14px;background:#000;border:1px solid var(--edge);display:block}
+.now{margin-top:14px;background:var(--card);border:1px solid var(--edge);border-radius:14px;padding:16px 18px}
+.now .tag{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--gold);letter-spacing:.08em}
+.now h2{font-family:Fraunces,serif;margin:4px 0 6px;font-size:24px}
+.now p{margin:0 0 8px;color:#dfe8f6}
+.tryit{border-left:3px solid var(--green);padding:8px 12px;background:rgba(56,225,176,.07);border-radius:6px;margin-top:10px;font-size:14px}
+.tryit b{color:var(--green)}
+.ctrl{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.ctrl button{font:600 13px Inter;color:var(--ink);background:transparent;border:1px solid var(--edge);border-radius:10px;padding:8px 12px;cursor:pointer}
+.ctrl button:hover{border-color:var(--gold)}
+.ctrl label{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:13px;margin-left:auto}
+.progress{height:6px;background:var(--edge);border-radius:6px;margin-top:14px;overflow:hidden}
+.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--gold));transition:width .3s}
+.plabel{font-size:12px;color:var(--muted);margin-top:6px}
+.list h3{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin:18px 0 8px}
+.list h3:first-child{margin-top:0}
+.item{display:grid;grid-template-columns:118px 1fr;gap:12px;align-items:center;padding:8px;border-radius:12px;cursor:pointer;
+  border:1px solid transparent;transition:.15s;background:none;color:inherit;text-align:left;width:100%;font:inherit}
+.item:hover{background:var(--card)}
+.item.active{background:var(--card);border-color:var(--gold)}
+.item img{width:118px;aspect-ratio:16/9;object-fit:cover;border-radius:8px;border:1px solid var(--edge)}
+.item .t{font-weight:600;font-size:14.5px}
+.item .d{font-size:12.5px;color:var(--muted)}
+.item .num{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--gold)}
+.item .done{color:var(--green);font-size:12px;font-weight:700;display:none}
+.item.watched .done{display:inline}
+footer{border-top:1px solid var(--edge);padding:18px 0 30px;color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="brand">Marrero Math · Foundations of Algebra</div>
+    <h1>Unit 1 Video Review</h1>
+    <p class="sub">Short animated walkthroughs of the most important problem types on the Unit 1 tests: slope, linear equations, word problems, arithmetic sequences, and functions. Pause each video and try the matching packet problems yourself.</p>
+    <div class="pdfs">
+      <a class="btn primary" href="./FOA_Unit1_Review_Packet.pdf" target="_blank">📄 4-Page Review Packet</a>
+      <a class="btn" href="./FOA_Unit1_Extended_Practice_10pg.pdf" target="_blank">📘 10-Page Extended Practice</a>
+      <button class="btn" id="fullBtn" type="button">▶ Play the full review (≈2 min)</button>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+<main>
+  <section class="player">
+    <video id="vid" controls playsinline preload="metadata"></video>
+    <div class="now">
+      <div class="tag" id="nTag"></div>
+      <h2 id="nTitle"></h2>
+      <p id="nDesc"></p>
+      <div class="tryit" id="nTry"></div>
+      <div class="ctrl">
+        <button id="prev" type="button">← Previous</button>
+        <button id="next" type="button">Next →</button>
+        <button id="slow" type="button">Speed: 1×</button>
+        <label><input type="checkbox" id="auto" checked> Autoplay next</label>
+      </div>
+      <div class="progress"><i id="bar"></i></div>
+      <div class="plabel" id="plabel"></div>
+    </div>
+  </section>
+  <section class="list" id="list"></section>
+</main>
+</div>
+<footer><div class="wrap">Dr. Carlos Marrero · Marrero Math · Watch a video, then practice. Your progress is saved on this device.</div></footer>
+
+<script>
+const V = [
+ {id:"S00Title", group:"Start here", title:"Unit 1 Roadmap", desc:"What's on the unit test and what each video covers.", tryit:"Skim the Key Ideas box on page 1 of the packet."},
+ {id:"S01SlopeTwoPoints", group:"Slope", title:"Slope Through Two Points", desc:"Find the slope through (1, −3) and (4, 9) with the slope formula and a rise/run picture.", tryit:"4-page packet #2 · 10-page packet #4–7"},
+ {id:"S02SlopeFromGraph", group:"Slope", title:"Slope From a Graph", desc:"Count rise over run between two lattice points on a graph.", tryit:"4-page packet #1, #3 · 10-page packet #1–3, #8–10"},
+ {id:"S03StandardToSlopeInt", group:"Linear Equations", title:"Standard Form → y = mx + b", desc:"Rewrite 8x + 4y = 20 by isolating y and dividing every term.", tryit:"4-page packet #7–8 · 10-page packet #18–23"},
+ {id:"S04InterceptsGraph", group:"Linear Equations", title:"Graphing With Intercepts", desc:"Graph 4x + 2y = 8 by finding the x- and y-intercepts.", tryit:"4-page packet #5–6, #13 · 10-page packet #14–17, #40–41"},
+ {id:"S05TwoPointEquation", group:"Linear Equations", title:"Equation Through Two Points", desc:"Write the equation through (−2, 9) and (3, −1) using point-slope form, then check.", tryit:"4-page packet #10–11 · 10-page packet #26–33"},
+ {id:"S06RateProblem", group:"Word Problems", title:"Rate + One Data Point", desc:"An electrician charges $65/hour; a 3-hour job costs $245. Build y = mx + b and predict.", tryit:"4-page packet #14–15 · 10-page packet #42–49"},
+ {id:"S07ArithmeticNthTerm", group:"Arithmetic Sequences", title:"Explicit Rule & the nth Term", desc:"For 7, 11, 15, 19, … write aₙ = a₁ + d(n − 1) and find the 60th term.", tryit:"4-page packet #16–17, #19 · 10-page packet #51–55, #61"},
+ {id:"S08RecursiveRule", group:"Arithmetic Sequences", title:"Recursive Rules", desc:"Write a recursive rule for 40, 33, 26, 19, … — both parts!", tryit:"4-page packet #18, #20 · 10-page packet #56–59"},
+ {id:"S09FunctionNotation", group:"Functions", title:"Function Notation", desc:"Evaluate f(3) and solve f(x) = −4 — know which one is the input.", tryit:"4-page packet #22–24 · 10-page packet #64–70"},
+ {id:"S10DomainRangeGraph", group:"Functions", title:"Domain, Range & Key Features", desc:"Read domain, range, and increasing/decreasing/constant intervals from a graph.", tryit:"4-page packet #25, #29–30 · 10-page packet #73, #78–80"},
+ {id:"S11IntervalNotation", group:"Functions", title:"Inequality ↔ Interval Notation", desc:"Closed dots get brackets; open dots and infinity get parentheses.", tryit:"4-page packet #27–28 · 10-page packet #76–77"},
+ {id:"S12WrapUp", group:"Wrap-up", title:"Your Test Checklist", desc:"The six ideas to remember before the test.", tryit:"Finish the packet and check your work with your teacher."}
+];
+const FULL = {id:"FOA_Unit1_Review_Full", group:"", title:"Full Unit 1 Review", desc:"All 13 videos back-to-back.", tryit:"Use the list on the right to jump to any topic."};
+
+const vid = document.getElementById('vid');
+let cur = 0, fullMode = false, watched = new Set();
+try { watched = new Set(JSON.parse(localStorage.getItem('foaU1watched') || '[]')); } catch(e) {}
+
+function save(){ try{ localStorage.setItem('foaU1watched', JSON.stringify([...watched])); }catch(e){} }
+
+function renderList(){
+  const list = document.getElementById('list'); list.innerHTML = '';
+  let g = null;
+  V.forEach((v,i)=>{
+    if(v.group!==g){ g=v.group; const h=document.createElement('h3'); h.textContent=g; list.appendChild(h); }
+    const b=document.createElement('button'); b.type='button';
+    b.className='item'+(i===cur&&!fullMode?' active':'')+(watched.has(v.id)?' watched':'');
+    b.innerHTML=`<img src="./${v.id}.jpg" alt="" loading="lazy"><div><div class="num">VIDEO ${String(i).padStart(2,'0')} <span class="done">✓ watched</span></div><div class="t">${v.title}</div><div class="d">${v.desc}</div></div>`;
+    b.onclick=()=>{ load(i,true); window.scrollTo({top:0,behavior:'smooth'}); };
+    list.appendChild(b);
+  });
+  const n=V.filter(v=>watched.has(v.id)).length;
+  document.getElementById('bar').style.width=(100*n/V.length)+'%';
+  document.getElementById('plabel').textContent=`${n} of ${V.length} videos watched`;
+}
+function show(v,tag){
+  document.getElementById('nTag').textContent=tag;
+  document.getElementById('nTitle').textContent=v.title;
+  document.getElementById('nDesc').textContent=v.desc;
+  document.getElementById('nTry').innerHTML='<b>Try it:</b> '+v.tryit;
+}
+function load(i,play){
+  fullMode=false; cur=i; const v=V[i];
+  vid.src=`./${v.id}.mp4`; vid.poster=`./${v.id}.jpg`;
+  show(v,`VIDEO ${String(i).padStart(2,'0')} · ${v.group.toUpperCase()}`);
+  renderList(); if(play) vid.play().catch(()=>{});
+}
+document.getElementById('fullBtn').onclick=()=>{
+  fullMode=true; vid.src=`./${FULL.id}.mp4`; vid.poster='./S00Title.jpg';
+  show(FULL,'FULL REVIEW'); renderList(); vid.play().catch(()=>{}); window.scrollTo({top:0,behavior:'smooth'});
+};
+vid.addEventListener('ended',()=>{
+  if(fullMode){ V.forEach(v=>watched.add(v.id)); save(); renderList(); return; }
+  watched.add(V[cur].id); save();
+  if(document.getElementById('auto').checked && cur<V.length-1) load(cur+1,true); else renderList();
+});
+document.getElementById('prev').onclick=()=>load(Math.max(0,cur-1),true);
+document.getElementById('next').onclick=()=>load(Math.min(V.length-1,cur+1),true);
+const speeds=[1,0.75,0.5,1.25]; let si=0;
+document.getElementById('slow').onclick=e=>{ si=(si+1)%speeds.length; vid.playbackRate=speeds[si]; e.target.textContent=`Speed: ${speeds[si]}×`; };
+vid.addEventListener('loadedmetadata',()=>{ vid.playbackRate=speeds[si]; });
+load(0,false);
+</script>
+</body>
+</html>
