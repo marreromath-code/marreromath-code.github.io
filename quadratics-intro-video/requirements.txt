@@ -1,1 +1,2 @@
 manim==0.22.1
+# Fonts: Fraunces (headings, from @fontsource/fraunces, converted to TTF) and Inter (body)

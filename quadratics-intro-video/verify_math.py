@@ -59,4 +59,18 @@ check("vertex x = -b/2a", F(2, 2), 1)
 check("min value", q(1), -4)
 check("q(4)", q(4), 5)
 check("q(-2)", q(-2), 5)
+
+# S09 slider on b (initial velocity): h(t) = -16t^2 + b t + 25, max = b^2/64 + 25 at t = b/32
+for b, tmax, hmax in ((24, 0.75, 34), (40, 1.25, 50), (56, 1.75, 74)):
+    Hb = lambda t: -16*t**2 + b*t + 25
+    check(f"b={b} vertex time b/32", b/32, tmax)
+    check(f"b={b} max height", Hb(b/32), hmax)
+    check(f"b={b} max via b^2/64+25", b*b/64 + 25, hmax)
+tg56 = (56 + math.sqrt(56**2 + 4*16*25)) / 32
+check("b=56 ground time < 4 (fits window)", tg56 < 4, True)
+check("b=56 max 74 < 80 (fits window)", 74 < 80, True)
+
+# Predict questions
+check("predict f(-3) for x^2 is 9 (not -9)", (-3)**2, 9)
+
 print("\nALL CHECKS PASS" if ok else "\nSOME CHECKS FAILED")

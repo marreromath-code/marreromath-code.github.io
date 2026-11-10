@@ -1,16 +1,16 @@
-S00Title: 1280x720 30/1fps h264 11.5s OK
-S01FunctionNotation: 1280x720 30/1fps h264 16.1s OK
-S02WhatIsQuadratic: 1280x720 30/1fps h264 12.7s OK
-S03StandardForm: 1280x720 30/1fps h264 16.6s OK
-S04ParentFunction: 1280x720 30/1fps h264 14.1s OK
-S05VertexBehavior: 1280x720 30/1fps h264 14.9s OK
-S06EffectOfA: 1280x720 30/1fps h264 18.1s OK
-S07ConstantC: 1280x720 30/1fps h264 16.5s OK
+S00Title: 1280x720 30/1fps h264 12.4s OK
+S01FunctionNotation: 1280x720 30/1fps h264 20.6s OK
+S02WhatIsQuadratic: 1280x720 30/1fps h264 13.1s OK
+S03StandardForm: 1280x720 30/1fps h264 13.9s OK
+S04ParentFunction: 1280x720 30/1fps h264 12.1s OK
+S05VertexBehavior: 1280x720 30/1fps h264 20.8s OK
+S06EffectOfA: 1280x720 30/1fps h264 22.9s OK
+S07ConstantC: 1280x720 30/1fps h264 14.6s OK
 S08QuickCheck: 1280x720 30/1fps h264 17.2s OK
-S09ThrowTheBall: 1280x720 30/1fps h264 21.9s OK
-S10DomainRangeMinMax: 1280x720 30/1fps h264 13.8s OK
-S11DesmosTable: 1280x720 30/1fps h264 14.7s OK
-S12WrapUp: 1280x720 30/1fps h264 14.4s OK
+S09ThrowTheBall: 1280x720 30/1fps h264 37.4s OK
+S10DomainRangeMinMax: 1280x720 30/1fps h264 17.9s OK
+S11DesmosTable: 1280x720 30/1fps h264 12.8s OK
+S12WrapUp: 1280x720 30/1fps h264 11.9s OK
 contact sheet: quality_control/contact_sheet.png (13 frames, 5 rows)
-TOTAL: 202.5s over 13 scenes
+TOTAL: 227.6s over 13 scenes
 VALIDATION: PASS

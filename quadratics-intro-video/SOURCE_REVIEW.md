@@ -2,7 +2,8 @@
 
 **Request:** a dynamic MP4 presentation in the Marrero Math design system that introduces
 quadratic functions, using the teacher's written summary. Relaxing background music from
-Epidemic Sound. Visual cues taken from course-player and quiz screens on Mobbin.
+Epidemic Sound. Version 2: restyled with the Marrero Math website palette and
+fonts, with lesson patterns inspired by Brilliant screens (Mobbin "Education" collection).
 
 **Level (assumed):** Algebra 1 / Foundations of Algebra, unit introduction.
 
@@ -36,5 +37,6 @@ Epidemic Sound. Visual cues taken from course-player and quiz screens on Mobbin.
 | v(t) = 40 − 32t = 0 at t = 1.25; h(1.25) = 50 ft | computed |
 | Ground: t = (40 + √3200)/32 ≈ 3.02 s; v ≈ −56.57 ft/s | computed |
 | a = −16 = ½(−32 ft/s²) | computed |
+| Slider b: max height b²/64 + 25 → b = 24: 34 ft, 40: 50 ft, 56: 74 ft (fits 0–80 ft, 0–4 s window) | computed |
 | g(x) = −x² + 4: max 4 at (0, 4); range y ≤ 4 | computed |
 | f(x) = x² − 2x − 3 table x = −1..3 → 0, −3, −4, −3, 0; min −4 at (1, −4) | computed |
