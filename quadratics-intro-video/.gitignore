@@ -1,0 +1,5 @@
+media/
+silent_full.mp4
+concat.txt
+*.log
+__pycache__/
